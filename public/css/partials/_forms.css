@@ -1,6 +1,6 @@
 input,
 textarea {
-    width: 90%;
+    width: 95%;
     padding: 10px;
     border: 1px solid rgba(23, 23, 197, 0.45);
     font-size: 1.5rem;
@@ -34,10 +34,11 @@ label {
 }
 .form {
     margin-top: 4rem;
+    padding: 5rem;
 }
 .form h2 {
     margin: 0;
-    width: 90%;
+    width: 95%;
     font-size: 3rem;
     padding-bottom: 2rem;
     margin-bottom: 2rem;
