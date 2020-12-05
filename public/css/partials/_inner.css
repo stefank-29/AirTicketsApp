@@ -16,10 +16,9 @@ body::before {
     display: block;
     background: linear-gradient(
         90deg,
-        #48ded4 0%,
-        #e82c75 35%,
-        rgb(255, 196, 0) 75%,
-        #33e2d7 95%
+        #c5211c 0%,
+        rgb(255, 196, 0) 50%,
+        #33e268 100%
     );
     height: 10px;
     width: 100%;

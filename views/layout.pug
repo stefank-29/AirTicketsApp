@@ -3,7 +3,7 @@ html
   head
     title= `${title} | ${h.siteName}`
     link(rel='stylesheet', href='/dist/style.css')
-    link(rel="shortcut icon" type="image/png" href="/images/icons/blogger.png")
+    link(rel="shortcut icon" type="image/png" href="/images/icons/logo.svg")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     link(rel='styelsheet', href='https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap', type='text/css')
     
@@ -14,12 +14,12 @@ html
         nav.nav
           .nav__section.nav__section--pages
             li.nav__item
-             //- a.nav__link.nav__link--logo(href="/")
-             //-   != h.icon('logo')
+              a.nav__link.nav__link--logo(href="/")
+                != h.icon('logo')
             each item in h.menu
               li.nav__item
                 a.nav__link(href=item.slug, class=(currentPath.startsWith(item.slug) ? 'nav__link--active' : ''))
-                  //-!= h.icon(item.icon)
+                  != h.icon(item.icon)
                   span #{item.title}
           
           .nav__section.nav__section--user
