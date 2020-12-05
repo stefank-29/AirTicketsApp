@@ -6,6 +6,10 @@ exports.registerForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
 
+exports.loginForm = (req, res) => {
+    res.render('login', { title: 'Log In' });
+};
+
 exports.validateRegister = (req, res, next) => {
     req.sanitizeBody('name');
     req.checkBody('name', 'You must supply name').notEmpty();

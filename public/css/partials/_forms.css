@@ -46,7 +46,8 @@ label {
 
 input.button {
     margin-top: 2rem;
-    background-color: brown;
+    background-color: rgb(20, 87, 212);
+    color: whitesmoke;
     cursor: pointer;
 }
 input.button.save {
@@ -57,5 +58,5 @@ input.button.save:hover {
     background: rgb(46, 219, 46);
 }
 input.button:hover {
-    background-color: rgb(199, 67, 67);
+    background-color: rgb(31, 107, 247);
 }
