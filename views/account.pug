@@ -1,0 +1,9 @@
+extend layout
+
+block content
+    .inner
+        h2= title
+        form.form(action="/account" method='POST')
+            label(for="name") Name
+            input(type="text" name='name' value=user.name )
+            input(type="submit" value="Update account" name="update" class="button save")
