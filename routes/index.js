@@ -9,7 +9,6 @@ router.get('/app', (req, res) => {
 });
 
 router.get('/register', userController.registerForm);
-
 router.post(
     '/register',
     userController.validateRegister,
@@ -18,5 +17,6 @@ router.post(
 );
 
 router.get('/login', userController.loginForm);
+router.post('/login', authController.login);
 
 module.exports = router;
