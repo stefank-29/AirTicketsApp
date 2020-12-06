@@ -29,7 +29,6 @@ const userScheme = new Schema({
         type: Number,
         required: true,
     },
-
     resetPasswordToken: String,
     resetPasswordExpires: Date,
 });

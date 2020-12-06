@@ -12,6 +12,7 @@ mongoose.Promise = global.Promise; // mongoose to use ES6 promises
 mongoose.connection.on('error', (err) => {
     console.error(`Connection error: ${err.message}`);
 });
+mongoose.set('useCreateIndex', true);
 
 // import models
 require('./models/User');
