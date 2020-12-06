@@ -29,6 +29,10 @@ exports.validateRegister = (req, res, next) => {
         'passportNumber',
         'You must supply a passport number'
     ).notEmpty();
+    req.checkBody(
+        'passportNumber',
+        'Passport number must be numeric'
+    ).isNumeric();
 
     const errors = req.validationErrors();
     if (errors) {
