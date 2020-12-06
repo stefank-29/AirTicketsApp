@@ -5,8 +5,8 @@ const htmlToText = require('html-to-text');
 const promisify = require('es6-promisify');
 
 const transport = nodemailer.createTransport({
+    service: 'gmail',
     host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
     auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
@@ -26,7 +26,7 @@ exports.send = async (options) => {
     const html = generateHTML(options.filename, options);
     const text = htmlToText.fromString(html);
     const mailOptions = {
-        from: `Airplane Ticket Service <noreply@tickets.com>`,
+        from: `Airplane Tickets Service <airtickets.noreply@gmail.com>`,
         to: options.user.email,
         subject: options.subject,
         html,
