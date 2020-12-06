@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
 
+// auth
 router.get('/register', userController.registerForm);
 router.post(
     '/register',
