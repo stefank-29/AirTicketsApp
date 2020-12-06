@@ -7,8 +7,8 @@ const promisify = require('es6-promisify');
 
 exports.login = passport.authenticate('local', {
     failureRedirect: '/login',
-    failureFlash: 'Failed login',
-    successFlash: 'Successfully logged in',
+    failureFlash: 'Failed login.',
+    successFlash: 'Successfully logged in!',
     successRedirect: '/',
 });
 
@@ -87,4 +87,27 @@ exports.confirmedPasswords = (req, res, next) => {
         return; // stop function from running
     }
     next();
+};
+
+exports.updatePassword = async (req, res) => {
+    const user = await User.findOne({
+        resetPasswordToken: req.params.token,
+        resetPasswordExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+        req.flash('error', 'Password reset is invalid or has expired');
+        return res.redirect('/login');
+    }
+
+    const setPassword = promisify(user.setPassword, user);
+    await setPassword(req.body.password);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    const updatedUser = await user.save();
+    await req.login(updatedUser); // prosledim usera kog logujem
+    req.flash(
+        'success',
+        'Your password has been reset! You are now logged in!'
+    );
+    res.redirect('/');
 };
