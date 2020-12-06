@@ -4,8 +4,8 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
-router.get('/app', (req, res) => {
-    res.render('blog', { title: 'dsad' });
+router.get('/', (req, res) => {
+    res.render('index', { title: 'Home' });
 });
 
 router.get('/register', userController.registerForm);
