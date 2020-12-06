@@ -48,10 +48,10 @@ exports.forgot = async (req, res) => {
         `You have been emailed a password reset link. ${resetURL}`
     );
     //4. redirect to login page
-    res.rediret('/login');
+    res.redirect('/login');
 };
 
-exports.reset = async (req, res) => {
+exports.resetForm = async (req, res) => {
     const user = await User.findOne({
         resetPasswordToken: req.params.token,
         resetPasswordExpires: { $gt: Date.now() }, // token is still active
@@ -60,4 +60,31 @@ exports.reset = async (req, res) => {
         req.flash('error', 'Password reset is invalid or has expired');
         return res.redirect('/login');
     }
+    // if there is user show reset form
+    res.render('reset', { title: 'Reset your Password' });
+};
+
+exports.confirmedPasswords = (req, res, next) => {
+    req.checkBody('password', 'Password cannot be blank!').notEmpty();
+    req.checkBody(
+        'password-confirm',
+        'Password Confirm cannot be blank!'
+    ).notEmpty();
+    req.checkBody('password-confirm', 'Your password do not match').equals(
+        req.body.password
+    );
+
+    const errors = req.validationErrors();
+    if (errors) {
+        req.flash(
+            'error',
+            errors.map((err) => err.msg)
+        );
+        res.render('reset', {
+            title: 'Reset your Password',
+            flashes: req.flash(),
+        });
+        return; // stop function from running
+    }
+    next();
 };
