@@ -29,12 +29,12 @@ const userScheme = new Schema({
         type: Number,
         required: true,
     },
-    
-    hash:{
-        type:String
+
+    hash: {
+        type: String,
     },
-    salt:{
-        type:String
+    salt: {
+        type: String,
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
@@ -50,7 +50,7 @@ userScheme.plugin(mongodbErrorHandler); // nice error messages
 
 module.exports = mongoose.model('User', userScheme);
 
-exports.validPassword = (password, hash, salt) =>{
+exports.validPassword = (password, hash, salt) => {
     var hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
     return hash === hashVerify;
-  }
+};

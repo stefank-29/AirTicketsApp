@@ -14,6 +14,8 @@ const routes = require('./routes/index');
 const helpers = require('./helpers');
 const errorHandlers = require('./handlers/errorHandlers');
 const adminRouter = require('./routes/admin.router.js');
+const { catchErrors } = require('./handlers/errorHandlers');
+const jwt = require('jsonwebtoken');
 
 require('./handlers/passport');
 //  (passport);
@@ -54,7 +56,7 @@ app.use(
 );
 
 //? Passport JS is what we use to handle our logins
-// app.use(passport.initialize());
+app.use(passport.initialize());
 // app.use(passport.session());
 
 // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
@@ -62,14 +64,22 @@ app.use(flash());
 
 //? varijable se prosledjuju templejtu u svim request-ovima
 // pass variables to our templates + all r equests
-app.use(async (req, res, next) => {
-    res.locals.h = helpers;
-    res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
-    res.locals.user = (await User.findOne({ _id: req.cookies.jwt.sub })) || null; //! salje usera ako je ulogovan inace salje null
-    res.locals.jwt = req.cookies.jwt || null;
-    res.locals.currentPath = req.path;
-    next();
-});
+app.use(
+    catchErrors(async (req, res, next) => {
+        res.locals.h = helpers;
+        res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
+        res.locals.currentPath = req.path;
+        res.locals.jwt = req.cookies.jwt || null;
+        try {
+            const verified = jwt.verify(req.cookies['jwt'], process.env.ACCES_TOKEN);
+            const usr = await User.findOne({ _id: verified.sub });
+            if (req.cookies.jwt != undefined) {
+                res.locals.user = usr;
+            }
+        } catch (err) {}
+        next();
+    })
+);
 
 // promisify some callback based APIs
 app.use((req, res, next) => {
