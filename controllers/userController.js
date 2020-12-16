@@ -92,7 +92,7 @@ exports.updateAccount = async (req, res) => {
         passportNumber: req.body.passportNumber,
     };
     const user = await User.findOneAndUpdate(
-        { _id: req.user._id },
+        { _id: res.locals.user._id },
         { $set: updates },
         {
             new: true,

@@ -4,7 +4,7 @@ const passport = require('passport');
 const crypto = require('crypto');
 const promisify = require('es6-promisify');
 const mail = require('../handlers/mail');
- 
+const passportUtil = require('../handlers/passport'); 
  const utils = require('./jwtController')
 
 const jwt = require('jsonwebtoken'); 
@@ -54,15 +54,9 @@ const jwt = require('jsonwebtoken');
 //     User.findOne({username : req.body.name})
 // };
 exports.login = async (req,res) => {
-    jwtToken = utils.issueJWT(req.user);
-    
-       // Send Set-Cookie header
-        res.cookie('jwt', jwtToken.token);
-        
-       
-        
-        
-    res.redirect('/');
+   jwtToken = utils.issueJWT(req.user);
+   res.cookie('jwt', jwtToken.token);
+   res.redirect('/');
 } 
 exports.logout = async (req, res) => {
 
@@ -73,14 +67,14 @@ exports.logout = async (req, res) => {
     res.redirect('/');
 };
 
-exports.isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        next();
-        return;
-    }
-    req.flash('error', 'You must be logged in to do that!');
-    res.redirect('/login');
-};
+// exports.isLoggedIn = (req, res, next) => {
+//     if (req.isAuthenticated()) {
+//         next();
+//         return;
+//     }
+//     req.flash('error', 'You must be logged in to do that!');
+//     res.redirect('/login');
+// };
 
 exports.forgot = async (req, res) => {
     //1. See if user with that email exists
@@ -147,7 +141,7 @@ exports.confirmedPasswords = (req, res, next) => {
     next();
 };
 
-exports.updatePassword = async (req, res) => {
+exports.updatePassword = async function(req, res)  {
     const user = await User.findOne({
         resetPasswordToken: req.params.token,
         resetPasswordExpires: { $gt: Date.now() },
@@ -157,12 +151,16 @@ exports.updatePassword = async (req, res) => {
         return res.redirect('/login');
     }
 
-    const setPassword = promisify(user.setPassword, user);
-    await setPassword(req.body.password);
+    const password = await utils.genPassword(req.body.password);
+    user.hash = password.hash;
+    user.salt = password.salt; 
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     const updatedUser = await user.save();
-    await req.login(updatedUser); // prosledim usera kog logujem
+    jwtToken = utils.issueJWT(user);
+    res.cookie('jwt', jwtToken.token);
+    
+    
     req.flash(
         'success',
         'Your password has been reset! You are now logged in!'

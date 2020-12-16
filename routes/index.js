@@ -42,7 +42,7 @@ router.post(
 router.get('/logout', authController.logout);
 
 // account
-router.get('/account', authController.isLoggedIn, userController.account);
+router.get('/account',  jwtAuth.authenticateToken, userController.account);
 router.post('/account', catchErrors(userController.updateAccount));
 
 router.post('/account/forgot', catchErrors(authController.forgot));
