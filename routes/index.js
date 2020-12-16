@@ -53,4 +53,7 @@ router.post(
     catchErrors(authController.updatePassword)
 );
 
+router.get('/resetPassword',authController.resetPasswordForm);
+router.post('/resetPassword', authController.resetPassword)
+
 module.exports = router;
