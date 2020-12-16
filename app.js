@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const User = mongoose.model('User');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -14,10 +15,8 @@ const helpers = require('./helpers');
 const errorHandlers = require('./handlers/errorHandlers');
 const adminRouter = require('./routes/admin.router.js');
 
-
- require('./handlers/passport')
+require('./handlers/passport');
 //  (passport);
-
 
 // create our Express app
 const app = express();
@@ -63,10 +62,11 @@ app.use(flash());
 
 //? varijable se prosledjuju templejtu u svim request-ovima
 // pass variables to our templates + all r equests
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     res.locals.h = helpers;
     res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
-    res.locals.user = req.user || null; //! salje usera ako je ulogovan inace salje null
+    res.locals.user = (await User.findOne({ _id: req.cookies.jwt.sub })) || null; //! salje usera ako je ulogovan inace salje null
+    res.locals.jwt = req.cookies.jwt || null;
     res.locals.currentPath = req.path;
     next();
 });
@@ -78,8 +78,8 @@ app.use((req, res, next) => {
 });
 
 // After allllll that above middleware, we finally handle our own routes!
-app.use('/',routes); //! svaki put kad se unese url sa '/' pokrene se routes (a u index.js se za svaki pojedinacno odredi sta koji radi)
-app.use('/admin',adminRouter);
+app.use('/', routes); //! svaki put kad se unese url sa '/' pokrene se routes (a u index.js se za svaki pojedinacno odredi sta koji radi)
+app.use('/admin', adminRouter);
 //! ako routes gore ne rade (posalju next)
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
