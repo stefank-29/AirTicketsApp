@@ -65,12 +65,8 @@ exports.login = async (req,res) => {
     res.redirect('/');
 } 
 exports.logout = async (req, res) => {
-    const token = req.cookies['jwt'];
-    var legit = jwt.verify(token,process.env.ACCES_TOKEN);
-    console.log((legit.sub));
-    const usr = await User.findOne({_id:legit.sub});
-    console.log(usr);
-    // console.log(req.cookies.jwt.payload.sub);
+
+    res.cookie('jwt','deleted');
     req.logout();
     req.flash('success', 'You are logged out!');
     
