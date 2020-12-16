@@ -41,6 +41,7 @@ const cookieExtractor = function (req) {
 //         nonce: 'string here for OpenID'
 //     }
 // }
+
 passport.use(
     new LocalStrategy(
         {
@@ -80,6 +81,7 @@ exports.authenticateToken = (req, res, next) => {
     let token = null;
     if (req && req.cookies) {
         token = req.cookies['jwt'];
+
     }
     if (token == null) return res.sendStatus(401);
 
