@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const promisify = require('es6-promisify');
 const { prototype } = require('extract-text-webpack-plugin');
-
+const jwt = require('jsonwebtoken'); 
+const jwtController = require('./jwtController');
 exports.registerForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
@@ -51,16 +52,33 @@ exports.validateRegister = (req, res, next) => {
 };
 
 exports.register = async (req, res, next) => {
+    const password = jwtController.genPassword(req.body.password);
+    
     const user = new User({
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,
         passportNumber: req.body.passportNumber,
+        // hash: password.hash,
+        // salt: password.salt, 
+        
     });
-    const register = promisify(User.register, User);
-    await register(user, req.body.password);
-    next(); // login
-};
+    
+    // await user.save()
+    //     .then((user)=>{
+    //         const jwt = jwtController.issueJWT(user);
+    //         res.set('token',jwt.token);
+    //         next();           
+            
+    //     })
+    //     .catch(err => next(err))
+    const register = promisify(User.register,User);
+    const usr = await register(user,req.body.password);
+    const jwt = jwtController.issueJWT(usr);
+    console.log(jwt.token) 
+    next();
+    
+ };
 
 exports.account = (req, res) => {
     res.render('account', { title: 'Edit Your Account' });

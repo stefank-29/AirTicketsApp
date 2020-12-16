@@ -4,14 +4,68 @@ const passport = require('passport');
 const crypto = require('crypto');
 const promisify = require('es6-promisify');
 const mail = require('../handlers/mail');
+ 
+ const utils = require('./jwtController')
 
-exports.login = passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: 'Failed login.',
-    successFlash: 'Successfully logged in!',
-    successRedirect: '/',
-});
+const jwt = require('jsonwebtoken'); 
 
+// exports.login = passport.authenticate('local',
+   
+//     // failureRedirect: '/login',
+//     // failureFlash: 'Failed login.',
+//     // successFlash: 'Successfully logged in!',
+//     // successRedirect: '/',
+//      (req,res)=>{
+//     console.log(req.user);
+// //    const user = await User.findOne({email:req.body.email});
+// //    jwtToken = utils.issueJWT(user);
+// //    res.cookie('token',jwtToken.token);
+// //    console.log(jwtToken.token);
+//    res.redirect('/');     
+// });
+// exports.login =  (req,res,next) => {
+    
+//     User.findOne({email: req.body.email})
+
+//         .then((user) => {
+                    
+//             if(!user) {
+//                 res.status(401).json({succes : false, msg:"ne postoji"});
+//             }
+            
+            
+//             const isValid = utils.validPassword(req.body.password,user.hash, user.salt);
+//             console.log(isValid);
+//             if(isValid) {
+              
+                
+                
+               
+//             }
+//             else{
+//                 res.status(401).json({succes : false, msg:"pogresna sifra"});
+//             }
+//         }).catch((err)=>{
+//             next(err);
+//         }) 
+// }
+
+// exports.loginJWT = (req,res)=>{
+//     User.findOne({username : req.body.name})
+// };
+exports.login = async (req,res) => {
+    jwtToken = utils.issueJWT(req.user);
+    
+        // Send Set-Cookie header
+        res.cookie('jwt', jwtToken.token, 
+            // httpOnly: true,
+            // sameSite: true,
+            // signed: true,
+            // secure: true
+       );
+        
+    res.redirect('/'); 
+} 
 exports.logout = (req, res) => {
     req.logout();
     req.flash('success', 'You are logged out!');

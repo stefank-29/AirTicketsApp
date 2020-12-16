@@ -29,6 +29,13 @@ const userScheme = new Schema({
         type: Number,
         required: true,
     },
+    
+    // hash:{
+    //     type:String
+    // },
+    // salt:{
+    //     type:String
+    // },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
 });

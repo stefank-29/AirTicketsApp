@@ -4,12 +4,13 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const ticketController = require('../controllers/ticketController');
 const { catchErrors } = require('../handlers/errorHandlers');
+const passport = require('passport');
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
 
-router.get('/tickets', authController.isLoggedIn, ticketController.ticketsPage);
+router.get('/tickets', passport.authenticate('jwt',{session:false}),(req,res)=>{res.send(req.user)}, ticketController.ticketsPage);
 
 // auth
 router.get('/register', userController.registerForm);
@@ -21,7 +22,7 @@ router.post(
 );
 
 router.get('/login', userController.loginForm);
-router.post('/login', authController.login);
+router.post('/login',passport.authenticate('local',{failureRedirect: '/login',failureFlash: 'Failed login.',successFlash:'logged in !!!'}), authController.login);
 
 router.get('/logout', authController.logout);
 

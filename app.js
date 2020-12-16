@@ -12,7 +12,12 @@ const expressValidator = require('express-validator');
 const routes = require('./routes/index');
 const helpers = require('./helpers');
 const errorHandlers = require('./handlers/errorHandlers');
-require('./handlers/passport');
+const adminRouter = require('./routes/admin.router.js');
+
+
+ require('./handlers/passport')
+//  (passport);
+
 
 // create our Express app
 const app = express();
@@ -28,8 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //? za slanje kad potvrdim formu (name postaje atribut od req.body)
 // Takes the raw requests and turns them into usable properties on req.body
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Exposes a bunch of methods for validating data. Used heavily on userController.validateRegister
 app.use(expressValidator());
@@ -50,8 +55,8 @@ app.use(
 );
 
 //? Passport JS is what we use to handle our logins
-app.use(passport.initialize());
-app.use(passport.session());
+ app.use(passport.initialize());
+// app.use(passport.session());
 
 // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests
 app.use(flash());
@@ -73,8 +78,8 @@ app.use((req, res, next) => {
 });
 
 // After allllll that above middleware, we finally handle our own routes!
-app.use('/', routes); //! svaki put kad se unese url sa '/' pokrene se routes (a u index.js se za svaki pojedinacno odredi sta koji radi)
-
+app.use('/',routes); //! svaki put kad se unese url sa '/' pokrene se routes (a u index.js se za svaki pojedinacno odredi sta koji radi)
+app.use('/admin',adminRouter);
 //! ako routes gore ne rade (posalju next)
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
