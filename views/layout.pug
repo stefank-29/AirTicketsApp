@@ -30,6 +30,7 @@ html
                 span Logout
               li.nav__item: a.nav__link(href="/account", title='Account settings' class=(currentPath.startsWith('/account') ? 'nav__link--active' : ''))
                 //- globaly recognised avatar (service za )
+
                 if user
                   img.avatar(src=user.gravatar width='200' )
 

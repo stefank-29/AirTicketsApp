@@ -67,7 +67,7 @@ exports.authenticateToken = (req, res, next) => {
     let token = null;
     if(req && req.cookies){
         token = req.cookies['jwt'];
-        console.log(token);
+        
     }
     if (token == null) return res.sendStatus(401)
   
@@ -75,6 +75,7 @@ exports.authenticateToken = (req, res, next) => {
       console.log(err)
       if (err) return res.sendStatus(403)
       req.user = user
+      console.log(user.sub);
       next()
     })
   } 

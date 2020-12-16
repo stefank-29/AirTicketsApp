@@ -64,6 +64,7 @@ app.use(flash());
 
 //? varijable se prosledjuju templejtu u svim request-ovima
 // pass variables to our templates + all r equests
+
 app.use(
     catchErrors(async (req, res, next) => {
         res.locals.h = helpers;
