@@ -93,7 +93,22 @@ exports.authenticateToken = (req, res, next) => {
         next();
     });
 };
-
+exports.isAdmin = (req,res,next) => {
+  
+  try{
+    
+  if(res.locals.user.isAdmin)
+    
+    next();
+    
+  else 
+    res.sendStatus(403);
+    
+  }catch(err){
+    res.sendStatus(403);
+  } 
+  
+}
 // passport.use(new JwtStrategy(passportJWTOptions, function(jwt_payload, done) {
 //     User.findOne({_id: jwt_payload.sub},
 
