@@ -7,22 +7,22 @@ const User = mongoose.model('User');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local').Strategy;
-const pathToken = path.join(__dirname, '.' , 'id_rsa_pub.pem'); 
-const PUB_key = fs.readFileSync(pathToken,'utf-8');
+const pathToken = path.join(__dirname, '.', 'id_rsa_pub.pem');
+const PUB_key = fs.readFileSync(pathToken, 'utf-8');
 const utils = require('../controllers/jwtController');
-const cookieExtractor= function(req){
+const cookieExtractor = function (req) {
     let token = null;
-    if(req && req.cookies){
+    if (req && req.cookies) {
         token = req.cookies['jwt'];
         console.log(token);
     }
     return token;
-} 
+};
 
 // const options = {
 //     jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
 //     secretOrKey: PUB_key,
-//     algorithms: ['RS256']  
+//     algorithms: ['RS256']
 // };
 // const passportJWTOptions = {
 //     // jwtFromRequest: req => req.cookies.jwt,
@@ -41,69 +41,76 @@ const cookieExtractor= function(req){
 //         nonce: 'string here for OpenID'
 //     }
 // }
-passport.use(new LocalStrategy(
-    {
-        usernameField: 'email',
-        passwordField:'password',
-        session:false
-     },
-    function(username, password, done) {
-      
-      User.findOne({ email: username }, function (err, user) {
-       
-        const isValid = utils.validPassword(password,user.hash, user.salt);
-          
+passport.use(
+    new LocalStrategy(
+        {
+            usernameField: 'email',
+            passwordField: 'password',
+            session: false,
+        },
+        function (username, password, done) {
+            User.findOne({ email: username }, function (err, user) {
+                const isValid = utils.validPassword(password, user.hash, user.salt);
 
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-        if (!utils.validPassword(password,user.hash,user.salt)) { return done(null, false); }
-        
-        return done(null, user);
-      });
-    }
-  ));
-  
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    return done(null, false);
+                }
+                if (!utils.validPassword(password, user.hash, user.salt)) {
+                    return done(null, false);
+                }
+
+                return done(null, user);
+            });
+        }
+    )
+);
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
+
 exports.authenticateToken = (req, res, next) => {
     let token = null;
-    if(req && req.cookies){
+    if (req && req.cookies) {
         token = req.cookies['jwt'];
-        
     }
-    if (token == null) return res.sendStatus(401)
-  
+    if (token == null) return res.sendStatus(401);
+
     jwt.verify(token, process.env.ACCES_TOKEN, (err, user) => {
-      console.log(err)
-      if (err) return res.sendStatus(403)
-      req.user = user
-      console.log(user.sub);
-      next()
-    })
-  } 
+        console.log(err);
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        console.log(user.sub);
+        next();
+    });
+};
 
 // passport.use(new JwtStrategy(passportJWTOptions, function(jwt_payload, done) {
 //     User.findOne({_id: jwt_payload.sub},
-      
+
 //         function(err, user) {
 //         if (err) {
 //              return done(err, false);
 //         }
 //         if (user) {
-           
+
 //              return done(null, user);
 //         } else {
 //              return done(null, false);
-           
+
 //         }
 //     });
 // }));
-
-
 
 // module.exports = (passport) =>{
 //     passport.use(strategy);
 // }
 
 //proverava kod logina da li postoji user
-
-
-
