@@ -59,11 +59,21 @@ exports.login = async (req,res) => {
        // Send Set-Cookie header
         res.cookie('jwt', jwtToken.token);
         
+       
+        
+        
     res.redirect('/');
 } 
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
+    const token = req.cookies['jwt'];
+    var legit = jwt.verify(token,process.env.ACCES_TOKEN);
+    console.log((legit.sub));
+    const usr = await User.findOne({_id:legit.sub});
+    console.log(usr);
+    // console.log(req.cookies.jwt.payload.sub);
     req.logout();
     req.flash('success', 'You are logged out!');
+    
     res.redirect('/');
 };
 

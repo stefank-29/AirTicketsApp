@@ -62,10 +62,10 @@ app.use(flash());
 
 //? varijable se prosledjuju templejtu u svim request-ovima
 // pass variables to our templates + all r equests
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
     res.locals.h = helpers;
     res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
-    res.locals.user = (await User.findOne({ _id: req.cookies.jwt.sub })) || null; //! salje usera ako je ulogovan inace salje null
+    // res.locals.user = (User.findOne({ _id: req.cookies.jwt.sub })) || null; //! salje usera ako je ulogovan inace salje null
     res.locals.jwt = req.cookies.jwt || null;
     res.locals.currentPath = req.path;
     next();
