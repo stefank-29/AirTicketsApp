@@ -56,15 +56,10 @@ const jwt = require('jsonwebtoken');
 exports.login = async (req,res) => {
     jwtToken = utils.issueJWT(req.user);
     
-        // Send Set-Cookie header
-        res.cookie('jwt', jwtToken.token, 
-            // httpOnly: true,
-            // sameSite: true,
-            // signed: true,
-            // secure: true
-       );
+       // Send Set-Cookie header
+        res.cookie('jwt', jwtToken.token);
         
-    res.redirect('/'); 
+    res.redirect('/');
 } 
 exports.logout = (req, res) => {
     req.logout();

@@ -55,7 +55,7 @@ app.use(
 );
 
 //? Passport JS is what we use to handle our logins
- app.use(passport.initialize());
+// app.use(passport.initialize());
 // app.use(passport.session());
 
 // The flash middleware let's us use req.flash('error', 'Shit!'), which will then pass that message to the next page the user requests

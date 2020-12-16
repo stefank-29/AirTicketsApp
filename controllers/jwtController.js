@@ -22,8 +22,8 @@ exports.issueJWT = (user) => {
       iat: Date.now()
     };
   
-    const signedToken = jsonwebtoken.sign(payload,PRIV_KEY, { expiresIn: expiresIn, algorithm: 'RS256' });
-    jsonwebtoken.verify(signedToken, PUB_KEY, { algorithms: ['RS256'] }, (err, payload) => {
+    const signedToken = jsonwebtoken.sign(payload,process.env.ACCES_TOKEN, { expiresIn: expiresIn});
+    jsonwebtoken.verify(signedToken, process.env.ACCES_TOKEN, (err, payload) => {
       if(err){
       if (err.name === 'TokenExpiredError') {
           console.log('Whoops, your token has expired!');
@@ -38,7 +38,7 @@ exports.issueJWT = (user) => {
       }}});
       
     return {
-      token: "Bearer " + signedToken,
+      token: signedToken,
       expires: expiresIn
     }
   }
@@ -51,8 +51,8 @@ exports.genPassword =(password) => {
     hash: genHash
   };
 }  
-
 exports.validPassword = (password, hash, salt) =>{
   var hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
   return hash === hashVerify;
 }
+

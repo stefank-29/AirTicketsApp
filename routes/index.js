@@ -5,12 +5,14 @@ const authController = require('../controllers/authController');
 const ticketController = require('../controllers/ticketController');
 const { catchErrors } = require('../handlers/errorHandlers');
 const passport = require('passport');
+const jwtAuth = require('../handlers/passport');
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
 
-router.get('/tickets', passport.authenticate('jwt',{session:false}),(req,res)=>{res.send(req.user)}, ticketController.ticketsPage);
+
+router.get('/tickets',jwtAuth.authenticateToken, ticketController.ticketsPage);
 
 // auth
 router.get('/register', userController.registerForm);
@@ -18,11 +20,12 @@ router.post(
     '/register',
     userController.validateRegister,
     catchErrors(userController.register),
+    passport.authenticate('local',{failureRedirect: '/login',failureFlash: 'Failed login.',successFlash:'logged in !!!'}),
     authController.login
 );
 
 router.get('/login', userController.loginForm);
-router.post('/login',passport.authenticate('local',{failureRedirect: '/login',failureFlash: 'Failed login.',successFlash:'logged in !!!'}), authController.login);
+router.post('/login',passport.authenticate('local',{session:false,failureRedirect: '/login',failureFlash: 'Failed login.',successFlash:'logged in !!!'}), authController.login);
 
 router.get('/logout', authController.logout);
 

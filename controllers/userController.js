@@ -59,24 +59,24 @@ exports.register = async (req, res, next) => {
         surname: req.body.surname,
         email: req.body.email,
         passportNumber: req.body.passportNumber,
-        // hash: password.hash,
-        // salt: password.salt, 
+        hash: password.hash,
+        salt: password.salt, 
         
     });
     
-    // await user.save()
-    //     .then((user)=>{
-    //         const jwt = jwtController.issueJWT(user);
-    //         res.set('token',jwt.token);
-    //         next();           
+    user.save()
+        .then((user)=>{
+            const jwt = jwtController.issueJWT(user);
+            res.cookie('jwt',jwt.token);
+            next();           
             
-    //     })
-    //     .catch(err => next(err))
-    const register = promisify(User.register,User);
-    const usr = await register(user,req.body.password);
-    const jwt = jwtController.issueJWT(usr);
-    console.log(jwt.token) 
-    next();
+        })
+        .catch(err => next(err))
+    // const register = promisify(User.register,User);
+    // const usr = await register(user,req.body.password);
+    // const jwt = jwtController.issueJWT(usr);
+    // console.log(jwt.token) 
+    // next();
     
  };
 

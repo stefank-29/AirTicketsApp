@@ -30,12 +30,12 @@ const userScheme = new Schema({
         required: true,
     },
     
-    // hash:{
-    //     type:String
-    // },
-    // salt:{
-    //     type:String
-    // },
+    hash:{
+        type:String
+    },
+    salt:{
+        type:String
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date,
 });
@@ -45,7 +45,12 @@ userScheme.virtual('gravatar').get(function () {
     return `https://gravatar.com/avatar/${hash}?s=200&d=retro`;
 });
 
-userScheme.plugin(passportLocalMongoose, { usernameField: 'email' }); // email koristim za username
+// userScheme.plugin(passportLocalMongoose, { usernameField: 'email' }); // email koristim za username
 userScheme.plugin(mongodbErrorHandler); // nice error messages
 
 module.exports = mongoose.model('User', userScheme);
+
+exports.validPassword = (password, hash, salt) =>{
+    var hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+    return hash === hashVerify;
+  }
