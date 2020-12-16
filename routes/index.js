@@ -11,8 +11,7 @@ router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
 
-
-router.get('/tickets',jwtAuth.authenticateToken, ticketController.ticketsPage);
+router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
 // auth
 router.get('/register', userController.registerForm);
@@ -20,12 +19,25 @@ router.post(
     '/register',
     userController.validateRegister,
     catchErrors(userController.register),
-    passport.authenticate('local',{failureRedirect: '/login',failureFlash: 'Failed login.',successFlash:'logged in !!!'}),
+    passport.authenticate('local', {
+        failureRedirect: '/login',
+        failureFlash: 'Failed login.',
+        successFlash: 'logged in !!!',
+    }),
     authController.login
 );
 
 router.get('/login', userController.loginForm);
-router.post('/login',passport.authenticate('local',{session:false,failureRedirect: '/login',failureFlash: 'Failed login.',successFlash:'logged in !!!'}), authController.login);
+router.post(
+    '/login',
+    passport.authenticate('local', {
+        session: false,
+        failureRedirect: '/login',
+        failureFlash: 'Failed login.',
+        successFlash: 'logged in !!!',
+    }),
+    authController.login
+);
 
 router.get('/logout', authController.logout);
 
