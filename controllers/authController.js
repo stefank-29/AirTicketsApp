@@ -167,9 +167,11 @@ exports.updatePassword = async function(req, res)  {
     );
     res.redirect('/');
 };
-
-exports.ResetPassword =async (req,res,next) => {
-    const user = req.user;
+exports.resetPasswordForm = (req,res) =>{
+    res.render('changePassword');
+} 
+exports.resetPassword =async (req,res,next) => {
+    const user = res.locals.user;
     req.checkBody('Oldpassword', 'Password cannot be blank').notEmpty();
    
     req.checkBody('password', 'Password cannot be blank').notEmpty();
@@ -180,7 +182,7 @@ exports.ResetPassword =async (req,res,next) => {
     req.checkBody('password-confirm', 'Your password do not match').equals(
         req.body.password
     );
-    isValid = utils.validPassword(req.body.Oldpassword, req.user.hash,req.user.salt);
+    isValid = utils.validPassword(req.body.Oldpassword,user.hash,user.salt);
     const errors = req.validationErrors();
     if (errors) {
         req.flash(
@@ -203,5 +205,11 @@ exports.ResetPassword =async (req,res,next) => {
     await user.save();
        
     }
+    else{
+        req.flash('error', 'Wrong Old Password');
+        res.redirect('back')
+        return
+    } 
+    res.redirect('/');
 
 } 

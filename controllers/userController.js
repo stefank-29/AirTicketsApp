@@ -81,6 +81,7 @@ exports.account = (req, res) => {
 };
 
 exports.updateAccount = async (req, res) => {
+    if(req.update !== undefined){
     const updates = {
         name: req.body.name,
         surname: req.body.surname,
@@ -99,4 +100,7 @@ exports.updateAccount = async (req, res) => {
     );
     req.flash('success', 'The profile is updated!');
     res.redirect('back');
+    }else{
+        res.redirect('/resetPassword');
+    }
 };
