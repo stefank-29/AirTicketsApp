@@ -41,6 +41,7 @@ const cookieExtractor= function(req){
 //         nonce: 'string here for OpenID'
 //     }
 // }
+
 passport.use(new LocalStrategy(
     {
         usernameField: 'email',
@@ -62,11 +63,18 @@ passport.use(new LocalStrategy(
       });
     }
   ));
+  passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+  
+  passport.deserializeUser(function(user, done) {
+    done(null, user);
+  });
   
 exports.authenticateToken = (req, res, next) => {
     let token = null;
     if(req && req.cookies){
-        token = req.cookies['jwt'];
+        token = req.cookies['jwt'].expiresIn;
         
     }
     if (token == null) return res.sendStatus(401)
