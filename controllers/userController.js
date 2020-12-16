@@ -72,11 +72,7 @@ exports.register = async (req, res, next) => {
             
         })
         .catch(err => next(err))
-    // const register = promisify(User.register,User);
-    // const usr = await register(user,req.body.password);
-    // const jwt = jwtController.issueJWT(usr);
-    // console.log(jwt.token) 
-    // next();
+ 
     
  };
 
