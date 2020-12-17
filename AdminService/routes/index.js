@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 
 router.get('/admin', (req, res) => {
-    res.send('hi');
+    res.render('layout');
 });
 
 module.exports = router;
