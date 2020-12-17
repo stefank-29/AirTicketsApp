@@ -29,17 +29,22 @@ const userScheme = new Schema({
         type: Number,
         required: true,
     },
-    
-    hash:{
-        type:String
+
+    hash: {
+        type: String,
     },
-    salt:{
-        type:String
+    salt: {
+        type: String,
     },
-    isAdmin:{
-        type:Boolean,
-        default:false  
+    isAdmin: {
+        type: Boolean,
+        default: false,
     },
+    isValid: {
+        type: Boolean,
+        default: false,
+    },
+    emailToken: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
 });
@@ -53,5 +58,3 @@ userScheme.virtual('gravatar').get(function () {
 userScheme.plugin(mongodbErrorHandler); // nice error messages
 
 module.exports = mongoose.model('User', userScheme);
-
-

@@ -22,7 +22,6 @@ router.post(
     passport.authenticate('local', {
         failureRedirect: '/login',
         failureFlash: 'Failed login.',
-        successFlash: 'logged in !!!',
     }),
     authController.login
 );
@@ -34,7 +33,6 @@ router.post(
         session: false,
         failureRedirect: '/login',
         failureFlash: 'Failed login.',
-        successFlash: 'logged in !!!',
     }),
     authController.login
 );
@@ -42,7 +40,7 @@ router.post(
 router.get('/logout', authController.logout);
 
 // account
-router.get('/account',  jwtAuth.authenticateToken, userController.account);
+router.get('/account', jwtAuth.authenticateToken, userController.account);
 router.post('/account', catchErrors(userController.updateAccount));
 
 router.post('/account/forgot', catchErrors(authController.forgot));
@@ -52,8 +50,17 @@ router.post(
     authController.confirmedPasswords,
     catchErrors(authController.updatePassword)
 );
+router.get(
+    '/account/verify/:token',
+    userController.verifyEmail,
+    passport.authenticate('local', {
+        failureRedirect: '/login',
+        failureFlash: 'Failed login.',
+    }),
+    authController.login
+);
 
-router.get('/resetPassword',authController.resetPasswordForm);
-router.post('/resetPassword', authController.resetPassword)
+router.get('/resetPassword', authController.resetPasswordForm);
+router.post('/resetPassword', authController.resetPassword);
 
 module.exports = router;

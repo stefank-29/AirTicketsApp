@@ -4,13 +4,13 @@ const passport = require('passport');
 const crypto = require('crypto');
 const promisify = require('es6-promisify');
 const mail = require('../handlers/mail');
-const passportUtil = require('../handlers/passport'); 
- const utils = require('./jwtController')
+const passportUtil = require('../handlers/passport');
+const utils = require('./jwtController');
 
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken');
 
 // exports.login = passport.authenticate('local',
-   
+
 //     // failureRedirect: '/login',
 //     // failureFlash: 'Failed login.',
 //     // successFlash: 'Successfully logged in!',
@@ -21,49 +21,50 @@ const jwt = require('jsonwebtoken');
 // //    jwtToken = utils.issueJWT(user);
 // //    res.cookie('token',jwtToken.token);
 // //    console.log(jwtToken.token);
-//    res.redirect('/');     
+//    res.redirect('/');
 // });
 // exports.login =  (req,res,next) => {
-    
+
 //     User.findOne({email: req.body.email})
 
 //         .then((user) => {
-                    
+
 //             if(!user) {
 //                 res.status(401).json({succes : false, msg:"ne postoji"});
 //             }
-            
-            
+
 //             const isValid = utils.validPassword(req.body.password,user.hash, user.salt);
 //             console.log(isValid);
 //             if(isValid) {
-              
-                
-                
-               
+
 //             }
 //             else{
 //                 res.status(401).json({succes : false, msg:"pogresna sifra"});
 //             }
 //         }).catch((err)=>{
 //             next(err);
-//         }) 
+//         })
 // }
 
 // exports.loginJWT = (req,res)=>{
 //     User.findOne({username : req.body.name})
 // };
-exports.login = async (req,res) => {
-   jwtToken = utils.issueJWT(req.user);
-   res.cookie('jwt', jwtToken.token);
-   res.redirect('/');
-} 
+exports.login = async (req, res) => {
+    if (req.user.isValid) {
+        jwtToken = utils.issueJWT(req.user);
+        res.cookie('jwt', jwtToken.token);
+        req.flash('success', 'You are logged in!');
+        res.redirect('/');
+    } else {
+        req.flash('info', 'Please verify your mail.');
+        res.redirect('/login');
+    }
+};
 exports.logout = async (req, res) => {
-
-    res.cookie('jwt','deleted');
+    res.cookie('jwt', 'deleted');
     req.logout();
     req.flash('success', 'You are logged out!');
-    
+
     res.redirect('/');
 };
 
@@ -118,13 +119,8 @@ exports.resetForm = async (req, res) => {
 
 exports.confirmedPasswords = (req, res, next) => {
     req.checkBody('password', 'Password cannot be blank!').notEmpty();
-    req.checkBody(
-        'password-confirm',
-        'Password Confirm cannot be blank!'
-    ).notEmpty();
-    req.checkBody('password-confirm', 'Your password do not match').equals(
-        req.body.password
-    );
+    req.checkBody('password-confirm', 'Password Confirm cannot be blank!').notEmpty();
+    req.checkBody('password-confirm', 'Your password do not match').equals(req.body.password);
 
     const errors = req.validationErrors();
     if (errors) {
@@ -141,7 +137,7 @@ exports.confirmedPasswords = (req, res, next) => {
     next();
 };
 
-exports.updatePassword = async function(req, res)  {
+exports.updatePassword = async function (req, res) {
     const user = await User.findOne({
         resetPasswordToken: req.params.token,
         resetPasswordExpires: { $gt: Date.now() },
@@ -153,36 +149,27 @@ exports.updatePassword = async function(req, res)  {
 
     const password = await utils.genPassword(req.body.password);
     user.hash = password.hash;
-    user.salt = password.salt; 
+    user.salt = password.salt;
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     const updatedUser = await user.save();
     jwtToken = utils.issueJWT(user);
     res.cookie('jwt', jwtToken.token);
-    
-    
-    req.flash(
-        'success',
-        'Your password has been reset! You are now logged in!'
-    );
+
+    req.flash('success', 'Your password has been reset! You are now logged in!');
     res.redirect('/');
 };
-exports.resetPasswordForm = (req,res) =>{
+exports.resetPasswordForm = (req, res) => {
     res.render('changePassword');
-} 
-exports.resetPassword =async (req,res,next) => {
+};
+exports.resetPassword = async (req, res, next) => {
     const user = res.locals.user;
     req.checkBody('Oldpassword', 'Password cannot be blank').notEmpty();
-   
+
     req.checkBody('password', 'Password cannot be blank').notEmpty();
-    req.checkBody(
-        'password-confirm',
-        'Confirmed Password cannot be blank'
-    ).notEmpty();
-    req.checkBody('password-confirm', 'Your password do not match').equals(
-        req.body.password
-    );
-    isValid = utils.validPassword(req.body.Oldpassword,user.hash,user.salt);
+    req.checkBody('password-confirm', 'Confirmed Password cannot be blank').notEmpty();
+    req.checkBody('password-confirm', 'Your password do not match').equals(req.body.password);
+    isValid = utils.validPassword(req.body.Oldpassword, user.hash, user.salt);
     const errors = req.validationErrors();
     if (errors) {
         req.flash(
@@ -197,19 +184,15 @@ exports.resetPassword =async (req,res,next) => {
         return; // stop function from runnin`g
     }
 
-
-    if(isValid){
-    const password = await utils.genPassword(req.body.password);
-    user.hash = password.hash;
-    user.salt = password.salt;   
-    await user.save();
-       
-    }
-    else{
+    if (isValid) {
+        const password = await utils.genPassword(req.body.password);
+        user.hash = password.hash;
+        user.salt = password.salt;
+        await user.save();
+    } else {
         req.flash('error', 'Wrong Old Password');
-        res.redirect('back')
-        return
-    } 
+        res.redirect('back');
+        return;
+    }
     res.redirect('/');
-
-} 
+};
