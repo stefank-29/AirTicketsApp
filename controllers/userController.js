@@ -6,7 +6,7 @@ const { prototype } = require('extract-text-webpack-plugin');
 const jwt = require('jsonwebtoken');
 const jwtController = require('./jwtController');
 const mail = require('../handlers/mail');
-
+const auth = require('./authController');
 exports.registerForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
@@ -90,26 +90,59 @@ exports.account = (req, res) => {
 };
 
 exports.updateAccount = async (req, res) => {
-    if (req.update !== undefined) {
-        const updates = {
-            name: req.body.name,
-            surname: req.body.surname,
-            email: req.body.email,
-            passportNumber: req.body.passportNumber,
-        };
-        const user = await User.findOneAndUpdate(
-            { _id: res.locals.user._id },
+    if(req.body.update !== undefined){
+    const updates = {
+        name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
+        passportNumber: req.body.passportNumber,
+    };
+    const user = await User.findOne({_id:res.locals.user._id});
+    console.log(user);
+    if(user.email === req.body.email){
+       await User.findOneAndUpdate({_id:res.locals.user._id},
+        { $set: updates },
+        {
+            new: true,
+            runValidators: true,
+            context: 'query',
+            useFindAndModify: false,
+       })
+    }else {
+       
+        updates.isValid = false;
+        await User.findOneAndUpdate({_id:res.locals.user._id},
             { $set: updates },
             {
                 new: true,
                 runValidators: true,
                 context: 'query',
                 useFindAndModify: false,
-            }
-        );
-        req.flash('success', 'The profile is updated!');
-        res.redirect('back');
-    } else {
+           })
+
+        
+        
+        req.flash('info', 'Please verify your new email');
+        user.emailToken = crypto.randomBytes(20).toString('hex');
+        await user.save();   
+        const resetURL = `http://${req.headers.host}/account/verify/${user.emailToken}`;
+        await mail.send({
+        user,
+        subject: 'Verify Account',
+        resetURL,
+        filename: 'verify-account', // renderovanje html-a
+
+    });
+
+    res.cookie('jwt', 'deleted');
+    res.redirect('/login');
+    }
+   
+
+    // );
+    req.flash('success', 'The profile is updated!');
+    res.redirect('back');
+    }else{
         res.redirect('/resetPassword');
     }
 };
