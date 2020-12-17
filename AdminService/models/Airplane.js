@@ -13,3 +13,5 @@ const airplaneSchema = new Schema({
         required: 'Please supply ',
     },
 });
+
+module.exports = mongoose.model('Airplane', airplaneSchema);
