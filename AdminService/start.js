@@ -15,8 +15,9 @@ mongoose.connection.on('error', (err) => {
 mongoose.set('useCreateIndex', true);
 
 // import models
-require('./models/Airplane');
 require('./models/Flight');
+require('./models/Airplane');
+
 
 // run server
 const app = require('./app');
@@ -25,4 +26,6 @@ const server = app.listen(app.get('port'), () => {
     console.log(`Express running => PORT ${server.address().port}`);
 });
 
-require('./handlers/mail');
+
+//require('./handlers/mail');
+
