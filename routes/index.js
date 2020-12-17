@@ -53,10 +53,6 @@ router.post(
 router.get(
     '/account/verify/:token',
     userController.verifyEmail,
-    passport.authenticate('local', {
-        failureRedirect: '/login',
-        failureFlash: 'Failed login.',
-    }),
     authController.login
 );
 
