@@ -8,6 +8,8 @@ router.get('/' ,(req,res)=>{
     axios.get('http://127.0.0.1:7777/admin').then((response)=>{
         
        res.redirect(response.config.url);
+    }).catch(error => {
+        console.log(error);
     });
 })
 
