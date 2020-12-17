@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
+
 const Airplane = mongoose.model('Airplane');
 const Flight = mongoose.model('Flight');
 const MongoStore = require('connect-mongo')(session);
@@ -13,6 +14,7 @@ const flash = require('connect-flash');
 const expressValidator = require('express-validator');
 const routes = require('./routes/index');
 const helpers = require('./helpers');
+
 const errorHandlers = require('./handlers/errorHandlers.js');
 const adminRouter = require('./routes/admin.router.js');
 const { catchErrors } = require('./handlers/errorHandlers.js');
@@ -24,7 +26,6 @@ const passportHandler = require('./handlers/passport');
 // create our Express app
 const app = express();
 
-//! ovo se renderuje
 // view engine setup
 app.set('views', path.join(__dirname, 'views')); // this is the folder where we keep our pug files
 app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work great too
@@ -64,13 +65,13 @@ app.use(flash());
 
 //? varijable se prosledjuju templejtu u svim request-ovima
 // pass variables to our templates + all r equests
-
 app.use(
     catchErrors(async (req, res, next) => {
         res.locals.h = helpers;
         res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
         res.locals.currentPath = req.path;
-        res.locals.jwt = req.cookies.jwt || null;
+        // res.locals.jwt = req.cookies.jwt || null;
+
         // try {
         //     const verified = jwt.verify(req.cookies['jwt'], process.env.ACCES_TOKEN);
         //     const usr = await User.findOne({ _id: verified.sub });
@@ -78,7 +79,8 @@ app.use(
         //         res.locals.user = usr;
         //     }
         // } catch (err) {}
-         next();
+        next();
+
     })
 );
 
@@ -90,7 +92,8 @@ app.use((req, res, next) => {
 
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes); //! svaki put kad se unese url sa '/' pokrene se routes (a u index.js se za svaki pojedinacno odredi sta koji radi)
-app.use('/admin',passportHandler.isAdmin, adminRouter);
+app.use('/admin', passportHandler.isAdmin, adminRouter);
+
 //! ako routes gore ne rade (posalju next)
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);
