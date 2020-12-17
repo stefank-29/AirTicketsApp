@@ -50,7 +50,9 @@ const jwt = require('jsonwebtoken');
 //     User.findOne({username : req.body.name})
 // };
 exports.login = async (req, res) => {
+    console.log(req.user)
     if (req.user.isValid) {
+        console.log(req.user);
         jwtToken = utils.issueJWT(req.user);
         res.cookie('jwt', jwtToken.token);
         req.flash('success', 'You are logged in!');

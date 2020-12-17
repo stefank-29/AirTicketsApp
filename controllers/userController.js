@@ -65,7 +65,7 @@ exports.register = async (req, res, next) => {
     });
     // req.flash('success', `You have been emailed a password reset link.`);
 
-    user.save()
+   await user.save()
         .then((user) => {
             // const jwt = jwtController.issueJWT(user);
             // res.cookie('jwt',jwt.token);
@@ -78,10 +78,13 @@ exports.verifyEmail = async (req, res, next) => {
     const user = await User.findOne({ emailToken: req.params.token });
     if (user) {
         user.isValid = true;
+        user.emailToken = undefined;
         await user.save();
+        req.user = user;
         next();
     } else {
         req.flash('error', 'Invalid token!');
+        req.redirect('/');
     }
 };
 
