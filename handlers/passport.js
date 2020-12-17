@@ -51,7 +51,7 @@ passport.use(
         },
         function (username, password, done) {
             User.findOne({ email: username }, function (err, user) {
-                const isValid = utils.validPassword(password, user.hash, user.salt);
+                // const isValid = utils.validPassword(password, user.hash, user.salt);
 
                 if (err) {
                     return done(err);
@@ -81,7 +81,6 @@ exports.authenticateToken = (req, res, next) => {
     let token = null;
     if (req && req.cookies) {
         token = req.cookies['jwt'];
-
     }
     if (token == null) return res.sendStatus(401);
 
@@ -93,22 +92,14 @@ exports.authenticateToken = (req, res, next) => {
         next();
     });
 };
-exports.isAdmin = (req,res,next) => {
-  
-  try{
-    
-  if(res.locals.user.isAdmin)
-    
-    next();
-    
-  else 
-    res.sendStatus(403);
-    
-  }catch(err){
-    res.sendStatus(403);
-  } 
-  
-}
+exports.isAdmin = (req, res, next) => {
+    try {
+        if (res.locals.user.isAdmin) next();
+        else res.sendStatus(403);
+    } catch (err) {
+        res.sendStatus(403);
+    }
+};
 // passport.use(new JwtStrategy(passportJWTOptions, function(jwt_payload, done) {
 //     User.findOne({_id: jwt_payload.sub},
 
