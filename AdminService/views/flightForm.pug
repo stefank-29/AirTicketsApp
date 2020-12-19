@@ -17,5 +17,5 @@ block content
             label(for="airplane") Airplane
             select(name="airplane") 
                 for airplane in airplanes
-                    option(value=airplane.name)= airplane.name
+                    option(value=airplane._id)= airplane.name
             input(type="submit" value='Save Flight' class='button save' name='save')
