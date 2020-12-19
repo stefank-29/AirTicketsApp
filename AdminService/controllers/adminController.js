@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const Airplane = mongoose.model('Airplane');
 const Flight = mongoose.model('Flight');
 
-exports.airplane = async (req, res, next) => {
+
+exports.addAirplane = async (req,res,next) => {
+
     const airplane = new Airplane({
         name: req.body.name,
         capacity: req.body.capacity,
@@ -11,7 +13,9 @@ exports.airplane = async (req, res, next) => {
     next();
 };
 
-exports.flight = async (req, res, next) => {
+
+exports.addFlight = async (req,res,next) => {
+
     const flight = new Flight({
         from: req.body.from,
         to: req.body.to,
@@ -30,6 +34,16 @@ exports.addAirplaneForm = (req, res, next) => {
     res.render('airplaneForm');
 };
 
+
 exports.addFlightForm = (req, res, next) => {
     res.render('flightForm');
 };
+
+}
+
+exports.deleteAirplane = async (req,res,next) => {
+
+const airplane = await Airplane.deleteOne({_id : req.params});
+
+}
+
