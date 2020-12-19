@@ -17,9 +17,6 @@ const errorHandlers = require('./handlers/errorHandlers.js');
 // const adminRouter = require('./routes/admin.router.js');
 const { catchErrors } = require('./handlers/errorHandlers.js');
 
-
-
-
 // create our Express app
 const app = express();
 
@@ -54,10 +51,6 @@ app.use(
     })
 );
 
-
-
-
-
 app.use(flash());
 
 //? varijable se prosledjuju templejtu u svim request-ovima
@@ -67,17 +60,16 @@ app.use(
         res.locals.h = helpers;
         res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
         res.locals.currentPath = req.path;
-        // res.locals.jwt = req.cookies.jwt || null;
+        res.locals.jwt = req.cookies.jwt || null;
 
-        // try {
-        //     const verified = jwt.verify(req.cookies['jwt'], process.env.ACCES_TOKEN);
-        //     const usr = await User.findOne({ _id: verified.sub });
-        //     if (req.cookies.jwt != undefined) {
-        //         res.locals.user = usr;
-        //     }
-        // } catch (err) {}
+        try {
+            const verified = jwt.verify(req.cookies['jwt'], process.env.ACCES_TOKEN);
+            const usr = await User.findOne({ _id: verified.sub });
+            if (req.cookies.jwt != undefined) {
+                res.locals.user = usr;
+            }
+        } catch (err) {}
         next();
-
     })
 );
 
