@@ -39,7 +39,7 @@ exports.addFlightForm = (req, res, next) => {
     res.render('flightForm');
 };
 
-}
+
 
 exports.deleteAirplane = async (req,res,next) => {
 
