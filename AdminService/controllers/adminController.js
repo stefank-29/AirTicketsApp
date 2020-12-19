@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Airplane = mongoose.model('Airplane');
 const Flight = mongoose.model('Flight');
 
-exports.airplane = async (req,res,next) => {
+exports.addAirplane = async (req,res,next) => {
     
     const airplane = new Airplane({
         name: req.body.name,
@@ -13,7 +13,7 @@ exports.airplane = async (req,res,next) => {
     
 } 
 
-exports.flight = async (req,res,next) => {
+exports.addFlight = async (req,res,next) => {
     
     const flight = new Flight({
         from: req.body.from,
@@ -25,4 +25,10 @@ exports.flight = async (req,res,next) => {
     await flight.save();
     next();
 
-} 
+}
+
+exports.deleteAirplane = async (req,res,next) => {
+
+const airplane = await Airplane.deleteOne({_id : req.params});
+
+}
