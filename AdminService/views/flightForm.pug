@@ -14,4 +14,8 @@ block content
             input(type="datetime-local" name='arrival' required)
             label(for="price") Price
             input(type="number" name='price' required)
+            label(for="airplane") Airplane
+            select(name="airplane") 
+                for airplane in airplanes
+                    option(value=airplane.name)= airplane.name
             input(type="submit" value='Save Flight' class='button save' name='save')
