@@ -35,6 +35,12 @@ exports.addFlightForm = async (req, res, next) => {
     res.render('flightForm', { airplanes });
 };
 
-exports.deleteAirplane = async (req, res, next) => {
-    const airplane = await Airplane.deleteOne({ _id: req.params });
-};
+
+
+exports.deleteAirplane = async (req,res,next) => {
+
+const airplane = await Airplane.deleteOne({_id : req.params});
+
+}
+
+
