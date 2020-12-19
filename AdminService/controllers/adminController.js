@@ -22,6 +22,10 @@ exports.addFlight = async (req, res, next) => {
     next();
 };
 
+exports.deleteAirplane = async (req, res, next) => {
+    const airplane = await Airplane.deleteOne({ _id: req.params });
+};
+
 exports.adminDashboard = (req, res) => {
     res.render('dashboard');
 };
@@ -35,12 +39,13 @@ exports.addFlightForm = async (req, res, next) => {
     res.render('flightForm', { airplanes });
 };
 
+exports.getFlights = async (req, res, next) => {
+    const flights = await Flight.find();
+    res.json(flights);
+    //res.render('dashboard', { title: 'Admin Dashboard', flights });
+};
 
-
-exports.deleteAirplane = async (req,res,next) => {
-
-const airplane = await Airplane.deleteOne({_id : req.params});
-
-}
-
-
+exports.getAirplanes = async (req, res, next) => {
+    const airplanes = await Airplane.find();
+    res.render('dashboard', { title: 'Admin Dashboard', airplanes });
+};

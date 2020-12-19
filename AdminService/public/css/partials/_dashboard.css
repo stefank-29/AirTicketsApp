@@ -1,0 +1,98 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.content {
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    display: flex;
+}
+
+.menu {
+    height: 100%;
+    width: 18.5%;
+    background-color: rgba(20, 114, 121, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 4rem;
+}
+.menu a {
+    margin-bottom: 2rem;
+    text-decoration: none;
+}
+
+.menu a:hover,
+.menu__link--active {
+    text-shadow: 0 0 2px whitesmoke;
+    text-decoration: underline whitesmoke !important;
+}
+.menu p {
+    margin: 0;
+    color: white;
+    font-size: 3rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.dashboard {
+    flex: 1;
+    height: 100%;
+    background-color: rgb(228, 222, 222);
+}
+
+.dashboard .list {
+    height: auto;
+    width: 80%;
+    margin: 4rem auto 4rem;
+    background-color: rgba(20, 114, 121, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.flight {
+    width: 60%;
+    margin: 2rem 0;
+    height: 15rem;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.flight .section {
+    padding: 1rem 1.5rem;
+    height: 100%;
+    width: 30%;
+    background-color: rgba(255, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .flight .to {
+    height: 100%;
+    width: 30%;
+    background-color: rgba(0, 0, 255, 0.7);
+} */
+
+.flight p.direction {
+    font-size: 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    color: rgba(0, 0, 0, 0.7);
+    margin: 0;
+}
+
+.flight p.time {
+    font-size: 3rem;
+    font-family: 'Lato', sans-serif;
+    margin: 1rem 0;
+}
+
+img.plane {
+    width: 50px;
+}
