@@ -23,18 +23,6 @@ const flightSscheme = new Schema({
         type: Number,
         required: true,
     },
-    departure: {
-        type: Date,
-        required: true,
-    },
-    arrival: {
-        type: Date,
-        required: true,
-    },
-    passengersNumber: {
-        type: Number,
-        default: 0,
-    },
     airplane: {
         type: mongoose.Schema.ObjectId,
         ref: 'Airplane',

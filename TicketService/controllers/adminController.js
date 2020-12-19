@@ -22,14 +22,10 @@ exports.flight = async (req, res, next) => {
     next();
 };
 
-exports.adminDashboard = (req, res) => {
-    res.render('dashboard');
-};
-
-exports.addAirplaneForm = (req, res, next) => {
+exports.addAirplaneForm = async (req, res, next) => {
     res.render('airplaneForm');
 };
 
-exports.addFlightForm = (req, res, next) => {
+exports.addFlightForm = async (req, res, next) => {
     res.render('flightForm');
 };

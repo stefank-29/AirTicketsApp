@@ -7,10 +7,6 @@ router.get('/admin', (req, res) => {
     res.render('layout');
 });
 
-router.get('/admin/dashboard');
-
 router.get('/admin/add/airplane', adminController.addAirplaneForm);
-
-router.get('/admin/add/flight', adminController.addFlightForm);
 
 module.exports = router;
