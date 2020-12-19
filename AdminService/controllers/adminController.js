@@ -40,9 +40,8 @@ exports.addFlightForm = async (req, res, next) => {
 };
 
 exports.getFlights = async (req, res, next) => {
-    const flights = await Flight.find();
-    res.json(flights);
-    //res.render('dashboard', { title: 'Admin Dashboard', flights });
+    const flights = await Flight.find().populate('airplane'); // da vrati i atribute aviona
+    res.render('dashboard', { title: 'Admin Dashboard', flights });
 };
 
 exports.getAirplanes = async (req, res, next) => {

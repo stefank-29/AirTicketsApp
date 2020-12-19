@@ -19,10 +19,13 @@ block content
                             p.direction!= `${flight.from}`
                         .plane
                             img.plane(src="/images/icons/plane.svg", alt="")
+                            //- p!= flight.airplane.name
+                            p.duration!= h.msToTime(flight.duration)
+
+
                         .section
                             p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
                             p.direction!= `${flight.to}`
-                            p!= flight.airplane
 
                 
             if airplanes

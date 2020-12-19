@@ -48,7 +48,7 @@ body {
     height: auto;
     width: 80%;
     margin: 4rem auto 4rem;
-    background-color: rgba(20, 114, 121, 0.5);
+    /* background-color: rgba(20, 114, 121, 0.5); */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -58,7 +58,8 @@ body {
     width: 60%;
     margin: 2rem 0;
     height: 15rem;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(20, 114, 121, 0.4);
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -67,7 +68,7 @@ body {
     padding: 1rem 1.5rem;
     height: 100%;
     width: 30%;
-    background-color: rgba(255, 0, 0, 0.7);
+    /* background-color: rgba(255, 0, 0, 0.7); */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -95,4 +96,15 @@ body {
 
 img.plane {
     width: 50px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.plane p {
+    margin: 1rem 0;
+}
+p.duration {
+    font-size: 1.2rem;
+    text-align: center;
 }
