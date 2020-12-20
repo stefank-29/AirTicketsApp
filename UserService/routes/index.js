@@ -12,28 +12,36 @@ const { response } = require('express');
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
-router.post('/' ,(req,res)=>{
+router.post('/', (req, res) => {
     // const data = {origin: req.body.origin,
     //     departure: req.body.departure,
     //     return: req.body.return,
     //     passengers: req.body.passengers  }
-    
+
     const params = new URLSearchParams({
         origin: req.body.origin,
-        destination: req.body.destination, 
+        destination: req.body.destination,
         departure: req.body.departure,
         return: req.body.return,
-        passengers: req.body.passengers   
-      }).toString();
-    const url = 'http://127.0.0.1:7777/search?' + params;  
-    axios.get(url)
-        .then((response)=>{
-           
-           res.json(response.data);
-    }).catch(err => {
-        console.log(err);
-      });
-})
+
+        passengers: req.body.passengers,
+    }).toString();
+    const url = 'http://127.0.0.1:7777/search?' + params;
+    axios
+        .get(url)
+        .then((response) => {
+            flightsDeparture = response.data.departureFlights;
+            returnFlights = response.data.returnFlights;
+
+            // console.log(flights);
+            // res.json(response.data);
+            return res.render('flightsList', { flightsDeparture, returnFlights });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
 
 router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
@@ -74,11 +82,7 @@ router.post(
     authController.confirmedPasswords,
     catchErrors(authController.updatePassword)
 );
-router.get(
-    '/account/verify/:token',
-    userController.verifyEmail,
-    authController.login
-);
+router.get('/account/verify/:token', userController.verifyEmail, authController.login);
 
 router.get('/account/card', userController.cardForm);
 router.post('/account/card', catchErrors(userController.addCard));
