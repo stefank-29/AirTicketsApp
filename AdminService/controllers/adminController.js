@@ -56,3 +56,8 @@ exports.getAirplanes = async (req, res, next) => {
     const airplanes = await Airplane.find();
     res.render('dashboard', { title: 'Admin Dashboard', airplanes });
 };
+
+exports.deleteFlight = async (req, res, next) => {
+    await Flight.findOneAndDelete({ _id: req.params.id });
+    res.render('dashboard', { title: 'Admin Dashboard', airplanes });
+};
