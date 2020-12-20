@@ -2,8 +2,8 @@ extends layout
 
 block content
     .inner
-        if flights
-            for flight in flights
+        if flightsDeparture
+            for flight in flightsDeparture
                 .flight
                     .section
                         p.date!= `${h.dayOfWeek(new Date(flight.departure))}, ${h.format(new Date(flight.departure),  "dd MMM yyyy")}`
@@ -22,4 +22,29 @@ block content
                     
                     .section
                         p.price Price: #{flight.price} &euro;
-                        a(class='delete' href=`/admin/tickets/${flight._id}/buy/`) Buy Tickets
+                        a(class='delete' href=`tickets/${flight._id}/buy/`) Buy Tickets
+
+        if returnFlights
+            for flight in returnFlights
+                .flight
+                    .section
+                        p.date!= `${h.dayOfWeek(new Date(flight.departure))}, ${h.format(new Date(flight.departure),  "dd MMM yyyy")}`
+
+                        p.time!= `${(new Date(flight.departure)).getHours()}:${(new Date(flight.departure)).getMinutes() < 10 ?  `0${(new Date(flight.departure)).getMinutes()}` : (new Date(flight.departure)).getMinutes()}`
+                        p.direction!= `${flight.from}`
+                    .plane
+                        img.plane(src="/images/icons/plane-return.svg", alt="")
+                        p.duration!= h.msToTime(flight.duration)
+
+                    .section
+                        p.time!= `${(new Date(flight.arrival)).getHours()}:${(new Date(flight.arrival)).getMinutes() < 10 ?  `0${(new Date(flight.arrival)).getMinutes()}` : (new Date(flight.arrival)).getMinutes()}`
+
+
+                        p.direction!= `${flight.to}`
+                    
+                    .section
+                        p.price Price: #{flight.price} &euro;
+                        a(class='delete' href=`tickets/${flight._id}/buy/`) Buy Tickets
+
+
+            

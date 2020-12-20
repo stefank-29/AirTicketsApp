@@ -29,10 +29,12 @@ router.post('/', (req, res) => {
     axios
         .get(url)
         .then((response) => {
-            flights = response.data;
+            flightsDeparture = response.data.departureFlights;
+            returnFlights = response.data.returnFlights;
+
             // console.log(flights);
             // res.json(response.data);
-            return res.render('flightsList', response.data);
+            return res.render('flightsList', { flightsDeparture, returnFlights });
         })
         .catch((err) => {
             console.log(err);

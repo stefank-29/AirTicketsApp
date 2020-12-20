@@ -8,34 +8,39 @@ const datesAreOnSameDay = (first, second) =>
     first.getDate() === second.getDate();
 
 exports.searchFlight = async (req, res) => {
-    let arrayOfFlights = [];
-    const flight = await Flight.find({
+    let departureFlights = [];
+    let returnFlights = [];
+    const flightsD = await Flight.find({
         from: req.query.origin,
         to: req.query.destination,
-        departure: { $gt: req.query.departure },
     })
         .populate({ path: 'airplane' })
         .sort({ departure: 1 });
-    // exec(async (err,flight) =>{
 
-    //      flight.forEach(f => {
+    const flightsR = await Flight.find({
+        from: req.query.destination,
+        to: req.query.origin,
+    })
+        .populate({ path: 'airplane' })
+        .sort({ departure: 1 });
 
-    //         if(f.airplane.capacity >= (f.passengersNumber+ req.query.passengers)){
-    //             console.log(f);
-    //          arrayOfFlights.push(f);
-    //         }
-    //     });
-    // });
-
-    flight.forEach((f) => {
-        console.log(new Date(f.departure), new Date(req.query.departure));
+    flightsD.forEach((f) => {
         if (
             f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
             datesAreOnSameDay(new Date(f.departure), new Date(req.query.departure))
         ) {
-            arrayOfFlights.push(f);
+            departureFlights.push(f);
         }
     });
-    console.log(arrayOfFlights);
-    res.send(arrayOfFlights);
+
+    flightsR.forEach((f) => {
+        if (
+            f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
+            datesAreOnSameDay(new Date(f.departure), new Date(req.query.return))
+        ) {
+            returnFlights.push(f);
+        }
+    });
+    // console.log(departureFlights);
+    res.send({ departureFlights, returnFlights });
 };
