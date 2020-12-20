@@ -52,7 +52,7 @@ exports.getFlights = async (req, res, next) => {
 };
 
 exports.getAirplanes = async (req, res, next) => {
-    const airplanes = await Airplane.find();
+    const airplanes = await Airplane.find().sort({ name: 1 });
     res.render('dashboard', { title: 'Admin Dashboard', airplanes });
 };
 
