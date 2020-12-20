@@ -17,7 +17,9 @@ const flightSscheme = new Schema({
     },
     duration: {
         type: Number,
-        required: true,
+        default: function(){
+            return (this.arrival - this.departure)
+        }
     },
     price: {
         type: Number,

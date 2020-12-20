@@ -8,18 +8,26 @@ exports.addAirplane = async (req, res, next) => {
         capacity: req.body.capacity,
     });
     await airplane.save();
-    next();
+    res.redirect('back');
 };
 
 exports.addFlight = async (req, res, next) => {
+    
+    const airplane = await Airplane.findOne({_id : req.body.airplane})
+    
     const flight = new Flight({
         from: req.body.from,
         to: req.body.to,
-        km: req.body.km,
+        departure: new Date(req.body.departure),
+        arrival : new Date(req.body.arrival),
         price: req.body.price,
+        
+        airplane: airplane 
     });
+   
     await flight.save();
-    next();
+    res.redirect('back');
+    // next();
 };
 
 exports.adminDashboard = (req, res) => {

@@ -1,4 +1,20 @@
 extends layout
 
 block content
-    p Hello
+    .inner
+        form(method="POST" class= 'form card')
+           h2 Search
+           label(for="origin") Origin
+           input(type="text" name='origin' required)
+           label(for="destination") Destionation
+           label(for="departure") Departure 
+           input(type="datetime-local" name='departure' value='DD-MM-YYYY' required)
+           label(for="return") Return
+           input(type="datetime-local" name='return' required)
+           label(for="passengers") passengers
+           input(type="text" name='passengers' required)
+           input(type="submit" value='Search' class='button save' name='search')
+
+
+           
+    
