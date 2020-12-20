@@ -35,12 +35,15 @@ exports.addFlight = async (req, res, next) => {
 };
 
 exports.deleteAirplane = async (req, res, next) => {
-    const airplane = await Airplane.findOne({ _id: req.params });
-    if(airplane.active <= Date.now()) {
-        airplane.delete();
+    const airplane = await Airplane.findOne({ _id: req.params.id });
+    
+    if(airplane.active <= Date.now() || airplane.active == undefined) {
+        await airplane.delete();
+        res.redirect('/admin/dashboard/airplanes');
     }
     else{
         req.flash('error','airplane is active');
+        res.redirect('back');
     }
     
 };
