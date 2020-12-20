@@ -19,9 +19,11 @@ router.get('/admin/add/flight', adminController.addFlightForm);
 router.get('/admin/dashboard/flights', catchErrors(adminController.getFlights));
 router.get('/admin/dashboard/airplanes', catchErrors(adminController.getAirplanes));
 
+
 router.get('/admin/flight/:id/delete/', catchErrors(adminController.deleteFlight));
 
-router.get('/search', (req, res) => {});
+router.get('/search', catchErrors(searchController.searchFlight));
 router.post('/search', searchController.searchFlight);
+
 
 module.exports = router;
