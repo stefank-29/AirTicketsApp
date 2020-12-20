@@ -34,8 +34,9 @@ exports.dayOfWeek = (date) => {
 };
 
 exports.menu = [
-    { slug: '/flights', title: 'All flights', icon: 'flight' },
-    { slug: '/tickets', title: 'By tickets', icon: 'ticket' },
+    { slug: '/admin/dashboard', title: 'Dashboard', icon: 'dashboard' },
+    { slug: '/admin/add/flight', title: 'Add flight', icon: 'flight' },
+    { slug: '/admin/add/airplane', title: 'Add airplane', icon: 'plane' },
     // { slug: '/top', title: 'Top', icon: 'top' },
     // { slug: '/add', title: 'Add', icon: 'add' },
     // { slug: '/map', title: 'Map', icon: 'map' },
