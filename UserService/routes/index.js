@@ -23,6 +23,7 @@ router.post('/', (req, res) => {
         destination: req.body.destination,
         departure: req.body.departure,
         return: req.body.return,
+
         passengers: req.body.passengers,
     }).toString();
     const url = 'http://127.0.0.1:7777/search?' + params;
@@ -40,6 +41,7 @@ router.post('/', (req, res) => {
             console.log(err);
         });
 });
+
 
 router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
@@ -81,6 +83,11 @@ router.post(
     catchErrors(authController.updatePassword)
 );
 router.get('/account/verify/:token', userController.verifyEmail, authController.login);
+
+router.get('/account/card', userController.cardForm);
+router.post('/account/card', catchErrors(userController.addCard));
+
+
 
 router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);

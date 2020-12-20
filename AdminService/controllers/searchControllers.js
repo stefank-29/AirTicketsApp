@@ -7,6 +7,7 @@ const datesAreOnSameDay = (first, second) =>
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate();
 
+
 exports.searchFlight = async (req, res) => {
     let departureFlights = [];
     let returnFlights = [];
@@ -16,6 +17,7 @@ exports.searchFlight = async (req, res) => {
     })
         .populate({ path: 'airplane' })
         .sort({ departure: 1 });
+
 
     const flightsR = await Flight.find({
         from: req.query.destination,
