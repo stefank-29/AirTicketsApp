@@ -19,9 +19,7 @@ router.post('/admin/add/airplane', catchErrors(adminController.addAirplane));
 router.get('/admin/add/flight', adminController.addFlightForm);
 router.post('/admin/add/flight', catchErrors(adminController.addFlight));
 
-router.get('/search', (req,res)=>{
-    
-})
+router.get('/search', catchErrors(searchController.searchFlight));
 router.post('/search', searchController.searchFlight);
 
 
