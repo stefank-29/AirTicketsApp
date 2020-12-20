@@ -12,7 +12,12 @@ exports.addAirplane = async (req, res, next) => {
 };
 
 exports.addFlight = async (req, res, next) => {
-    const airplane = await Airplane.findOne({ _id: req.body.airplane });
+
+    
+    const airplane = await Airplane.findOne({_id : req.body.airplane})
+    
+    await airplane.update({$set: {active:req.body.arrival}});
+
 
     const flight = new Flight({
         from: req.body.from,
@@ -30,7 +35,14 @@ exports.addFlight = async (req, res, next) => {
 };
 
 exports.deleteAirplane = async (req, res, next) => {
-    const airplane = await Airplane.deleteOne({ _id: req.params });
+    const airplane = await Airplane.findOne({ _id: req.params });
+    if(airplane.active <= Date.now()) {
+        airplane.delete();
+    }
+    else{
+        req.flash('error','airplane is active');
+    }
+    
 };
 
 exports.adminDashboard = (req, res) => {
@@ -42,7 +54,8 @@ exports.addAirplaneForm = (req, res, next) => {
 };
 
 exports.addFlightForm = async (req, res, next) => {
-    const airplanes = await Airplane.find();
+    const airplanes = await Airplane.find({$or: [{active: {$lt:Date.now()}}, {active:null}]} );
+    
     res.render('flightForm', { airplanes });
 };
 
