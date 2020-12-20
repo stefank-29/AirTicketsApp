@@ -15,6 +15,8 @@ block content
                 for flight in flights
                     .flight
                         .section
+                            p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`
+
                             p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
                             p.direction!= `${flight.from}`
                         .plane
