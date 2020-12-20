@@ -14,6 +14,7 @@ const airplaneSchema = new Schema({
     },
     active:{
         type:Date,
+        
     }
 });
 
