@@ -6,10 +6,31 @@ const ticketController = require('../controllers/ticketController');
 const { catchErrors } = require('../handlers/errorHandlers');
 const passport = require('passport');
 const jwtAuth = require('../handlers/passport');
+const axios = require('axios');
+const { response } = require('express');
 
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
+router.post('/' ,(req,res)=>{
+    const data = {origin: req.body.origin,
+        departure: req.body.departure,
+        return: req.body.return,
+        passengers: req.body.passengers  }
+    const params = new URLSearchParams({
+        origin: req.body.origin,
+        departure: req.body.departure,
+        return: req.body.return,
+        passengers: req.body.passengers   
+      }).toString();
+    const url = 'http://127.0.0.1:7777/search?' + params;  
+    axios.get(url)
+        .then((response)=>{
+           console.log(response);
+    }).catch(err => {
+        console.log(err);
+      });
+})
 
 router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
