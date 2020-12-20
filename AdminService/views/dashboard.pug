@@ -22,10 +22,13 @@ block content
                             //- p!= flight.airplane.name
                             p.duration!= h.msToTime(flight.duration)
 
-
                         .section
                             p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
                             p.direction!= `${flight.to}`
+                        
+                        .section
+                            p.price Price: #{flight.price} &euro;
+                            a(class='delete' href=`/admin/flight/${flight._id}/delete/`) Delete
 
                 
             if airplanes

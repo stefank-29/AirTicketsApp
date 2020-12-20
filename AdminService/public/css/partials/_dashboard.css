@@ -74,12 +74,19 @@ body {
     align-items: center;
     justify-content: center;
 }
-
-/* .flight .to {
-    height: 100%;
-    width: 30%;
-    background-color: rgba(0, 0, 255, 0.7);
-} */
+.flight .section a.delete {
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    border: 1px solid rgba(255, 0, 0, 0.7);
+    text-decoration: none;
+    background-color: rgba(255, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s;
+}
+.flight .section a.delete:hover {
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+}
 
 .flight p.direction {
     font-size: 1.5rem;
@@ -104,7 +111,11 @@ img.plane {
 .plane p {
     margin: 1rem 0;
 }
-p.duration {
+.flight p.duration {
     font-size: 1.2rem;
     text-align: center;
+}
+.flight p.price {
+    font-size: 2rem;
+    margin: 1rem 0;
 }
