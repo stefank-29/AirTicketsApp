@@ -41,7 +41,9 @@ block content
                             p.capacity!= `Capacity:  ${airplane.capacity}`
                         
                         .section
+
                             form(action=`/admin/airplane/${airplane._id}/delete/` method="POST")
+
                                 if (airplane.active == undefined || airplane.active < Date.now())
                                     button(class='delete' type='submit') Delete
                                 else
