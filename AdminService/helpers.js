@@ -1,4 +1,5 @@
 const fs = require('fs');
+const formatt = require('date-fns/format');
 
 // Dump is a handy debugging function we can use to sort of "console.log" our data
 exports.dump = (obj) => JSON.stringify(obj, null, 2);
@@ -19,6 +20,17 @@ exports.msToTime = (duration) => {
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
     return `${hours}h ${minutes}m`;
+};
+
+exports.format = formatt;
+
+exports.dayOfWeek = (date) => {
+    //Create an array containing each day, starting with Sunday.
+    var weekdays = new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+    //Use the getDay() method to get the day.
+    var day = date.getDay();
+    //Return the element that corresponds to that index.
+    return weekdays[day];
 };
 
 exports.menu = [
