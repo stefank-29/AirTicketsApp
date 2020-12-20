@@ -12,6 +12,9 @@ const airplaneSchema = new Schema({
         type: Number,
         required: 'Please supply ',
     },
+    active:{
+        type:Date,
+    }
 });
 
 module.exports = mongoose.model('Airplane', airplaneSchema);
