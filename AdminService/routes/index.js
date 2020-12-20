@@ -10,19 +10,21 @@ router.get('/admin', (req, res) => {
     res.render('layout');
 });
 
-router.get('/admin/dashboard');
-
+router.get('/admin/dashboard', adminController.adminDashboard);
 
 router.get('/admin/add/airplane', adminController.addAirplaneForm);
-router.post('/admin/add/airplane', catchErrors(adminController.addAirplane));
 
 router.get('/admin/add/flight', adminController.addFlightForm);
-router.post('/admin/add/flight', catchErrors(adminController.addFlight));
+
+
+router.get('/admin/dashboard/flights', catchErrors(adminController.getFlights));
+router.get('/admin/dashboard/airplanes', catchErrors(adminController.getAirplanes));
 
 router.get('/search', (req,res)=>{
     
 })
 router.post('/search', searchController.searchFlight);
+
 
 
 module.exports = router;

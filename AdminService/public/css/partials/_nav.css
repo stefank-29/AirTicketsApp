@@ -42,13 +42,7 @@
 .nav__link--active {
     border-bottom-color: rgba(0, 0, 0, 0.2);
     border-right-color: rgba(0, 0, 0, 0.05);
-    background: linear-gradient(
-            90deg,
-            #c5211c 0%,
-            rgb(255, 196, 0) 50%,
-            #33e268 100%
-        )
-        fixed;
+    background: linear-gradient(90deg, #c5211c 0%, rgb(255, 196, 0) 50%, #33e268 100%) fixed;
 }
 .nav__link:hover svg,
 .nav__link--active svg {
