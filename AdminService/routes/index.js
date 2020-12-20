@@ -24,6 +24,8 @@ router.get('/admin/dashboard/airplanes', catchErrors(adminController.getAirplane
 
 router.get('/admin/flight/:id/delete/', catchErrors(adminController.deleteFlight));
 
+router.post('/admin/airplane/:id/delete/', catchErrors(adminController.deleteAirplane));
+
 router.get('/search', catchErrors(searchController.searchFlight));
 router.post('/search', searchController.searchFlight);
 
