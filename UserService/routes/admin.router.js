@@ -6,7 +6,7 @@ const axios = require('axios');
 
 router.get('/' ,(req,res)=>{
     axios.get(process.env.SERVICE_2).then((response)=>{
-       console.log(response); 
+       
        res.redirect(response.config.url);
     }).catch(error => {
         console.log(error);

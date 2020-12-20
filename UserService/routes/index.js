@@ -13,12 +13,14 @@ router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
 router.post('/' ,(req,res)=>{
-    const data = {origin: req.body.origin,
-        departure: req.body.departure,
-        return: req.body.return,
-        passengers: req.body.passengers  }
+    // const data = {origin: req.body.origin,
+    //     departure: req.body.departure,
+    //     return: req.body.return,
+    //     passengers: req.body.passengers  }
+    
     const params = new URLSearchParams({
         origin: req.body.origin,
+        destination: req.body.destination, 
         departure: req.body.departure,
         return: req.body.return,
         passengers: req.body.passengers   
@@ -26,7 +28,8 @@ router.post('/' ,(req,res)=>{
     const url = 'http://127.0.0.1:7777/search?' + params;  
     axios.get(url)
         .then((response)=>{
-           console.log(response);
+           console.log(response); 
+           res.json(response.data);
     }).catch(err => {
         console.log(err);
       });
