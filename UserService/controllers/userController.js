@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Card = mongoose.model('Card');
 const crypto = require('crypto');
 const promisify = require('es6-promisify');
 const { prototype } = require('extract-text-webpack-plugin');
@@ -14,6 +15,26 @@ exports.registerForm = (req, res) => {
 exports.loginForm = (req, res) => {
     res.render('login', { title: 'Log In' });
 };
+
+exports.cardForm = (req,res) => {
+    res.render('addCardForm', { title: 'Credit Card' })
+}
+
+exports.addCard = async (req, res) => {
+    const card = new Card({
+        name: req.body.name,
+        surname: req.body.surname,
+        cardNumber: req.body.number,
+        pin: req.body.pin
+    })
+    await card.save();
+ 
+    const user = await User.findOne({ _id: res.locals.user.id });
+    
+    await user.updateOne({ $push: {card:card}});
+
+    res.redirect('/account');
+}
 
 exports.validateRegister = (req, res, next) => {
     req.sanitizeBody('name');

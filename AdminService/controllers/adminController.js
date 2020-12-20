@@ -43,7 +43,7 @@ exports.deleteAirplane = async (req, res, next) => {
     }
     else{
         req.flash('error','airplane is active');
-        res.redirect('back');
+        res.redirect('/account');
     }
     
 };
@@ -73,7 +73,12 @@ exports.getAirplanes = async (req, res, next) => {
 };
 
 exports.deleteFlight = async (req, res, next) => {
-    await Flight.findOneAndDelete({ _id: req.params.id });
-    const flights = await Flight.find();
+    const flight = await Flight.findOne({ _id: req.params.id }).populate('airplane');
+    const airplane = await Airplane.findOne({ _id: flight.airplane.id});
+   
+    
+    await airplane.update({$set: {active: Date.now()}});
+    await flight.delete();
+   
     res.redirect('/admin/dashboard/flights');
 };

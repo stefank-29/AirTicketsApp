@@ -16,7 +16,7 @@ mongoose.set('useCreateIndex', true);
 
 // import models
 require('./models/User');
-
+require('./models/Card');
 // run server
 const app = require('./app');
 app.set('port', process.env.PORT || 7777);

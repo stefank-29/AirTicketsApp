@@ -29,6 +29,11 @@ const userScheme = new Schema({
         type: Number,
         required: true,
     },
+    card: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Card',
+        
+    }],
 
     hash: {
         type: String,

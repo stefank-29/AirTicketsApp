@@ -28,7 +28,7 @@ router.post('/' ,(req,res)=>{
     const url = 'http://127.0.0.1:7777/search?' + params;  
     axios.get(url)
         .then((response)=>{
-           console.log(response); 
+           
            res.json(response.data);
     }).catch(err => {
         console.log(err);
@@ -79,6 +79,11 @@ router.get(
     userController.verifyEmail,
     authController.login
 );
+
+router.get('/account/card', userController.cardForm);
+router.post('/account/card', catchErrors(userController.addCard));
+
+
 
 router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);

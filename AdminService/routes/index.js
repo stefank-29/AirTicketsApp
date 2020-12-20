@@ -10,6 +10,13 @@ router.get('/admin', (req, res) => {
 });
 // provere za rute
 
+router.get('/' ,(req,res)=>{
+    axios.get(process.env.SERVICE_1).then((response)=>{
+       
+       res.redirect(response.config.url);
+    });
+});
+
 router.get('/admin/dashboard', adminController.adminDashboard);
 
 router.get('/admin/add/airplane', adminController.addAirplaneForm);
