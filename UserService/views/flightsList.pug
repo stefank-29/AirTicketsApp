@@ -1,5 +1,7 @@
 extends layout
 
+include mixins/_pagination
+
 block content
     .inner
         if flightsDeparture
@@ -45,6 +47,8 @@ block content
                     .section
                         p.price Price: #{flight.price} &euro;
                         a(class='delete' href=`tickets/${flight._id}/buy/`) Buy Tickets
+
+        +pagination(page, pages, count)
 
 
             

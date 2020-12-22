@@ -8,7 +8,6 @@ exports.storeQuery = (req, res) => {
     req.session.destination = req.body.destination;
     req.session.departure = req.body.departure;
     req.session.return = req.body.return;
-
     req.session.passengers = req.body.passengers;
 
     res.redirect('/flights/page/1');
@@ -29,11 +28,28 @@ exports.getFlights = (req, res) => {
     axios
         .get(url)
         .then((response) => {
-            flightsDeparture = response.data.departureFlights;
-            returnFlights = response.data.returnFlights;
+            const flightsDeparture = response.data.departureFlights;
+            const returnFlights = response.data.returnFlights;
+            const page = response.data.page;
+            const pages = response.data.pages;
+            const count = response.data.countD;
             // console.log(flights);
             // res.json(response.data);
-            return res.render('flightsList', { flightsDeparture, returnFlights });
+            console.log(flightsDeparture.length);
+            if (flightsDeparture.length == 0) {
+                req.flash(
+                    'info',
+                    `You asked for page ${page}, but that doesn't exists. So I put you on page ${pages}`
+                );
+                return res.redirect(`/flights/page/${pages - 1}`);
+            }
+            return res.render('flightsList', {
+                flightsDeparture,
+                returnFlights,
+                page,
+                pages,
+                count,
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -44,6 +60,6 @@ exports.getFlights = (req, res) => {
 exports.flightsPage = (req, res) => {
     flightsDeparture = req.flightsDeparture;
     returnFlights = req.returnFlights;
-    console.log(req);
+
     return res.render('flightsList', { flightsDeparture, returnFlights });
 };
