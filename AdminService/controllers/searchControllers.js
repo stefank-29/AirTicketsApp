@@ -7,8 +7,16 @@ const datesAreOnSameDay = (first, second) =>
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate();
 
-
 exports.searchFlight = async (req, res) => {
+    const page = req.query.page || 1;
+    const limit = 1;
+    const skip = page * limit - limit;
+    // const flights = await Flight.find()
+    //     .populate('airplane')
+    //     .sort({ departure: 1 })
+    //     .skip(skip)
+    //     .limit(limit);
+
     let departureFlights = [];
     let returnFlights = [];
     const flightsD = await Flight.find({
@@ -16,15 +24,18 @@ exports.searchFlight = async (req, res) => {
         to: req.query.destination,
     })
         .populate({ path: 'airplane' })
-        .sort({ departure: 1 });
-
+        .sort({ departure: 1 })
+        .skip(skip)
+        .limit(limit);
 
     const flightsR = await Flight.find({
         from: req.query.destination,
         to: req.query.origin,
     })
         .populate({ path: 'airplane' })
-        .sort({ departure: 1 });
+        .sort({ departure: 1 })
+        .skip(skip)
+        .limit(limit);
 
     flightsD.forEach((f) => {
         if (
