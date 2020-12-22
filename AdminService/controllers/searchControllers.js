@@ -9,7 +9,7 @@ const datesAreOnSameDay = (first, second) =>
 
 exports.searchFlight = async (req, res) => {
     const page = req.query.page || 1;
-    const limit = 1;
+    const limit = 2;
     const skip = page * limit - limit;
 
     let departureFlights = [];

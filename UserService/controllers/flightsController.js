@@ -36,7 +36,7 @@ exports.getFlights = (req, res) => {
             // console.log(flights);
             // res.json(response.data);
             console.log(flightsDeparture.length);
-            if (flightsDeparture.length == 0) {
+            if (flightsDeparture.length == 0 && returnFlights.length == 0) {
                 req.flash(
                     'info',
                     `You asked for page ${page}, but that doesn't exists. So I put you on page ${pages}`
