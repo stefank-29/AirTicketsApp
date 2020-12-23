@@ -6,7 +6,8 @@ block content
     .inner
         
         if flightsDeparture
-            h2 Departure Flights
+            h2 Departure Flights 
+                a.redirect(href="/flights/return/page/1/") Return Flights
             for flight in flightsDeparture
                 .flight
                     .section
@@ -30,6 +31,7 @@ block content
 
         if returnFlights
             h2 Return Flights
+                a.redirect(href="/flights/page/1/") Departure Flights
             for flight in returnFlights
                 .flight
                     .section
