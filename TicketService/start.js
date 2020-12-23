@@ -15,7 +15,7 @@ mongoose.connection.on('error', (err) => {
 mongoose.set('useCreateIndex', true);
 
 // import models
-
+require('./models/Tickets');
 
 
 // run server

@@ -19,6 +19,8 @@ router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
 router.get('/flights/page/:page', flightsController.getFlights);
 
+router.get('/flights/page/tickets/:id/buy',ticketController.buyTicket);
+
 // auth
 router.get('/register', userController.registerForm);
 router.post(
@@ -63,5 +65,7 @@ router.post('/account/card', catchErrors(userController.addCard));
 
 router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);
+
+
 
 module.exports = router;
