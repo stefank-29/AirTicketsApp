@@ -45,7 +45,15 @@ exports.deleteAirplane = async (req, res, next) => {
     }
 };
 
+exports.adminGetEmail = (req, res) => {
+    console.log('email iz querija ' + req.query.email);
+    res.locals.email = req.query.email;
+
+    res.redirect('/admin/dashboard/');
+};
+
 exports.adminDashboard = (req, res) => {
+    console.log(res.locals);
     res.render('dashboard');
 };
 

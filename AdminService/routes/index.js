@@ -15,8 +15,8 @@ router.get('/', (req, res) => {
         res.redirect(response.config.url);
     });
 });
-
-router.get('/admin/dashboard', adminController.adminDashboard);
+router.get('/admin/getEmail', adminController.adminGetEmail);
+router.get('/admin/dashboard/', adminController.adminDashboard);
 
 router.get('/admin/add/airplane', adminController.addAirplaneForm);
 router.post('/admin/add/airplane', catchErrors(adminController.addAirplane));
