@@ -15,8 +15,8 @@ router.get('/', (req, res) => {
         res.redirect(response.config.url);
     });
 });
-
-router.get('/admin/dashboard', adminController.adminDashboard);
+router.get('/admin/getEmail', adminController.adminGetEmail);
+router.get('/admin/dashboard/', adminController.adminDashboard);
 
 router.get('/admin/add/airplane', adminController.addAirplaneForm);
 router.post('/admin/add/airplane', catchErrors(adminController.addAirplane));
@@ -33,7 +33,9 @@ router.get('/admin/flight/:id/delete/', catchErrors(adminController.deleteFlight
 router.post('/admin/airplane/:id/delete/', catchErrors(adminController.deleteAirplane));
 
 router.get('/search', catchErrors(searchController.searchDepartureFlight));
-// router.get('/search/return', catchErrors(searchController.searchReturnFlight));
+router.get('/search/return', catchErrors(searchController.searchReturnFlight));
+
+router.get('/logout', adminController.logout);
 
 // router.post('/search', searchController.searchFlight);
 

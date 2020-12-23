@@ -13,7 +13,6 @@ exports.searchDepartureFlight = async (req, res) => {
     const skip = page * limit - limit;
 
     let departureFlights = [];
-    // let returnFlights = [];
     //*** departure ***//
     const flightsPromise = Flight.find({
         from: req.query.origin,
@@ -30,16 +29,6 @@ exports.searchDepartureFlight = async (req, res) => {
     const [flightsD, count] = await Promise.all([flightsPromise, countPromise]);
     const pages = Math.ceil(count / limit);
 
-    // //*** return ***//
-    // const flightsR = await Flight.find({
-    //     from: req.query.destination,
-    //     to: req.query.origin,
-    // })
-    //     .populate({ path: 'airplane' })
-    //     .sort({ departure: 1 })
-    //     .skip(skip)
-    //     .limit(limit);
-
     flightsD.forEach((f) => {
         if (
             f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
@@ -49,16 +38,40 @@ exports.searchDepartureFlight = async (req, res) => {
         }
     });
 
-    // flightsR.forEach((f) => {
-    //     if (
-    //         f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
-    //         datesAreOnSameDay(new Date(f.departure), new Date(req.query.return))
-    //     ) {
-    //         returnFlights.push(f);
-    //     }
-    // });
-
     res.send({ departureFlights, page, pages, count });
 };
 
-exports.searchReturnFlight = (req, res) => {};
+exports.searchReturnFlight = async (req, res) => {
+    const page = req.query.page || 1;
+    const limit = 3;
+    const skip = page * limit - limit;
+
+    let returnFlights = [];
+
+    // //*** return ***//
+    const flightsPromise = await Flight.find({
+        from: req.query.destination,
+        to: req.query.origin,
+    })
+        .populate({ path: 'airplane' })
+        .sort({ departure: 1 })
+        .skip(skip)
+        .limit(limit);
+
+    const query = { from: req.query.destination, to: req.query.origin };
+    const countPromise = Flight.countDocuments(query);
+
+    const [flightsR, count] = await Promise.all([flightsPromise, countPromise]);
+    const pages = Math.ceil(count / limit);
+
+    flightsR.forEach((f) => {
+        if (
+            f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
+            datesAreOnSameDay(new Date(f.departure), new Date(req.query.return))
+        ) {
+            returnFlights.push(f);
+        }
+    });
+
+    res.send({ returnFlights, page, pages, count });
+};
