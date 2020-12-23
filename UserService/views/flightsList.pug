@@ -4,7 +4,9 @@ include mixins/_pagination
 
 block content
     .inner
+        
         if flightsDeparture
+            h2 Departure Flights
             for flight in flightsDeparture
                 .flight
                     .section
