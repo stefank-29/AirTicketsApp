@@ -35,6 +35,8 @@ router.post('/admin/airplane/:id/delete/', catchErrors(adminController.deleteAir
 router.get('/search', catchErrors(searchController.searchDepartureFlight));
 router.get('/search/return', catchErrors(searchController.searchReturnFlight));
 
+router.get('/logout', adminController.logout);
+
 // router.post('/search', searchController.searchFlight);
 
 module.exports = router;

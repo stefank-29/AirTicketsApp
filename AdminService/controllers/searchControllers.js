@@ -13,7 +13,6 @@ exports.searchDepartureFlight = async (req, res) => {
     const skip = page * limit - limit;
 
     let departureFlights = [];
-    // let returnFlights = [];
     //*** departure ***//
     const flightsPromise = Flight.find({
         from: req.query.origin,
@@ -30,16 +29,6 @@ exports.searchDepartureFlight = async (req, res) => {
     const [flightsD, count] = await Promise.all([flightsPromise, countPromise]);
     const pages = Math.ceil(count / limit);
 
-    // //*** return ***//
-    // const flightsR = await Flight.find({
-    //     from: req.query.destination,
-    //     to: req.query.origin,
-    // })
-    //     .populate({ path: 'airplane' })
-    //     .sort({ departure: 1 })
-    //     .skip(skip)
-    //     .limit(limit);
-
     flightsD.forEach((f) => {
         if (
             f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
@@ -48,15 +37,6 @@ exports.searchDepartureFlight = async (req, res) => {
             departureFlights.push(f);
         }
     });
-
-    // flightsR.forEach((f) => {
-    //     if (
-    //         f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
-    //         datesAreOnSameDay(new Date(f.departure), new Date(req.query.return))
-    //     ) {
-    //         returnFlights.push(f);
-    //     }
-    // });
 
     res.send({ departureFlights, page, pages, count });
 };
