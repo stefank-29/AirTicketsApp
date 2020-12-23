@@ -17,7 +17,8 @@ router.post('/', flightsController.storeQuery);
 
 router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
-router.get('/flights/page/:page', flightsController.getFlights);
+router.get('/flights/page/:page', flightsController.getDepartureFlights);
+router.get('/flights/return/page/:page', flightsController.getReturnFlights);
 
 // auth
 router.get('/register', userController.registerForm);

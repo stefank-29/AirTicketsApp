@@ -33,7 +33,7 @@ router.get('/admin/flight/:id/delete/', catchErrors(adminController.deleteFlight
 router.post('/admin/airplane/:id/delete/', catchErrors(adminController.deleteAirplane));
 
 router.get('/search', catchErrors(searchController.searchDepartureFlight));
-// router.get('/search/return', catchErrors(searchController.searchReturnFlight));
+router.get('/search/return', catchErrors(searchController.searchReturnFlight));
 
 // router.post('/search', searchController.searchFlight);
 
