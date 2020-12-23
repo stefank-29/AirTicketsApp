@@ -10,10 +10,9 @@ router.get('/admin', (req, res) => {
 });
 // provere za rute
 
-router.get('/' ,(req,res)=>{
-    axios.get(process.env.SERVICE_1).then((response)=>{
-       
-       res.redirect(response.config.url);
+router.get('/', (req, res) => {
+    axios.get(process.env.SERVICE_1).then((response) => {
+        res.redirect(response.config.url);
     });
 });
 
@@ -33,7 +32,9 @@ router.get('/admin/flight/:id/delete/', catchErrors(adminController.deleteFlight
 
 router.post('/admin/airplane/:id/delete/', catchErrors(adminController.deleteAirplane));
 
-router.get('/search', catchErrors(searchController.searchFlight));
-router.post('/search', searchController.searchFlight);
+router.get('/search', catchErrors(searchController.searchDepartureFlight));
+// router.get('/search/return', catchErrors(searchController.searchReturnFlight));
+
+// router.post('/search', searchController.searchFlight);
 
 module.exports = router;

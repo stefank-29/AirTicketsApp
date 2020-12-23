@@ -7,13 +7,13 @@ const datesAreOnSameDay = (first, second) =>
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate();
 
-exports.searchFlight = async (req, res) => {
+exports.searchDepartureFlight = async (req, res) => {
     const page = req.query.page || 1;
-    const limit = 2;
+    const limit = 3;
     const skip = page * limit - limit;
 
     let departureFlights = [];
-    let returnFlights = [];
+    // let returnFlights = [];
     //*** departure ***//
     const flightsPromise = Flight.find({
         from: req.query.origin,
@@ -24,21 +24,21 @@ exports.searchFlight = async (req, res) => {
         .skip(skip)
         .limit(limit);
 
-    const countPromise = Flight.countDocuments();
+    const query = { from: req.query.origin, to: req.query.destination };
+    const countPromise = Flight.countDocuments(query);
 
-    const [flightsD, countD] = await Promise.all([flightsPromise, countPromise]);
+    const [flightsD, count] = await Promise.all([flightsPromise, countPromise]);
+    const pages = Math.ceil(count / limit);
 
-    const pages = Math.ceil(countD / limit);
-
-    //*** return ***//
-    const flightsR = await Flight.find({
-        from: req.query.destination,
-        to: req.query.origin,
-    })
-        .populate({ path: 'airplane' })
-        .sort({ departure: 1 })
-        .skip(skip)
-        .limit(limit);
+    // //*** return ***//
+    // const flightsR = await Flight.find({
+    //     from: req.query.destination,
+    //     to: req.query.origin,
+    // })
+    //     .populate({ path: 'airplane' })
+    //     .sort({ departure: 1 })
+    //     .skip(skip)
+    //     .limit(limit);
 
     flightsD.forEach((f) => {
         if (
@@ -49,14 +49,16 @@ exports.searchFlight = async (req, res) => {
         }
     });
 
-    flightsR.forEach((f) => {
-        if (
-            f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
-            datesAreOnSameDay(new Date(f.departure), new Date(req.query.return))
-        ) {
-            returnFlights.push(f);
-        }
-    });
+    // flightsR.forEach((f) => {
+    //     if (
+    //         f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
+    //         datesAreOnSameDay(new Date(f.departure), new Date(req.query.return))
+    //     ) {
+    //         returnFlights.push(f);
+    //     }
+    // });
 
-    res.send({ departureFlights, returnFlights, page, pages, countD });
+    res.send({ departureFlights, page, pages, count });
 };
+
+exports.searchReturnFlight = (req, res) => {};
