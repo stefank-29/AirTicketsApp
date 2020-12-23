@@ -7,24 +7,38 @@ const datesAreOnSameDay = (first, second) =>
     first.getMonth() === second.getMonth() &&
     first.getDate() === second.getDate();
 
-
 exports.searchFlight = async (req, res) => {
+    const page = req.query.page || 1;
+    const limit = 2;
+    const skip = page * limit - limit;
+
     let departureFlights = [];
     let returnFlights = [];
-    const flightsD = await Flight.find({
+    //*** departure ***//
+    const flightsPromise = Flight.find({
         from: req.query.origin,
         to: req.query.destination,
     })
         .populate({ path: 'airplane' })
-        .sort({ departure: 1 });
+        .sort({ departure: 1 })
+        .skip(skip)
+        .limit(limit);
 
+    const countPromise = Flight.countDocuments();
 
+    const [flightsD, countD] = await Promise.all([flightsPromise, countPromise]);
+
+    const pages = Math.ceil(countD / limit);
+
+    //*** return ***//
     const flightsR = await Flight.find({
         from: req.query.destination,
         to: req.query.origin,
     })
         .populate({ path: 'airplane' })
-        .sort({ departure: 1 });
+        .sort({ departure: 1 })
+        .skip(skip)
+        .limit(limit);
 
     flightsD.forEach((f) => {
         if (
@@ -43,6 +57,6 @@ exports.searchFlight = async (req, res) => {
             returnFlights.push(f);
         }
     });
-    // console.log(departureFlights);
-    res.send({ departureFlights, returnFlights });
+
+    res.send({ departureFlights, returnFlights, page, pages, countD });
 };

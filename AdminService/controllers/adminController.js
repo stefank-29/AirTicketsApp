@@ -12,12 +12,9 @@ exports.addAirplane = async (req, res, next) => {
 };
 
 exports.addFlight = async (req, res, next) => {
+    const airplane = await Airplane.findOne({ _id: req.body.airplane });
 
-    
-    const airplane = await Airplane.findOne({_id : req.body.airplane})
-    
-    await airplane.update({$set: {active:req.body.arrival}});
-
+    await airplane.update({ $set: { active: req.body.arrival } });
 
     const flight = new Flight({
         from: req.body.from,
@@ -36,16 +33,14 @@ exports.addFlight = async (req, res, next) => {
 
 exports.deleteAirplane = async (req, res, next) => {
     const airplane = await Airplane.findOne({ _id: req.params.id });
-    
-    if(airplane.active <= Date.now() || airplane.active == undefined) {
+
+    if (airplane.active <= Date.now() || airplane.active == undefined) {
         await airplane.delete();
         res.redirect('/admin/dashboard/airplanes');
-    }
-    else{
-        req.flash('error','airplane is active');
+    } else {
+        req.flash('error', 'airplane is active');
         res.redirect('/account');
     }
-    
 };
 
 exports.adminDashboard = (req, res) => {
@@ -57,8 +52,10 @@ exports.addAirplaneForm = (req, res, next) => {
 };
 
 exports.addFlightForm = async (req, res, next) => {
-    const airplanes = await Airplane.find({$or: [{active: {$lt:Date.now()}}, {active:null}]} );
-    
+    const airplanes = await Airplane.find({
+        $or: [{ active: { $lt: Date.now() } }, { active: null }],
+    });
+
     res.render('flightForm', { airplanes });
 };
 
@@ -74,11 +71,10 @@ exports.getAirplanes = async (req, res, next) => {
 
 exports.deleteFlight = async (req, res, next) => {
     const flight = await Flight.findOne({ _id: req.params.id }).populate('airplane');
-    const airplane = await Airplane.findOne({ _id: flight.airplane.id});
-   
-    
-    await airplane.update({$set: {active: Date.now()}});
+    const airplane = await Airplane.findOne({ _id: flight.airplane.id });
+
+    await airplane.update({ $set: { active: Date.now() } });
     await flight.delete();
-   
+
     res.redirect('/admin/dashboard/flights');
 };

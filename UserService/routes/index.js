@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const ticketController = require('../controllers/ticketController');
+const flightsController = require('../controllers/flightsController');
 const { catchErrors } = require('../handlers/errorHandlers');
 const passport = require('passport');
 const jwtAuth = require('../handlers/passport');
@@ -12,38 +13,11 @@ const { response } = require('express');
 router.get('/', (req, res) => {
     res.render('index', { title: 'Home' });
 });
-router.post('/', (req, res) => {
-    // const data = {origin: req.body.origin,
-    //     departure: req.body.departure,
-    //     return: req.body.return,
-    //     passengers: req.body.passengers  }
-
-    const params = new URLSearchParams({
-        origin: req.body.origin,
-        destination: req.body.destination,
-        departure: req.body.departure,
-        return: req.body.return,
-
-        passengers: req.body.passengers,
-    }).toString();
-    const url = 'http://127.0.0.1:7777/search?' + params;
-    axios
-        .get(url)
-        .then((response) => {
-            flightsDeparture = response.data.departureFlights;
-            returnFlights = response.data.returnFlights;
-
-            // console.log(flights);
-            // res.json(response.data);
-            return res.render('flightsList', { flightsDeparture, returnFlights });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
+router.post('/', flightsController.storeQuery);
 
 router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
+
+router.get('/flights/page/:page', flightsController.getFlights);
 
 // auth
 router.get('/register', userController.registerForm);
@@ -86,8 +60,6 @@ router.get('/account/verify/:token', userController.verifyEmail, authController.
 
 router.get('/account/card', userController.cardForm);
 router.post('/account/card', catchErrors(userController.addCard));
-
-
 
 router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);
