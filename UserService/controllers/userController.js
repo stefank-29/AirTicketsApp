@@ -16,25 +16,25 @@ exports.loginForm = (req, res) => {
     res.render('login', { title: 'Log In' });
 };
 
-exports.cardForm = (req,res) => {
-    res.render('addCardForm', { title: 'Credit Card' })
-}
+exports.cardForm = (req, res) => {
+    res.render('addCardForm', { title: 'Credit Card' });
+};
 
 exports.addCard = async (req, res) => {
     const card = new Card({
         name: req.body.name,
         surname: req.body.surname,
         cardNumber: req.body.number,
-        pin: req.body.pin
-    })
+        pin: req.body.pin,
+    });
     await card.save();
- 
+
     const user = await User.findOne({ _id: res.locals.user.id });
-    
-    await user.updateOne({ $push: {card:card}});
+
+    await user.updateOne({ $push: { card: card } });
 
     res.redirect('/account');
-}
+};
 
 exports.validateRegister = (req, res, next) => {
     req.sanitizeBody('name');
@@ -86,7 +86,8 @@ exports.register = async (req, res, next) => {
     });
     // req.flash('success', `You have been emailed a password reset link.`);
 
-   await user.save()
+    await user
+        .save()
         .then((user) => {
             // const jwt = jwtController.issueJWT(user);
             // res.cookie('jwt',jwt.token);
@@ -114,65 +115,64 @@ exports.account = (req, res) => {
 };
 
 exports.updateAccount = async (req, res) => {
-    if(req.body.update !== undefined){
-    const updates = {
-        name: req.body.name,
-        surname: req.body.surname,
-        email: req.body.email,
-        passportNumber: req.body.passportNumber,
-    };
-    const user = await User.findOne({_id:res.locals.user._id});
-    console.log(user);
-    if(user.email === req.body.email){
-       await User.findOneAndUpdate({_id:res.locals.user._id},
-        { $set: updates },
-        {
-            new: true,
-            runValidators: true,
-            context: 'query',
-            useFindAndModify: false,
-       })
-    }else {
-       
-        updates.isValid = false;
-        await User.findOneAndUpdate({_id:res.locals.user._id},
-            { $set: updates },
-            {
-                new: true,
-                runValidators: true,
-                context: 'query',
-                useFindAndModify: false,
-           })
+    if (req.body.update !== undefined) {
+        const updates = {
+            name: req.body.name,
+            surname: req.body.surname,
+            email: req.body.email,
+            passportNumber: req.body.passportNumber,
+        };
+        const user = await User.findOne({ _id: res.locals.user._id });
+        console.log(user);
+        if (user.email === req.body.email) {
+            await User.findOneAndUpdate(
+                { _id: res.locals.user._id },
+                { $set: updates },
+                {
+                    new: true,
+                    runValidators: true,
+                    context: 'query',
+                    useFindAndModify: false,
+                }
+            );
+        } else {
+            updates.isValid = false;
+            await User.findOneAndUpdate(
+                { _id: res.locals.user._id },
+                { $set: updates },
+                {
+                    new: true,
+                    runValidators: true,
+                    context: 'query',
+                    useFindAndModify: false,
+                }
+            );
 
-        
-        
-        req.flash('info', 'Please verify your new email');
-        user.emailToken = crypto.randomBytes(20).toString('hex');
-        await user.save();   
-        const resetURL = `http://${req.headers.host}/account/verify/${user.emailToken}`;
-        await mail.send({
-        user,
-        subject: 'Verify Account',
-        resetURL,
-        filename: 'verify-account', // renderovanje html-a
+            req.flash('info', 'Please verify your new email');
+            user.emailToken = crypto.randomBytes(20).toString('hex');
+            await user.save();
+            const resetURL = `http://${req.headers.host}/account/verify/${user.emailToken}`;
+            await mail.send({
+                user,
+                subject: 'Verify Account',
+                resetURL,
+                filename: 'verify-account', // renderovanje html-a
+            });
 
-    });
+            res.cookie('jwt', 'deleted');
+            res.redirect('/login');
+        }
 
-    res.cookie('jwt', 'deleted');
-    res.redirect('/login');
-    }
-   
-
-    // );
-    req.flash('success', 'The profile is updated!');
-    res.redirect('back');
-    }else{
+        // );
+        req.flash('success', 'The profile is updated!');
+        res.redirect('back');
+    } else {
         res.redirect('/resetPassword');
     }
 };
 
-exports.getInfo = async (req,res) => {
-    const user = await User.findOne({_id : req.query.userId}).populate({path: 'card'});
-    
-    res.json(user);    
+exports.getInfo = async (req, res) => {
+    const user = await User.findOne({ _id: req.query.userId }).populate({ path: 'card' });
+    console.log(user);
+    res.json(user);
 };

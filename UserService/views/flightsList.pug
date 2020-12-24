@@ -27,7 +27,7 @@ block content
                     
                     .section
                         p.price Price: #{flight.price} &euro;
-                        a(class='delete' href=`tickets/${flight._id}/buy/`) Buy Tickets
+                        a(class='delete' href=`/tickets/${flight._id}/buy/`) Buy Tickets
 
         if returnFlights
             h2 Return Flights
@@ -51,7 +51,7 @@ block content
                     
                     .section
                         p.price Price: #{flight.price} &euro;
-                        a(class='delete' href=`tickets/${flight._id}/buy/`) Buy Tickets
+                        a(class='delete' href=`/tickets/${flight._id}/buy/`) Buy Tickets
 
         +pagination(page, pages, count)
 
