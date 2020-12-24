@@ -170,3 +170,9 @@ exports.updateAccount = async (req, res) => {
         res.redirect('/resetPassword');
     }
 };
+
+exports.getInfo = async (req,res) => {
+    const user = await User.findOne({_id : req.query.userId}).populate({path: 'card'});
+    
+    res.json(user);    
+};
