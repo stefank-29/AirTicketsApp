@@ -20,8 +20,7 @@ router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 router.get('/flights/page/:page', flightsController.getDepartureFlights);
 router.get('/flights/return/page/:page', flightsController.getReturnFlights);
 
-router.get('/flights/page/tickets/:id/buy',jwtAuth.authenticateToken,
-    catchErrors(ticketController.buyTicket));
+router.get('/tickets/:id/buy', jwtAuth.authenticateToken, catchErrors(ticketController.buyTicket));
 
 // auth
 router.get('/register', userController.registerForm);
@@ -69,6 +68,5 @@ router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);
 
 router.get('/getInfo', catchErrors(userController.getInfo));
-
 
 module.exports = router;
