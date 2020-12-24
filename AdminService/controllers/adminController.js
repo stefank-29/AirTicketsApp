@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Airplane = mongoose.model('Airplane');
 const Flight = mongoose.model('Flight');
+const axios = require('axios');
+const { response } = require('express');
 
 exports.addAirplane = async (req, res, next) => {
     const airplane = new Airplane({
@@ -43,7 +45,15 @@ exports.deleteAirplane = async (req, res, next) => {
     }
 };
 
+exports.adminGetEmail = (req, res) => {
+    console.log('email iz querija ' + req.query.email);
+    res.locals.email = req.query.email;
+
+    res.redirect('/admin/dashboard/');
+};
+
 exports.adminDashboard = (req, res) => {
+    console.log(res.locals);
     res.render('dashboard');
 };
 
@@ -77,4 +87,11 @@ exports.deleteFlight = async (req, res, next) => {
     await flight.delete();
 
     res.redirect('/admin/dashboard/flights');
+};
+
+exports.logout = (req, res) => {
+    const url = 'http://127.0.0.1:8000/logout';
+    axios.get(url).then((response) => {
+        return res.redirect(response.config.url);
+    });
 };
