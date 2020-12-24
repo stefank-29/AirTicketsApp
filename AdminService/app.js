@@ -44,8 +44,8 @@ app.use(cookieParser());
 app.use(
     session({
         secret: process.env.SECRET,
-        //key: process.env.KEY,
-        resave: false,
+        key: process.env.KEY,
+        resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
@@ -61,6 +61,7 @@ app.use(
         res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
         res.locals.currentPath = req.path;
         res.locals.jwt = req.cookies.jwt || null;
+        res.locals.email = req.session.email;
 
         try {
             const verified = jwt.verify(req.cookies['jwt'], process.env.ACCES_TOKEN);
