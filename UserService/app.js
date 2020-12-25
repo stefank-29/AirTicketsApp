@@ -54,7 +54,6 @@ app.use(
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
-       
     })
 );
 

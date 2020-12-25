@@ -51,6 +51,7 @@ router.get('/logout', authController.logout);
 // account
 router.get('/account', jwtAuth.authenticateToken, userController.account);
 router.post('/account', catchErrors(userController.updateAccount));
+router.get('/accountadmin', userController.saveCookie);
 
 router.post('/account/forgot', catchErrors(authController.forgot));
 router.get('/account/reset/:token', catchErrors(authController.resetForm));

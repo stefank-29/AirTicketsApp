@@ -100,11 +100,13 @@ exports.logout = (req, res) => {
 };
 
 exports.account = (req, res) => {
-    const url = 'http://127.0.0.1:8000/account';
+    const params = new URLSearchParams({
+        jwt: req.cookies['jwt'],
+    });
+    const url = 'http://127.0.0.1:8000/accountadmin?' + params;
     axios
         .get(url)
         .then((response) => {
-            console.log('aaaaaaaaaaaaaaaa');
             res.redirect(response.config.url);
         })
         .catch((err) => {
