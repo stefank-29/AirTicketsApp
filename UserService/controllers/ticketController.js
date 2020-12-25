@@ -13,7 +13,9 @@ exports.buyTicket = async (req,res) => {
     const user = await User.findOne({_id: res.locals.user.id});
     const params = new URLSearchParams({
         flightId: req.params.id,
-        userId: user.id 
+        userId: user.id,
+        passengers: req.session.passengers, 
+
     }).toString();
     const url = 'http://127.0.0.1:8888/tickets?' + params;
     axios.get(url).then((response)=>{

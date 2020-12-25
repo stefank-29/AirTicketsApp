@@ -179,9 +179,9 @@ exports.updateAccount = async (req, res) => {
 exports.getInfo = async (req, res) => {
     if(req.query.userId != 'undefined'){
         
-        console.log(req.query.userId);    
+       
         const user = await User.findOne({ _id: req.query.userId }).populate({ path: 'card' });
-   
+        
         res.send(user);
     }else
         res.send(null);
