@@ -29,12 +29,12 @@ html
             li.nav__item: a.nav__link(href="/logout", class=(currentPath.startsWith('/logout') ? 'nav__link--active' : ''))
               != h.icon('logout')
               span Logout
-              //- li.nav__item: a.nav__link(href="/account", title='Account settings' class=(currentPath.startsWith('/account') ? 'nav__link--active' : ''))
-                //- globaly recognised avatar (service za )
+            li.nav__item: a.nav__link(href="/account", title='Account settings' class=(currentPath.startsWith('/account') ? 'nav__link--active' : ''))
+              
 
-                if user
-                  img.avatar(src=user.gravatar width='200' )
-        
+              if email
+                img.avatar(src=email width='200' )
+      
             //- else
             //-   li.nav__item: a.nav__link(href="/register", class=(currentPath.startsWith('/register') ? 'nav__link--active' : '')) Register
             //-   li.nav__item: a.nav__link(href="/login", class=(currentPath.startsWith('/login') ? 'nav__link--active' : '')) Log In

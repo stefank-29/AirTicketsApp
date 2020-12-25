@@ -46,14 +46,17 @@ exports.deleteAirplane = async (req, res, next) => {
 };
 
 exports.adminGetEmail = (req, res) => {
-    console.log('email iz querija ' + req.query.email);
-    res.locals.email = req.query.email;
+    // console.log('email iz querija ' + req.query.email + 'jwt: ' + req.query.jwt);
+    //console.log(req.query.jwt);
+    // console.log('-----------------------------');
+    // console.log(req.cookies['jwt']);
+    req.session.email = req.query.email;
 
     res.redirect('/admin/dashboard/');
 };
 
 exports.adminDashboard = (req, res) => {
-    console.log(res.locals);
+    console.log(req.session.email);
     res.render('dashboard');
 };
 
@@ -94,4 +97,17 @@ exports.logout = (req, res) => {
     axios.get(url).then((response) => {
         return res.redirect(response.config.url);
     });
+};
+
+exports.account = (req, res) => {
+    const url = 'http://127.0.0.1:8000/account';
+    axios
+        .get(url)
+        .then((response) => {
+            console.log('aaaaaaaaaaaaaaaa');
+            res.redirect(response.config.url);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };
