@@ -48,10 +48,13 @@ app.use(cookieParser());
 app.use(
     session({
         secret: process.env.SECRET,
-        key: process.env.KEY,
+
+        key: procefalsess.env.KEY,
+
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
+       
     })
 );
 
