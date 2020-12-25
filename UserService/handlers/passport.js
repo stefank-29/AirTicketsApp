@@ -78,6 +78,7 @@ passport.deserializeUser(function (user, done) {
 });
 
 exports.authenticateToken = (req, res, next) => {
+    console.log('token u auth' + req.cookies['jwt']);
     let token = null;
     if (req && req.cookies) {
         token = req.cookies['jwt'];

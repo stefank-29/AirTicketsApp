@@ -113,7 +113,12 @@ exports.verifyEmail = async (req, res, next) => {
 exports.account = (req, res) => {
     res.render('account', { title: 'Edit Your Account' });
 };
-
+exports.saveCookie = (req, res) => {
+    console.log('jwt iz querija ' + req.query.jwt);
+    res.cookie('jwt', req.query.jwt);
+    console.log('jwt ' + req.cookies['jwt']);
+    res.redirect('/account');
+};
 exports.updateAccount = async (req, res) => {
     if (req.body.update !== undefined) {
         const updates = {
