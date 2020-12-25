@@ -49,7 +49,7 @@ app.use(
     session({
         secret: process.env.SECRET,
 
-        key: procefalsess.env.KEY,
+        key: process.env.KEY,
 
         resave: true,
         saveUninitialized: true,

@@ -10,28 +10,35 @@ exports.storeQuery = (req, res) => {
     res.redirect('/tickets/buy');
 };
 
-exports.buyTicket = (req, res, next) => {
+exports.infoTicket = async (req, res, next) => {
+    let user,flight;
     const params = new URLSearchParams({
         flightId: req.session.flightId,
         userId: req.session.userId,
     }).toString();
     const url = 'http://127.0.0.1:8000/getInfo?' + params;
-    axios
-        .get(url)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+
+    const respUser = await axios.get(url);
+
+    req.user = respUser.data;
+         
     const urlService2 = 'http://127.0.0.1:7777/getInfo?' + params;
-    axios
-        .get(urlService2)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+
+    const respFlight = await axios.get(urlService2); 
+   
+        
     next();
 };
+
+exports.buyTicket = async (req,res) => {
+    const ticket = new Ticket({
+        userId: req.session.userId,
+        flightId: req.session.flightId,
+        purchase: new Date()
+
+    });
+    
+    await ticket.save();
+
+    next();
+}

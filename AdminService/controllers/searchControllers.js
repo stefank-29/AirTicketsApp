@@ -42,9 +42,12 @@ exports.searchDepartureFlight = async (req, res) => {
 };
 
 exports.getInfo = async (req, res) => {
-    const flight = await Flight.findOne({ _id: req.query.flightId });
-    console.log(flight);
-    res.json(flight);
+    if(req.query.flightId != 'undefined'){ 
+        const flight = await Flight.findOne({ _id: req.query.flightId });
+   
+        res.send(flight);
+    }else
+        res.send(null);
 };
 
 exports.searchReturnFlight = async (req, res) => {
