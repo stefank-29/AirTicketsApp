@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 
 router.get('/', (req, res) => {
-    const params = new URLSearchParams({ email: res.locals.user.email });
+    const params = new URLSearchParams({ email: res.locals.user.gravatar, jwt: res.locals.jwt });
     const url = process.env.SERVICE_2 + '?' + params; // /admin/getEmail
     axios
         .get(url)

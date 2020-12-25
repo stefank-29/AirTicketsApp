@@ -34,15 +34,13 @@ router.post('/admin/airplane/:id/delete/', catchErrors(adminController.deleteAir
 
 router.get('/search', catchErrors(searchController.searchDepartureFlight));
 
-
-
 router.get('/getInfo', catchErrors(searchController.getInfo));
 // router.get('/search/return', catchErrors(searchController.searchReturnFlight));
 
 router.get('/search/return', catchErrors(searchController.searchReturnFlight));
 
 router.get('/logout', adminController.logout);
-
+router.get('/account', adminController.account);
 
 // router.post('/search', searchController.searchFlight);
 
