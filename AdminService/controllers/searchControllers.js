@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Flight = mongoose.model('Flight');
+var CronJob = require('cron').CronJob;
+
 // const { datesAreOnSameDay } = require('../helpers');
 
 const datesAreOnSameDay = (first, second) =>
@@ -8,6 +10,8 @@ const datesAreOnSameDay = (first, second) =>
     first.getDate() === second.getDate();
 
 exports.searchDepartureFlight = async (req, res) => {
+    req.session.count = req.query.passengers;
+    
     const page = req.query.page || 1;
     const limit = 3;
     const skip = page * limit - limit;
@@ -42,12 +46,28 @@ exports.searchDepartureFlight = async (req, res) => {
 };
 
 exports.getInfo = async (req, res) => {
-    if(req.query.flightId != 'undefined'){ 
+    let job;
+    if(req.query.stop){
+        console.log('stop');
+        job.stop();
+    }
+    if(req.query.flightId != 'undefined' && req.query.passengers != 'undefined'){
+        
         const flight = await Flight.findOne({ _id: req.query.flightId });
-   
+        await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] + parseInt(req.query.passengers) } }); 
+        
+        console.log('Before job instantiation');
+            job = new CronJob('0 */1 * * * *',async function() {
+            console.log('every minyte');
+            await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] + parseInt(req.query.passengers) } });
+            this.stop();
+          }, null, true).start();
+        //   job.start();
+          
         res.send(flight);
     }else
         res.send(null);
+
 };
 
 exports.searchReturnFlight = async (req, res) => {
