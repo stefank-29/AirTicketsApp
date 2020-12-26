@@ -15,9 +15,6 @@ const errorHandlers = require('./handlers/errorHandlers.js');
 // const adminRouter = require('./routes/admin.router.js');
 const { catchErrors } = require('./handlers/errorHandlers.js');
 
-
-
-
 // create our Express app
 const app = express();
 
@@ -45,16 +42,12 @@ app.use(cookieParser());
 app.use(
     session({
         secret: process.env.SECRET,
-        //key: process.env.KEY,
+        key: process.env.KEY,
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
 );
-
-
-
-
 
 app.use(flash());
 
@@ -75,7 +68,6 @@ app.use(
         //     }
         // } catch (err) {}
         next();
-
     })
 );
 

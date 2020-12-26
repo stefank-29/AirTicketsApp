@@ -40,6 +40,8 @@ exports.addCard = async (req, res) => {
 //* buying forms
 //! ovde si stao (drugi templejt sa razlicitom formom)
 exports.cardFormBuy = (req, res) => {
+    console.log(res.locals.user);
+    console.log(req.cookies.jwt);
     res.render('addCardForm', { title: 'Credit Card' });
     //res.send('hi');
 };
@@ -152,11 +154,12 @@ exports.verifyEmail = async (req, res, next) => {
 };
 
 exports.account = (req, res) => {
+    console.log('iz kukija' + req.cookies.jwt);
     res.render('account', { title: 'Edit Your Account' });
 };
 exports.saveCookie = (req, res) => {
     console.log('jwt iz querija ' + req.query.jwt);
-    res.cookie('jwt', req.query.jwt);
+    // res.cookie('jwt', req.query.jwt);
     console.log('jwt ' + req.cookies['jwt']);
     res.redirect('/account');
 };
