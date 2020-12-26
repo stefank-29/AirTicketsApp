@@ -8,6 +8,6 @@ router.get('/tickets', ticketController.storeQuery);
 
 router.get('/tickets/buy', catchErrors(ticketController.infoTicket), ticketController.buyForm);
 
-router.get('/user/card/add', ticketController.addCard);
+router.get('/user/:id/addcard', ticketController.addCard);
 
 module.exports = router;

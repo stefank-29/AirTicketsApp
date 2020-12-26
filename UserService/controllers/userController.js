@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const jwtController = require('./jwtController');
 const mail = require('../handlers/mail');
 const auth = require('./authController');
+const axios = require('axios');
 exports.registerForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
@@ -40,9 +41,12 @@ exports.addCard = async (req, res) => {
 //! ovde si stao (drugi templejt sa razlicitom formom)
 exports.cardFormBuy = (req, res) => {
     res.render('addCardForm', { title: 'Credit Card' });
+    //res.send('hi');
 };
 
 exports.addCardBuy = async (req, res) => {
+    console.log(res.locals.user);
+    console.log(req.cookies.jwt);
     const card = new Card({
         name: req.body.name,
         surname: req.body.surname,
@@ -55,7 +59,22 @@ exports.addCardBuy = async (req, res) => {
 
     await user.updateOne({ $push: { card: card } });
 
-    res.redirect('/account');
+    const params = new URLSearchParams({
+        flightId: req.session.flightId,
+        userId: user.id,
+        passengers: req.session.passengers,
+    }).toString();
+
+    const url = 'http://127.0.0.1:8888/tickets?' + params;
+    axios
+        .get(url)
+        .then((response) => {
+            res.redirect(response.config.url);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    // res.redirect('/account');
 };
 
 exports.validateRegister = (req, res, next) => {
@@ -199,17 +218,11 @@ exports.updateAccount = async (req, res) => {
 };
 
 exports.getInfo = async (req, res) => {
-
-    if(req.query.userId != 'undefined'){
-        
-       
+    if (req.query.userId != 'undefined') {
         const user = await User.findOne({ _id: req.query.userId }).populate({ path: 'card' });
-        
+
         res.send(user);
-    }else
+    } else {
         res.send(null);
-
-
-        res.send(user);
-    } else res.send(null);
+    }
 };

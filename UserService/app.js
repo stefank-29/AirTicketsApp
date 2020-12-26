@@ -5,6 +5,7 @@ const User = mongoose.model('User');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const promisify = require('es6-promisify');
@@ -50,12 +51,22 @@ app.use(
         secret: process.env.SECRET,
 
         key: process.env.KEY,
-
+        cookie: { secure: true },
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
 );
+
+// app.use(
+//     cookieSession({
+//         name: 'session',
+//         keys: [process.env.KEY],
+
+//         // Cookie Options
+//         maxAge: 24 * 60 * 60 * 1000, // 24 hours
+//     })
+// );
 
 //? Passport JS is what we use to handle our logins
 app.use(passport.initialize());
