@@ -13,8 +13,12 @@ exports.storeQuery = (req, res) => {
 };
 
 exports.infoTicket = async (req, res, next) => {
+
+    let user, flight;
+
     
     const passengers = req.session.passengers;
+
     const params = new URLSearchParams({
         flightId: req.session.flightId,
         userId: req.session.userId,
@@ -25,26 +29,46 @@ exports.infoTicket = async (req, res, next) => {
     const respUser = await axios.get(url);
 
     req.user = respUser.data;
+
+
     
-    
+
     const urlService2 = 'http://127.0.0.1:7777/getInfo?' + params;
 
-    const respFlight = await axios.get(urlService2); 
-   
-        
+    const respFlight = await axios.get(urlService2);
+
     next();
 };
 
-exports.buyTicket = async (req,res) => {
+exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
         userId: req.session.userId,
         flightId: req.session.flightId,
+
         purchase: new Date()
     });
     const urlService2 = 'http://127.0.0.1:7777/getInfo?stop=true';
 
     const respFlight = await axios.get(urlService2); 
+
     await ticket.save();
 
     next();
-}
+};
+
+exports.buyForm = (req, res) => {
+    user = req.user;
+    flight = req.flight;
+    console.log(user);
+    // console.log(user);
+    res.render('ticketForm', { title: 'Buy tickets', user, flight });
+};
+
+exports.addCard = (req, res) => {
+    const userId = req.params.id;
+    const params = new URLSearchParams({
+        id: userId,
+    }).toString();
+
+    const url = 'http://127.0.0.1:8000/account/card/buy?' + params;
+};

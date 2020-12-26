@@ -65,6 +65,9 @@ router.get('/account/verify/:token', userController.verifyEmail, authController.
 router.get('/account/card', userController.cardForm);
 router.post('/account/card', catchErrors(userController.addCard));
 
+router.get('/account/card/buy', userController.cardFormBuy);
+router.post('/account/card/buy', catchErrors(userController.addCardBuy));
+
 router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);
 

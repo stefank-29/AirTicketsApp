@@ -2,10 +2,20 @@ extends layout
 
 block content
     .inner 
+        //- pre= h.dump(user)
         form(method="POST" class= 'form card')
-            h2= `hi ${user.name}`
-            label(for="name") Name
-            input(type="text" name='name' required)
-            label(for="capacity") Capacity
-            input(type="number" name='capacity' required)
-            input(type="submit" value='Save Airplane' class='button save' name='save')
+            if user
+                h2= `Hi ${user.name}!`
+                    if user.card.length > 0
+                        a.card(href=`/user/${user._id}/addcard`) Add Card             
+                if user.card.length > 0
+                    label(for="card") Select card for payment:
+                    select(name="card") 
+                        for card in user.card
+                            option(value=card._id)=`Card: ${card.cardNumber}`
+                    input(type="submit" value='Buy tickets' class='button save' name='buy')
+
+                else
+                    p.info Please add card to finish payment.
+                    a.card(href=`/user/${user._id}/addcard`) Add Card             
+                    input(type="submit" value='Buy tickets' class='button save' name='buy' disabled)

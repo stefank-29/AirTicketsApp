@@ -36,6 +36,28 @@ exports.addCard = async (req, res) => {
     res.redirect('/account');
 };
 
+//* buying forms
+//! ovde si stao (drugi templejt sa razlicitom formom)
+exports.cardFormBuy = (req, res) => {
+    res.render('addCardForm', { title: 'Credit Card' });
+};
+
+exports.addCardBuy = async (req, res) => {
+    const card = new Card({
+        name: req.body.name,
+        surname: req.body.surname,
+        cardNumber: req.body.number,
+        pin: req.body.pin,
+    });
+    await card.save();
+
+    const user = await User.findOne({ _id: res.locals.user.id });
+
+    await user.updateOne({ $push: { card: card } });
+
+    res.redirect('/account');
+};
+
 exports.validateRegister = (req, res, next) => {
     req.sanitizeBody('name');
     req.checkBody('name', 'You must supply name').notEmpty();
@@ -177,6 +199,7 @@ exports.updateAccount = async (req, res) => {
 };
 
 exports.getInfo = async (req, res) => {
+
     if(req.query.userId != 'undefined'){
         
        
@@ -186,4 +209,7 @@ exports.getInfo = async (req, res) => {
     }else
         res.send(null);
 
+
+        res.send(user);
+    } else res.send(null);
 };
