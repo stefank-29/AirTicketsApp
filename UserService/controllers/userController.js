@@ -208,8 +208,5 @@ exports.getInfo = async (req, res) => {
         res.send(user);
     }else
         res.send(null);
-
-
-        res.send(user);
-    } else res.send(null);
+    
 };

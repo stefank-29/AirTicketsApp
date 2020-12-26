@@ -73,4 +73,5 @@ router.post('/resetPassword', authController.resetPassword);
 
 router.get('/getInfo', catchErrors(userController.getInfo));
 
+
 module.exports = router;
