@@ -14,7 +14,7 @@ select {
 }
 input:focus,
 textarea:focus,
-select {
+select:focus {
     box-shadow: 0 0 5px 2px rgb(7, 132, 250);
 }
 input.input--error,

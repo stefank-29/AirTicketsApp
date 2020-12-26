@@ -6,11 +6,8 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 router.get('/tickets', ticketController.storeQuery);
 
-router.get('/tickets/buy', catchErrors(ticketController.infoTicket) , (req,res) => {
-    user = req.user;
-    flight = req.flight;
-    res.render('ticketForm' , {user,flight});
-});
+router.get('/tickets/buy', catchErrors(ticketController.infoTicket), ticketController.buyForm);
 
+router.get('/user/card/add', ticketController.addCard);
 
 module.exports = router;

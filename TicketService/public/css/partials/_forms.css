@@ -1,5 +1,6 @@
 input,
-textarea {
+textarea,
+select {
     width: 95%;
     padding: 10px;
     border: 1px solid rgba(23, 23, 197, 0.45);
@@ -8,12 +9,17 @@ textarea {
     resize: none;
     white-space: pre-wrap;
 }
+select {
+    background-color: white;
+}
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
     box-shadow: 0 0 5px 2px rgb(7, 132, 250);
 }
 input.input--error,
-textarea.input--error {
+textarea.input--error,
+select.input--error {
     border-color: red;
 }
 label {
@@ -24,13 +30,7 @@ label {
 .form {
     background: white;
     padding: 2rem;
-    box-shadow: linear-gradient(
-        90deg,
-        #48ded4 0%,
-        #e82c75 35%,
-        rgb(255, 196, 0) 75%,
-        #33e2d7 95%
-    );
+    box-shadow: linear-gradient(90deg, #48ded4 0%, #e82c75 35%, rgb(255, 196, 0) 75%, #33e2d7 95%);
 }
 .form {
     margin-top: 4rem;
@@ -61,4 +61,9 @@ input.button.save:hover {
 }
 input.button:hover {
     background-color: rgb(31, 107, 247);
+}
+form p.info {
+    font-size: 2rem;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
 }
