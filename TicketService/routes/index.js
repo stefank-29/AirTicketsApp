@@ -9,7 +9,7 @@ router.get('/tickets', ticketController.storeQuery);
 router.get('/tickets/buy', catchErrors(ticketController.infoTicket), ticketController.buyForm);
 router.post('/tickets/buy', catchErrors(ticketController.buyTicket));
 
-router.get('/user/card/add', ticketController.addCard);
+router.get('/user/:id/addcard', ticketController.addCard);
 
 router.get('/redirect/home',catchErrors(ticketController.homeRedirect));
 

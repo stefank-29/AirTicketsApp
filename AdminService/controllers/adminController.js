@@ -103,7 +103,7 @@ exports.account = (req, res) => {
     const params = new URLSearchParams({
         jwt: req.cookies['jwt'],
     }).toString();
-    const url = 'http://127.0.0.1:8000/accountadmin?' + params;
+    const url = 'http://127.0.0.1:8000/account?' + params;
     axios
         .get(url)
         .then((response) => {

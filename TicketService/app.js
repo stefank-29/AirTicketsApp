@@ -15,9 +15,6 @@ const errorHandlers = require('./handlers/errorHandlers.js');
 // const adminRouter = require('./routes/admin.router.js');
 const { catchErrors } = require('./handlers/errorHandlers.js');
 
-
-
-
 // create our Express app
 const app = express();
 
@@ -52,6 +49,7 @@ app.use(
     })
 );
 
+
 app.use(function(req,res,next){
     var _send = res.send;
    var sent = false;
@@ -84,7 +82,6 @@ app.use(
         //     }
         // } catch (err) {}
         next();
-
     })
 );
 
