@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 
 router.get('/tickets', ticketController.storeQuery);
 
-router.get('/tickets/buy', catchErrors(ticketController.infoTicket), ticketController.buyForm);
+router.get('/tickets/buy', catchErrors(ticketController.infoTicket),catchErrors(ticketController.scheduleTrigger), ticketController.buyForm);
 router.post('/tickets/buy', catchErrors(ticketController.buyTicket));
 
 router.get('/user/:id/addcard', ticketController.addCard);

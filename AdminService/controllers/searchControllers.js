@@ -49,30 +49,27 @@ exports.searchDepartureFlight = async (req, res) => {
 };
 var task;
 exports.getInfo = async (req, res) => {
-    
-    
-    if(req.query.stop){
-      
-        
-        let current_job = schedule.scheduledJobs[req.query.userId];
-       
-        current_job.cancel();
-        
-        res.send('http://127.0.0.1:8000/'); 
-        
-    }
-    
+          
     if(req.query.flightId != 'undefined' && req.query.passengers != 'undefined'){
        
         const flight = await Flight.findOne({ _id: req.query.flightId });
         await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] + parseInt(req.query.passengers) } }); 
         flight.passengersNumber += parseInt(req.query.passengers);
-                
-         res.send(flight);
+             
+        res.send(flight);
     }else
         res.send(null);
 
 };
+
+exports.updatePassengers = async (req,res) => {
+    const flight = await Flight.findOne({ _id: req.query.flightId });
+    console.log(flight);
+    await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] - parseInt(req.query.passengers) } }); 
+    res.send('http://127.0.0.1:8000/')
+    
+    
+}
 
 exports.searchReturnFlight = async (req, res) => {
     const page = req.query.page || 1;
