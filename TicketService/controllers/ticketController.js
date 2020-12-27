@@ -48,26 +48,31 @@ exports.infoTicket = async (req, res, next) => {
     next();
 };
 
-exports.scheduleTrigger = (req, res, next) => {
+exports.scheduleTrigger = (req,res,next) => {
+   
     var rule = new schedule.RecurrenceRule();
     rule.minute = 1;
     let startTime = new Date(Date.now() + 5000);
     let endTime = new Date(startTime.getTime() + 720000);
 
+     schedule.scheduleJob(req.session.userId,{ start: startTime, end: endTime, rule:'* * * * * '}, async function(){
+        console.log('uso');
+        const params = new URLSearchParams({
+            flightId: req.session.flightId,
+            userId: req.session.userId,
+            passengers: req.session.passengers,
 
-    schedule.scheduleJob(
-        req.query.userId,
-        { start: startTime, end: endTime, rule: '* * * * * ' },
-        async function () {
-            console.log('uso');
-            await flight.updateOne({
-                $set: {
-                    passengersNumber: flight['passengersNumber'] - parseInt(req.query.passengers),
-                },
-            });
-        }
-    );
-};
+           }).toString();
+        const url = 'http://127.0.0.1:7777/update/passengers?' + params;  
+        const response = await axios.get(url);
+        console.log(response);
+
+             
+
+     });
+     
+     next();
+} 
 
 exports.homeRedirect = async (req, res) => {
     console.log('sad');
@@ -83,7 +88,7 @@ exports.homeRedirect = async (req, res) => {
         const url = 'http://127.0.0.1:7777/update/passengers?' + params;  
         const response = await axios.get(url);
         console.log(response);
-
+           
         return res.redirect(response.data);
       
 
@@ -109,15 +114,14 @@ exports.buyTicket = async (req, res) => {
     });
     await ticket.save();
 
-    const respFlight = await axios.get(urlService2);
-    console.log(respFlight.data);
-    res.redirect(respFlight.data);
-
+   
+    
     let current_job = schedule.scheduledJobs[req.session.userId];
+   
     console.log(current_job);
     current_job.cancel();
     axios
-    .get('http://127.0.0.1:7777/flights/page/1')
+    .get('http://127.0.0.1:8000/flights/page/1')
     .then((response) => {
         res.redirect(response.config.url);
     })
