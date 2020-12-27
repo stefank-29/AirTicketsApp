@@ -19,4 +19,6 @@ router.get('/user/:id/addcard', ticketController.addCard);
 
 router.get('/redirect/home', catchErrors(ticketController.homeRedirect));
 
+router.get('/logout', ticketController.logout);
+
 module.exports = router;

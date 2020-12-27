@@ -111,3 +111,10 @@ exports.addCard = (req, res) => {
             console.log(error);
         });
 };
+
+exports.logout = (req, res) => {
+    const url = 'http://127.0.0.1:8000/logout';
+    axios.get(url).then((response) => {
+        return res.redirect(response.config.url);
+    });
+};
