@@ -45,14 +45,23 @@ app.use(cookieParser());
 app.use(
     session({
         secret: process.env.SECRET,
-        //key: process.env.KEY,
+        key: process.env.KEY,
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
     })
 );
 
-
+app.use(function(req,res,next){
+    var _send = res.send;
+   var sent = false;
+   res.send = function(data){
+       if(sent) return;
+       _send.bind(res)(data);
+       sent = true;
+   };
+   next();
+   });
 
 
 

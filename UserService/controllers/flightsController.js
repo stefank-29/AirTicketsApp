@@ -15,6 +15,8 @@ exports.storeQuery = (req, res) => {
 
 exports.getDepartureFlights = (req, res) => {
     const page = req.params.page;
+    console.log('-------------------------')
+    console.log(req.session.origin);
 
     const params = new URLSearchParams({
         origin: req.session.origin,

@@ -34,11 +34,19 @@ exports.infoTicket = async (req, res, next) => {
     
 
     const urlService2 = 'http://127.0.0.1:7777/getInfo?' + params;
-
-    const respFlight = await axios.get(urlService2);
-
+   
+    const respFlight =  axios.get(urlService2);
+    
     next();
 };
+
+exports.homeRedirect = async (req,res) => {
+    console.log('sad');
+    
+    const response = await axios.get('http://127.0.0.1:8000');
+    console.log(response.request._redirectable._currentUrl);
+    return res.redirect(response.request._redirectable._currentUrl); 
+}
 
 exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
@@ -47,19 +55,24 @@ exports.buyTicket = async (req, res) => {
 
         purchase: new Date()
     });
-    const urlService2 = 'http://127.0.0.1:7777/getInfo?stop=true';
-
-    const respFlight = await axios.get(urlService2); 
-
+    const params = new URLSearchParams({
+        stop: true,
+        userId: req.session.userId,
+    });
+    const urlService2 = 'http://127.0.0.1:7777/getInfo?' + params;
     await ticket.save();
+    const respFlight = await axios.get(urlService2);
+    console.log(respFlight.data); 
+    res.redirect(respFlight.data);
+    
 
-    next();
+   
 };
 
 exports.buyForm = (req, res) => {
     user = req.user;
     flight = req.flight;
-    console.log(user);
+   
     // console.log(user);
     res.render('ticketForm', { title: 'Buy tickets', user, flight });
 };

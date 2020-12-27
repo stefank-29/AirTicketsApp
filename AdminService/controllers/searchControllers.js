@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const Flight = mongoose.model('Flight');
-var CronJob = require('cron').CronJob;
-
+const cron = require('cron').CronJob;
+// const cron = require('node-cron');
 // const { datesAreOnSameDay } = require('../helpers');
+var schedule = require('node-schedule');
+const axios = require('axios');
+const { response } = require('express');
 
 const datesAreOnSameDay = (first, second) =>
     first.getFullYear() === second.getFullYear() &&
@@ -44,27 +47,44 @@ exports.searchDepartureFlight = async (req, res) => {
 
     res.send({ departureFlights, page, pages, count });
 };
-
+var task;
 exports.getInfo = async (req, res) => {
-    let job;
+    
+    
     if(req.query.stop){
-        console.log('stop');
-        job.stop();
-    }
-    if(req.query.flightId != 'undefined' && req.query.passengers != 'undefined'){
+      
         
+        let current_job = schedule.scheduledJobs[req.query.userId];
+       
+        current_job.cancel();
+        
+        res.send('http://127.0.0.1:8000/'); 
+        
+    }
+    
+    if(req.query.flightId != 'undefined' && req.query.passengers != 'undefined'){
+        console.log('aaa');
         const flight = await Flight.findOne({ _id: req.query.flightId });
         await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] + parseInt(req.query.passengers) } }); 
-        
+        flight.passengersNumber += parseInt(req.query.passengers);
         console.log('Before job instantiation');
-            job = new CronJob('0 */1 * * * *',async function() {
-            console.log('every minyte');
-            await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] + parseInt(req.query.passengers) } });
-            this.stop();
-          }, null, true).start();
-        //   job.start();
-          
-        res.send(flight);
+        var rule = new schedule.RecurrenceRule();
+        rule.minute = 1;
+        let startTime = new Date(Date.now() + 5000);
+        let endTime = new Date(startTime.getTime() + 720000);
+
+           schedule.scheduleJob(req.query.userId,{ start: startTime, end: endTime, rule:'* * * * * '}, async function(){
+            console.log('uso');
+            await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] - parseInt(req.query.passengers) } });
+            const response =  axios.get('http://127.0.0.1:8888/redirect/home');
+            // console.log(response.config.url);
+            
+            
+
+        });
+         
+            
+        // res.send(flight);
     }else
         res.send(null);
 

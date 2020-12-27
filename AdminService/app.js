@@ -79,6 +79,16 @@ app.use((req, res, next) => {
     req.login = promisify(req.login, req);
     next();
 });
+app.use(function(req,res,next){
+    var _send = res.send;
+   var sent = false;
+   res.send = function(data){
+       if(sent) return;
+       _send.bind(res)(data);
+       sent = true;
+   };
+   next();
+   });
 
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes); //! svaki put kad se unese url sa '/' pokrene se routes (a u index.js se za svaki pojedinacno odredi sta koji radi)
