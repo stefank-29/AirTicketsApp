@@ -17,7 +17,7 @@ exports.infoTicket = async (req, res, next) => {
     let user, flight;
 
     const passengers = req.session.passengers;
-
+    req.passengers = passengers;
     const params = new URLSearchParams({
         flightId: req.session.flightId,
         userId: req.session.userId,
@@ -30,35 +30,41 @@ exports.infoTicket = async (req, res, next) => {
     req.user = respUser.data;
 
     const urlService2 = 'http://127.0.0.1:7777/getInfo?' + params;
-   
-    const respFlight =  axios.get(urlService2);
+
+    const respFlight = await axios.get(urlService2);
 
     req.flight = respFlight.data;
-    
+
     next();
 };
 
-exports.scheduleTrigger = (req,res,next) => {
-   
+exports.scheduleTrigger = (req, res, next) => {
     var rule = new schedule.RecurrenceRule();
     rule.minute = 1;
     let startTime = new Date(Date.now() + 5000);
     let endTime = new Date(startTime.getTime() + 720000);
 
-    schedule.scheduleJob(req.query.userId,{ start: startTime, end: endTime, rule:'* * * * * '}, async function(){
-    console.log('uso');
-    await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] - parseInt(req.query.passengers) } });
+    schedule.scheduleJob(
+        req.query.userId,
+        { start: startTime, end: endTime, rule: '* * * * * ' },
+        async function () {
+            console.log('uso');
+            await flight.updateOne({
+                $set: {
+                    passengersNumber: flight['passengersNumber'] - parseInt(req.query.passengers),
+                },
+            });
+        }
+    );
+};
 
-    });
-} 
-
-exports.homeRedirect = async (req,res) => {
+exports.homeRedirect = async (req, res) => {
     console.log('sad');
-    
+
     const response = await axios.get('http://127.0.0.1:8000');
     console.log(response.request._redirectable._currentUrl);
-    return res.redirect(response.request._redirectable._currentUrl); 
-}
+    return res.redirect(response.request._redirectable._currentUrl);
+};
 
 exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
@@ -76,19 +82,17 @@ exports.buyTicket = async (req, res) => {
 
     await ticket.save();
     const respFlight = await axios.get(urlService2);
-    console.log(respFlight.data); 
+    console.log(respFlight.data);
     res.redirect(respFlight.data);
-    
-
-   
 };
 
 exports.buyForm = (req, res) => {
     user = req.user;
     flight = req.flight;
-   
+    passengers = req.passengers;
+
     // console.log(user);
-    res.render('ticketForm', { title: 'Buy tickets', user, flight });
+    res.render('ticketForm', { title: 'Buy tickets', user, flight, passengers });
 };
 
 exports.addCard = (req, res) => {
