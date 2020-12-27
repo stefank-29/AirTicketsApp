@@ -63,28 +63,12 @@ exports.getInfo = async (req, res) => {
     }
     
     if(req.query.flightId != 'undefined' && req.query.passengers != 'undefined'){
-        console.log('aaa');
+       
         const flight = await Flight.findOne({ _id: req.query.flightId });
         await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] + parseInt(req.query.passengers) } }); 
         flight.passengersNumber += parseInt(req.query.passengers);
-        console.log('Before job instantiation');
-        var rule = new schedule.RecurrenceRule();
-        rule.minute = 1;
-        let startTime = new Date(Date.now() + 5000);
-        let endTime = new Date(startTime.getTime() + 720000);
-
-           schedule.scheduleJob(req.query.userId,{ start: startTime, end: endTime, rule:'* * * * * '}, async function(){
-            console.log('uso');
-            await flight.updateOne({ $set: { passengersNumber: flight['passengersNumber'] - parseInt(req.query.passengers) } });
-            const response =  axios.get('http://127.0.0.1:8888/redirect/home');
-            // console.log(response.config.url);
-            
-            
-
-        });
-         
-            
-        // res.send(flight);
+                
+         res.send(flight);
     }else
         res.send(null);
 
