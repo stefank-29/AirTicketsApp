@@ -224,8 +224,10 @@ exports.getInfo = async (req, res) => {
     if (req.query.userId != 'undefined') {
         const user = await User.findOne({ _id: req.query.userId }).populate({ path: 'card' });
 
+
         res.send(user);
     } else {
         res.send(null);
     }
+
 };
