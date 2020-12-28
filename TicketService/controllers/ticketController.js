@@ -48,35 +48,51 @@ exports.infoTicket = async (req, res, next) => {
     next();
 };
 
-exports.scheduleTrigger = (req,res,next) => {
-   
+exports.scheduleTrigger = (req, res, next) => {
     var rule = new schedule.RecurrenceRule();
     rule.minute = 1;
     let startTime = new Date(Date.now() + 5000);
     let endTime = new Date(startTime.getTime() + 720000);
 
-     schedule.scheduleJob(req.session.userId,{ start: startTime, end: endTime, rule:'* * * * * '}, async function(){
-        console.log('uso');
-        const params = new URLSearchParams({
-            flightId: req.session.flightId,
-            userId: req.session.userId,
-            passengers: req.session.passengers,
+    schedule.scheduleJob(
+        req.session.userId,
+        { start: startTime, end: endTime, rule: '* * * * * ' },
+        async function () {
+            console.log('uso');
+            const params = new URLSearchParams({
+                flightId: req.session.flightId,
+                userId: req.session.userId,
+                passengers: req.session.passengers,
+            }).toString();
+            const url = 'http://127.0.0.1:7777/update/passengers?' + params;
+            const response = await axios.get(url);
+            console.log(response);
+        }
+    );
 
-           }).toString();
-        const url = 'http://127.0.0.1:7777/update/passengers?' + params;  
-        const response = await axios.get(url);
-        console.log(response);
-
-             
-
-     });
-     
-     next();
-} 
-
+    next();
+};
 
 exports.homeRedirect = async (req, res) => {
     console.log('sad');
+
+    schedule.scheduleJob(
+        req.session.userId,
+        { start: startTime, end: endTime, rule: '* * * * * ' },
+        async function () {
+            console.log('uso');
+            const params = new URLSearchParams({
+                flightId: req.session.flightId,
+                userId: req.session.userId,
+                passengers: req.session.passengers,
+            }).toString();
+            const url = 'http://127.0.0.1:7777/update/passengers?' + params;
+            const response = await axios.get(url);
+            console.log(response);
+
+            return res.redirect(response.data);
+        }
+    );
 
 
      schedule.scheduleJob(req.session.userId,{ start: startTime, end: endTime, rule:'*/10 * * * *'}, async function(){
@@ -101,6 +117,7 @@ exports.homeRedirect = async (req, res) => {
 
 
 
+
 exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
         userId: req.session.userId,
@@ -114,15 +131,18 @@ exports.buyTicket = async (req, res) => {
         userId: req.session.userId,
         rank: req.session.miles,
 
+
        }).toString();
 
    
 
     let current_job = schedule.scheduledJobs[req.session.userId];
-   
+
+
     current_job.cancel();
     const url = 'http://127.0.0.1:8000/update/rank?' + params;  
     axios
+
    .get(url)
     .then((response) => {
         res.redirect(response.data);
@@ -130,6 +150,7 @@ exports.buyTicket = async (req, res) => {
     .catch((error) => {
         console.log(error);
     });   
+
 
 };
 

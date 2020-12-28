@@ -156,12 +156,15 @@ exports.account = (req, res) => {
     console.log('jwt: ' + req.cookies.jwt);
     res.render('account', { title: 'Edit Your Account' });
 };
-exports.saveCookie = (req, res) => {
-    console.log('jwt iz querija ' + req.query.jwt);
-    res.cookie('jwt', req.query.jwt);
-    // console.log('jwt ' + req.cookies['jwt']);
-    res.redirect('/account');
-};
+// exports.saveCookie = (req, res, next) => {
+//     console.log('user: ' + res.locals.user);
+//     console.log('jwt: ' + req.cookies.jwt);
+//     const jwt = req.query.jwt;
+//     res.cookie('jwt2', jwt);
+
+//     next();
+//     //res.redirect('/account');
+// };
 exports.updateAccount = async (req, res) => {
     if (req.body.update !== undefined) {
         const updates = {

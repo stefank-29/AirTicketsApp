@@ -45,6 +45,12 @@ app.use(
     session({
         secret: process.env.SECRET,
         key: process.env.KEY,
+        cookie: {
+            secure: false,
+            httpOnly: true,
+            sameSite: 'Lax',
+            maxAge: 60 * 60 * 24 * 1000,
+        },
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
@@ -71,16 +77,17 @@ app.use(
         res.locals.h = helpers;
         res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
         res.locals.currentPath = req.path;
-        res.locals.jwt = req.cookies.jwt || null;
         res.locals.email = req.session.email;
 
-        try {
-            const verified = jwt.verify(req.cookies['jwt'], process.env.ACCES_TOKEN);
-            const usr = await User.findOne({ _id: verified.sub });
-            if (req.cookies.jwt != undefined) {
-                res.locals.user = usr;
-            }
-        } catch (err) {}
+        // res.locals.jwt = req.cookies.jwt || null;
+
+        // try {
+        //     const verified = jwt.verify(req.cookies['jwt'], process.env.ACCES_TOKEN);
+        //     const usr = await User.findOne({ _id: verified.sub });
+        //     if (req.cookies.jwt != undefined) {
+        //         res.locals.user = usr;
+        //     }
+        // } catch (err) {}
         next();
     })
 );

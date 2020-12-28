@@ -19,6 +19,7 @@ router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
 router.get('/flights/page/:page', flightsController.getDepartureFlights);
 router.get('/flights/return/page/:page', flightsController.getReturnFlights);
+router.get('/flights/page/redirect', flightsController.redirect);
 
 router.get('/tickets/:id/buy', jwtAuth.authenticateToken, catchErrors(ticketController.buyTicket));
 
@@ -50,7 +51,7 @@ router.get('/logout', authController.logout);
 
 // account
 router.get('/account', jwtAuth.authenticateToken, userController.account);
-router.get('/accountadmin', userController.saveCookie);
+router.get('/accountadmin', userController.account);
 
 router.post('/account', catchErrors(userController.updateAccount));
 
@@ -63,7 +64,7 @@ router.post(
 );
 router.get('/account/verify/:token', userController.verifyEmail, authController.login);
 
-router.get('/account/card', userController.cardForm);
+router.get('/account/card', jwtAuth.authenticateToken, userController.cardForm);
 router.post('/account/card', catchErrors(userController.addCard));
 
 router.get('/account/card/buy', userController.cardFormBuy);
