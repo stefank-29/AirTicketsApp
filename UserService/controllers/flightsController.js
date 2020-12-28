@@ -12,10 +12,12 @@ exports.storeQuery = (req, res) => {
 
     res.redirect('/flights/page/1');
 };
-
+exports.redirect = (req, res) => {
+    res.redirect('/flights/page/1');
+};
 exports.getDepartureFlights = (req, res) => {
     const page = req.params.page;
-    console.log('-------------------------')
+    console.log('-------------------------');
     console.log(req.session.origin);
 
     const params = new URLSearchParams({

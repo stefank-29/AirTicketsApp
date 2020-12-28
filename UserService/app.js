@@ -50,7 +50,12 @@ app.use(
     session({
         secret: process.env.SECRET,
         key: process.env.KEY,
-        cookie: { secure: false },
+        cookie: {
+            secure: false,
+            httpOnly: true,
+            sameSite: 'Lax',
+            maxAge: 60 * 60 * 24 * 1000,
+        },
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
@@ -88,6 +93,8 @@ app.use(
             const usr = await User.findOne({ _id: verified.sub });
             if (req.cookies.jwt != undefined) {
                 res.locals.user = usr;
+            } else {
+                res.locals.user = null;
             }
         } catch (err) {}
         next();
