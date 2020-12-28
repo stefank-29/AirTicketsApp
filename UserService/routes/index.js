@@ -73,5 +73,6 @@ router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);
 
 router.get('/getInfo', catchErrors(userController.getInfo));
+router.get('/update/rank', catchErrors(userController.updateRank));
 
 module.exports = router;

@@ -228,3 +228,11 @@ exports.getInfo = async (req, res) => {
         res.send(null);
     }
 };
+
+exports.updateRank = async (req,res) => {
+    console.log('pppppppp')
+    console.log(req.query.rank);
+    const user = await User.findOne({ _id: req.query.userId });
+    await user.updateOne({ $set: {rank: user.rank + parseInt(req.query.rank) }});
+    res.send('http://127.0.0.1:8000')
+}

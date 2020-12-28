@@ -14,6 +14,13 @@ exports.storeQuery = (req, res) => {
     res.redirect('/tickets/buy');
 };
 
+function minutesTomiles(millisecond) {
+    let min = Math.floor(millisecond/60000);
+    
+    return min * 10;
+}
+
+
 exports.infoTicket = async (req, res, next) => {
     let user, flight;
 
@@ -35,6 +42,8 @@ exports.infoTicket = async (req, res, next) => {
     const respFlight = await axios.get(urlService2);
 
     req.flight = respFlight.data;
+
+    req.session.miles = minutesTomiles(respFlight.data.duration);
 
     next();
 };
@@ -70,7 +79,7 @@ exports.homeRedirect = async (req, res) => {
     console.log('sad');
 
 
-     schedule.scheduleJob(req.session.userId,{ start: startTime, end: endTime, rule:'* * * * * '}, async function(){
+     schedule.scheduleJob(req.session.userId,{ start: startTime, end: endTime, rule:'*/10 * * * *'}, async function(){
         console.log('uso');
         const params = new URLSearchParams({
             flightId: req.session.flightId,
@@ -99,19 +108,24 @@ exports.buyTicket = async (req, res) => {
 
         purchase: new Date(),
     });
+    
     await ticket.save();
+    const params = new URLSearchParams({
+        userId: req.session.userId,
+        rank: req.session.miles,
 
+       }).toString();
 
    
 
     let current_job = schedule.scheduledJobs[req.session.userId];
    
-    console.log(current_job);
     current_job.cancel();
+    const url = 'http://127.0.0.1:8000/update/rank?' + params;  
     axios
-   .get('http://127.0.0.1:8000/flights/page/1')
+   .get(url)
     .then((response) => {
-        res.redirect(response.config.url);
+        res.redirect(response.data);
     })
     .catch((error) => {
         console.log(error);

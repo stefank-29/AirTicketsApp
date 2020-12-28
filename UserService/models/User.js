@@ -49,6 +49,10 @@ const userScheme = new Schema({
         type: Boolean,
         default: false,
     },
+    rank: {
+        type: Number,
+        default:0, 
+    },
     emailToken: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
