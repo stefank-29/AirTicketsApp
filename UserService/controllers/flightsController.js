@@ -28,7 +28,7 @@ exports.getDepartureFlights = (req, res) => {
         passengers: req.session.passengers,
         page: page,
     }).toString();
-    console.log(req.session.origin);
+    
     const url = 'http://127.0.0.1:7777/search?' + params;
     axios
         .get(url)
