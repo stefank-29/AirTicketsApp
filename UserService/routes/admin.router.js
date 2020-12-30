@@ -6,7 +6,7 @@ const axios = require('axios');
 
 router.get('/', (req, res) => {
     const params = new URLSearchParams({ email: res.locals.user.gravatar, jwt: res.locals.jwt });
-    const url = process.env.SERVICE_2 + '?' + params; // /admin/getEmail
+    const url = 'http://127.0.0.1:8080/admin/getEmail' + '?' + params; // /admin/getEmail
     axios
         .get(url)
         .then((response) => {

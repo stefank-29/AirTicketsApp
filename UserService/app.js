@@ -120,7 +120,7 @@ app.use((req, res, next) => {
 
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes); //! svaki put kad se unese url sa '/' pokrene se routes (a u index.js se za svaki pojedinacno odredi sta koji radi)
-app.use('/admin', passportHandler.isAdmin, adminRouter);
+app.use('/ad', passportHandler.isAdmin, adminRouter);
 //! ako routes gore ne rade (posalju next)
 // If that above routes didnt work, we 404 them and forward to error handler
 app.use(errorHandlers.notFound);

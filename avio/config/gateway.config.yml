@@ -1,0 +1,62 @@
+# todo sve css fajlove da dignemo u folderu gde je gateway
+http:
+    port: 8080
+
+apiEndpoints:
+    userAPI:
+        host: '127.0.0.1'
+        paths: ['/account/', '/login', '/*', '/ad']
+    adminAPI:
+        host: '127.0.0.1'
+        paths: ['/admin/*', '/search/*', '/getInfo', '/logout', '/account', '/update/*']
+    ticketAPI:
+        host: '127.0.0.1'
+        paths: ['/tickets/*', '/user/*', '/redirect/*', '/logout']
+serviceEndpoints:
+    userService:
+        url: 'http://127.0.0.1:8000'
+    adminService:
+        url: 'http://127.0.0.1:7777'
+    ticketService:
+        url: 'http://127.0.0.1:8888'
+
+policies:
+    - basic-auth
+    - cors
+    - expression
+    - key-auth
+    - log
+    - proxy
+    - rate-limit
+pipelines:
+    userPipeline:
+        apiEndpoints:
+            - userAPI
+        policies:
+            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+            # - key-auth:
+            - proxy:
+                  - action:
+                        serviceEndpoint: userService
+                        changeOrigin: true
+
+    adminPipeline:
+        apiEndpoints:
+            - adminAPI
+        policies:
+            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+            # - key-auth:
+            - proxy:
+                  - action:
+                        serviceEndpoint: adminService
+                        changeOrigin: true
+    ticketPipeline:
+        apiEndpoints:
+            - ticketAPI
+        policies:
+            # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+            # - key-auth:
+            - proxy:
+                  - action:
+                        serviceEndpoint: ticketService
+                        changeOrigin: true
