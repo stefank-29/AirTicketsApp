@@ -26,4 +26,6 @@ router.get('/redirect/home', catchErrors(ticketController.homeRedirect));
 
 router.get('/logout', ticketController.logout);
 
+router.get('/k', (req,res)=>{console.log('hi agenda')});
+
 module.exports = router;
