@@ -3,6 +3,10 @@ const Airplane = mongoose.model('Airplane');
 const Flight = mongoose.model('Flight');
 const axios = require('axios');
 const { response } = require('express');
+const Queue = require('bee-queue');
+// const Agenda = require('agenda');
+// const agenda = new Agenda({db: {address: process.env.AGENDA_DATABASE, collection: 'agenda'}});
+
 
 exports.addAirplane = async (req, res, next) => {
     const airplane = new Airplane({
@@ -114,3 +118,22 @@ exports.account = (req, res) => {
             console.log(err);
         });
 };
+
+exports.cancelFlight = (req,res) => {
+   
+    agenda.define('cancel flight', async job => {
+        const url = 'http://127.0.0.1:8888/k'
+        console.log('my agenda');
+        const response = await axios.get(url); 
+      });
+       
+      (async function() { 
+        await agenda.start();
+       
+        
+      })();
+
+}
+
+
+

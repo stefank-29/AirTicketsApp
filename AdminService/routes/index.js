@@ -44,6 +44,8 @@ router.get('/account', adminController.account);
 
 router.get('/update/passengers', searchController.updatePassengers);
 
+router.get('/cancel' , adminController.cancelFlight);
+
 // router.post('/search', searchController.searchFlight);
 
 module.exports = router;
