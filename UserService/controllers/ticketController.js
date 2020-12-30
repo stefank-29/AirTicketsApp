@@ -15,7 +15,7 @@ exports.buyTicket = async (req, res) => {
         userId: user.id,
         passengers: req.session.passengers,
     }).toString();
-    const url = 'http://127.0.0.1:8888/tickets?' + params;
+    const url = 'http://127.0.0.1:8080/tickets?' + params;
     axios
         .get(url)
         .then((response) => {

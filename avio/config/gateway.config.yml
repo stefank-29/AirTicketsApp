@@ -5,13 +5,28 @@ http:
 apiEndpoints:
     userAPI:
         host: '127.0.0.1'
-        paths: ['/account/', '/login', '/*', '/ad']
+        paths:
+            [
+                '/',
+                '/account/*',
+                '/login',
+                '/flights/*',
+                '/logout',
+                '/ad',
+                '/register',
+                '/ticket/*',
+                '/accountadmin',
+                '/resetPassword',
+                '/getUserInfo',
+                '/update/*',
+            ]
     adminAPI:
         host: '127.0.0.1'
-        paths: ['/admin/*', '/search/*', '/getInfo', '/logout', '/account', '/update/*']
+        paths: ['/admin/*', '/search', '/search/*', '/getInfo', '/account', '/update/*', '/logout']
     ticketAPI:
         host: '127.0.0.1'
-        paths: ['/tickets/*', '/user/*', '/redirect/*', '/logout']
+        paths: ['/tickets', '/tickets/buy', /tickets/*', '/user/*', '/redirect/*', '/logout']
+
 serviceEndpoints:
     userService:
         url: 'http://127.0.0.1:8000'
@@ -50,6 +65,7 @@ pipelines:
                   - action:
                         serviceEndpoint: adminService
                         changeOrigin: true
+
     ticketPipeline:
         apiEndpoints:
             - ticketAPI

@@ -15,11 +15,10 @@ exports.storeQuery = (req, res) => {
 };
 
 function minutesTomiles(millisecond) {
-    let min = Math.floor(millisecond/60000);
-    
+    let min = Math.floor(millisecond / 60000);
+
     return min * 10;
 }
-
 
 exports.infoTicket = async (req, res, next) => {
     let user, flight;
@@ -31,13 +30,13 @@ exports.infoTicket = async (req, res, next) => {
         userId: req.session.userId,
         passengers: passengers,
     }).toString();
-    const url = 'http://127.0.0.1:8000/getInfo?' + params;
+    const url = 'http://127.0.0.1:8080/getUserInfo?' + params;
 
     const respUser = await axios.get(url);
 
     req.user = respUser.data;
 
-    const urlService2 = 'http://127.0.0.1:7777/getInfo?' + params;
+    const urlService2 = 'http://127.0.0.1:8080/getInfo?' + params;
 
     const respFlight = await axios.get(urlService2);
 
@@ -64,7 +63,7 @@ exports.scheduleTrigger = (req, res, next) => {
                 userId: req.session.userId,
                 passengers: req.session.passengers,
             }).toString();
-            const url = 'http://127.0.0.1:7777/update/passengers?' + params;
+            const url = 'http://127.0.0.1:8080/update/passengers?' + params;
             const response = await axios.get(url);
             console.log(response);
         }
@@ -86,7 +85,7 @@ exports.homeRedirect = async (req, res) => {
                 userId: req.session.userId,
                 passengers: req.session.passengers,
             }).toString();
-            const url = 'http://127.0.0.1:7777/update/passengers?' + params;
+            const url = 'http://127.0.0.1:8080/update/passengers?' + params;
             const response = await axios.get(url);
             console.log(response);
 
@@ -94,29 +93,26 @@ exports.homeRedirect = async (req, res) => {
         }
     );
 
+    schedule.scheduleJob(
+        req.session.userId,
+        { start: startTime, end: endTime, rule: '*/10 * * * *' },
+        async function () {
+            console.log('uso');
+            const params = new URLSearchParams({
+                flightId: req.session.flightId,
+                userId: req.session.userId,
+                passengers: req.session.passengers,
+            }).toString();
+            const url = 'http://127.0.0.1:8080/update/passengers?' + params;
+            const response = await axios.get(url);
+            console.log(response);
 
-     schedule.scheduleJob(req.session.userId,{ start: startTime, end: endTime, rule:'*/10 * * * *'}, async function(){
-        console.log('uso');
-        const params = new URLSearchParams({
-            flightId: req.session.flightId,
-            userId: req.session.userId,
-            passengers: req.session.passengers,
+            return res.redirect(response.data);
+        }
+    );
 
-           }).toString();
-        const url = 'http://127.0.0.1:7777/update/passengers?' + params;  
-        const response = await axios.get(url);
-        console.log(response);
-           
-        return res.redirect(response.data);
-      
-
-     });
-     
-     next();
-} 
-
-
-
+    next();
+};
 
 exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
@@ -125,33 +121,26 @@ exports.buyTicket = async (req, res) => {
 
         purchase: new Date(),
     });
-    
+
     await ticket.save();
     const params = new URLSearchParams({
         userId: req.session.userId,
         rank: req.session.miles,
-
-
-       }).toString();
-
-   
+    }).toString();
 
     let current_job = schedule.scheduledJobs[req.session.userId];
 
-
     current_job.cancel();
-    const url = 'http://127.0.0.1:8000/update/rank?' + params;  
+    const url = 'http://127.0.0.1:8080/update/rank?' + params;
     axios
 
-   .get(url)
-    .then((response) => {
-        res.redirect(response.data);
-    })
-    .catch((error) => {
-        console.log(error);
-    });   
-
-
+        .get(url)
+        .then((response) => {
+            res.redirect(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 exports.buyForm = (req, res) => {
@@ -169,7 +158,7 @@ exports.addCard = (req, res) => {
         id: userId,
     }).toString();
 
-    const url = 'http://127.0.0.1:8000/account/card/buy?' + params;
+    const url = 'http://127.0.0.1:8080/account/card/buy?' + params;
     axios
         .get(url)
         .then((response) => {
@@ -181,7 +170,7 @@ exports.addCard = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-    const url = 'http://127.0.0.1:8000/logout';
+    const url = 'http://127.0.0.1:8080/logout';
     axios.get(url).then((response) => {
         return res.redirect(response.config.url);
     });

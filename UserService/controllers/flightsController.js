@@ -28,8 +28,8 @@ exports.getDepartureFlights = (req, res) => {
         passengers: req.session.passengers,
         page: page,
     }).toString();
-    
-    const url = 'http://127.0.0.1:7777/search?' + params;
+
+    const url = 'http://127.0.0.1:8080/search?' + params;
     axios
         .get(url)
         .then((response) => {
@@ -73,7 +73,7 @@ exports.getReturnFlights = (req, res) => {
         passengers: req.session.passengers,
         page: page,
     }).toString();
-    const url = 'http://127.0.0.1:7777/search/return?' + params;
+    const url = 'http://127.0.0.1:8080/search/return?' + params;
     axios
         .get(url)
         .then((response) => {

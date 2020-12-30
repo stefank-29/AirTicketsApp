@@ -65,7 +65,7 @@ exports.addCardBuy = async (req, res) => {
         passengers: req.session.passengers,
     }).toString();
 
-    const url = 'http://127.0.0.1:8888/tickets?' + params;
+    const url = 'http://127.0.0.1:8080/tickets?' + params;
     axios
         .get(url)
         .then((response) => {
@@ -232,10 +232,10 @@ exports.getInfo = async (req, res) => {
     }
 };
 
-exports.updateRank = async (req,res) => {
-    console.log('pppppppp')
+exports.updateRank = async (req, res) => {
+    console.log('pppppppp');
     console.log(req.query.rank);
     const user = await User.findOne({ _id: req.query.userId });
-    await user.updateOne({ $set: {rank: user.rank + parseInt(req.query.rank) }});
-    res.send('http://127.0.0.1:8000')
-}
+    await user.updateOne({ $set: { rank: user.rank + parseInt(req.query.rank) } });
+    res.send('http://127.0.0.1:8000');
+};

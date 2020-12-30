@@ -11,7 +11,7 @@ router.get('/admin', (req, res) => {
 // provere za rute
 
 router.get('/', (req, res) => {
-    axios.get(process.env.SERVICE_1).then((response) => {
+    axios.get('http://127.0.0.1:8080/').then((response) => {
         res.redirect(response.config.url);
     });
 });
