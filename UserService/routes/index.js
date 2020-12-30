@@ -15,13 +15,13 @@ router.get('/', (req, res) => {
 });
 router.post('/', flightsController.storeQuery);
 
-router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
+// router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
 router.get('/flights/page/:page', flightsController.getDepartureFlights);
 router.get('/flights/return/page/:page', flightsController.getReturnFlights);
 router.get('/flights/page/redirect', flightsController.redirect);
 
-router.get('/tickets/:id/buy', jwtAuth.authenticateToken, catchErrors(ticketController.buyTicket));
+router.get('/ticket/:id/buy', jwtAuth.authenticateToken, catchErrors(ticketController.buyTicket));
 
 // auth
 router.get('/register', userController.registerForm);
@@ -73,7 +73,7 @@ router.post('/account/card/buy', catchErrors(userController.addCardBuy));
 router.get('/resetPassword', authController.resetPasswordForm);
 router.post('/resetPassword', authController.resetPassword);
 
-router.get('/getInfo', catchErrors(userController.getInfo));
+router.get('/getUserInfo', catchErrors(userController.getInfo));
 router.get('/update/rank', catchErrors(userController.updateRank));
 
 module.exports = router;
