@@ -3,7 +3,7 @@ const User = mongoose.model('User');
 const axios = require('axios');
 
 exports.ticketsPage = (req, res) => {
-    res.render('tickets', { title: 'Tickets' });
+    res.render('myTickets', { title: 'My Tickets' });
 };
 
 exports.buyTicket = async (req, res) => {

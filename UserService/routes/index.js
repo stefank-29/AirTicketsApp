@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 router.post('/', flightsController.storeQuery);
 
-// router.get('/tickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
+router.get('/mytickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
 router.get('/flights/page/:page', flightsController.getDepartureFlights);
 router.get('/flights/return/page/:page', flightsController.getReturnFlights);

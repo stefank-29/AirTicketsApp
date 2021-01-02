@@ -1,0 +1,48 @@
+extends layout
+
+block content
+    .inner
+        h2 Purchased tickets
+        .list
+            if flights
+                for flight in flights
+                    if flight.canceled == true
+                        .flight(class='canceled')
+                            .section
+
+                                p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`
+
+                                p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
+                                p.direction!= `${flight.from}`
+                            .plane
+                                img.plane(src="/images/icons/plane.svg", alt="")
+                                p.duration!= h.msToTime(flight.duration)
+
+                            .section
+                                p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
+                                p.direction!= `${flight.to}`
+                            
+                            .section
+                                p.price Ticket Price: #{flight.price} &euro; x #{passengers}
+                                p.price Total: #{flight.price * passengers} &euro;
+                               
+                    else 
+                        .flight(class=(flight.departure < Date.now()? 'passed' : ''))
+                            .section 
+                                p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`
+
+                                p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
+                                p.direction!= `${flight.from}`
+                            .plane
+                                img.plane(src="/images/icons/plane.svg", alt="")
+                                //- p!= flight.airplane.name
+                                p.duration!= h.msToTime(flight.duration)
+
+                            .section
+                                p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
+                                p.direction!= `${flight.to}`
+                            
+                            .section
+                                p.price Ticket Price: #{flight.price} &euro; x #{passengers}
+                                p.price Total: #{flight.price * passengers} &euro;
+                                
