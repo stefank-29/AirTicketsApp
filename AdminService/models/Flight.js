@@ -17,9 +17,9 @@ const flightSscheme = new Schema({
     },
     duration: {
         type: Number,
-        default: function(){
-            return (this.arrival - this.departure)
-        }
+        default: function () {
+            return this.arrival - this.departure;
+        },
     },
     price: {
         type: Number,
@@ -43,9 +43,11 @@ const flightSscheme = new Schema({
         required: true,
     },
     canceled: {
+
         type:Boolean,
         default:false
     }
+
 });
 
 module.exports = mongoose.model('Flight', flightSscheme);

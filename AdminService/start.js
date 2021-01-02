@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 require('dotenv').config({ path: 'variables.env' }); // to access config via proces.env
 
 // Connect to database
- mongoose.connect(process.env.DATABASE, {
+
+
+mongoose.connect(process.env.DATABASE, {
+
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });

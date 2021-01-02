@@ -33,4 +33,7 @@ router.get('/cancelTicket', catchErrors(ticketController.cancelTicket));
 
 
 
+router.get('/getTickets', catchErrors(ticketController.getTickets));
+
+
 module.exports = router;

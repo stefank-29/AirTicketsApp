@@ -40,7 +40,7 @@ exports.datesAreOnSameDay = (first, second) =>
 
 exports.menu = [
     { slug: '/flights', title: 'All flights', icon: 'flight' },
-    { slug: '/tickets', title: 'By tickets', icon: 'ticket' },
+    { slug: '/mytickets', title: 'My tickets', icon: 'ticket' },
     // { slug: '/top', title: 'Top', icon: 'top' },
     // { slug: '/add', title: 'Add', icon: 'add' },
     // { slug: '/map', title: 'Map', icon: 'map' },

@@ -2,8 +2,26 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const axios = require('axios');
 
-exports.ticketsPage = (req, res) => {
-    res.render('tickets', { title: 'Tickets' });
+exports.ticketsPage = async (req, res) => {
+    const params = new URLSearchParams({
+        userId: res.locals.user._id,
+    });
+    const url = 'http://127.0.0.1:8080/getTickets?' + params;
+    const resp = await axios.get(url);
+
+    flightIds = [];
+    const tickets = resp.data;
+    tickets.forEach((ticket) => {
+        flightIds.push(ticket.flightId);
+    });
+    const params2 = new URLSearchParams({
+        flightIds: flightIds,
+    });
+    const url2 = 'http://127.0.0.1:8080/flightsInfo?' + params2;
+    const resp2 = await axios.get(url2);
+    const flights = resp2.data;
+    console.log(flights);
+    res.render('myTickets', { title: 'My Tickets', flights });
 };
 
 exports.buyTicket = async (req, res) => {

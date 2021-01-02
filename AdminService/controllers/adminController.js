@@ -20,6 +20,7 @@ const sendEmail = new Queue('email' , options);
 
 
 
+
 exports.addAirplane = async (req, res, next) => {
     const airplane = new Airplane({
         name: req.body.name,
@@ -102,6 +103,7 @@ exports.deleteFlight = async (req, res, next) => {
     console.log('aa');
     const flight = await Flight.findOne({ _id: req.params.id }).populate('airplane');
     const airplane = await Airplane.findOne({ _id: flight.airplane.id });
+
     const resp = await axios.get('http://127.0.0.1:8080/getTicketInfo?id=' + (req.params.id).toString());
   
     if(resp.data === true){
@@ -120,13 +122,12 @@ exports.deleteFlight = async (req, res, next) => {
     } 
     else{
         await flight.update({ $set: { canceled: true } });
-        await airplane.update({ $set: { active: Date.now() } });
-    }
-   
-    
 
-    res.redirect('/admin/dashboard/flights');
-};
+    const resp = await axios.get(
+        'http://127.0.0.1:8080/getTicketInfo?id=' + req.params.id.toString()
+    );
+
+
 cancelTicket.process(async (job) => {
    
     const resp = await axios.get('http://127.0.0.1:8080/cancelTicket?id=' + (job.data.id).toString());
@@ -192,7 +193,15 @@ exports.account = (req, res) => {
         });
 };
 
-
-
-
-
+exports.flightsInfo = async (req, res) => {
+    let flights = [];
+    flightIds = req.query.flightIds.split(',');
+    console.log(flightIds);
+    await Promise.all(
+        flightIds.map(async (flight) => {
+            flight = await Flight.findOne({ _id: flight });
+            flights.push(flight);
+        })
+    );
+    res.send(flights);
+};
