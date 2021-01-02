@@ -18,6 +18,10 @@ const ticketScheme = new Schema({
     purchase: {
         type:Date,
         required:true
+    },
+    canceled: {
+        type:Boolean,
+        default:false
     }
  
 });

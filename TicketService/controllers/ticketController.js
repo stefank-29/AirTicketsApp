@@ -185,3 +185,23 @@ exports.getTicketInfo = async (req,res) => {
         res.send(false);    
 
 }
+
+exports.cancelTicket = async (req,res) => {
+    console.log('pogodjen');
+    const ticket = await Ticket.find({flightId: req.query.id });
+    let usersId = [];
+        await Promise.all(ticket.map(async (t) => {
+            await t.updateOne({ $set: {canceled: true}});
+            console.log(t.userId);
+            usersId.push(t.userId);
+            console.log(usersId);
+        }))
+
+        res.send(usersId);
+
+        
+     
+   
+   
+    
+}

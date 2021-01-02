@@ -75,5 +75,9 @@ router.post('/resetPassword', authController.resetPassword);
 
 router.get('/getUserInfo', catchErrors(userController.getInfo));
 router.get('/update/rank', catchErrors(userController.updateRank));
+router.get('/downgrade/rank', catchErrors(userController.downgraderank));
+router.get('/sendemail', catchErrors(userController.cancelEmail));
+
+
 
 module.exports = router;
