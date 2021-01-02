@@ -19,11 +19,21 @@ apiEndpoints:
                 '/resetPassword',
                 '/getUserInfo',
                 '/update/*',
-                '/myTickets',
+                '/mytickets',
             ]
     adminAPI:
         host: '127.0.0.1'
-        paths: ['/admin/*', '/search', '/search/*', '/getInfo', '/account', '/update/*', '/logout']
+        paths:
+            [
+                '/admin/*',
+                '/search',
+                '/search/*',
+                '/getInfo',
+                '/account',
+                '/update/*',
+                '/logout',
+                '/flightsInfo',
+            ]
     ticketAPI:
         host: '127.0.0.1'
         paths:
@@ -35,6 +45,7 @@ apiEndpoints:
                 '/redirect/*',
                 '/logout',
                 '/getTicketInfo/',
+                '/getTickets',
             ]
 
 serviceEndpoints:

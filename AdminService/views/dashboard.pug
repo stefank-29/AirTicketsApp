@@ -40,7 +40,7 @@ block content
                                 p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
                                 p.direction!= `${flight.from}`
                             .plane
-                                img.plane(src="/images/icons/plane.svg", alt="")
+                                img.plane(src="http://localhost:7777/images/icons/plane.svg", alt="")
                                 //- p!= flight.airplane.name
                                 p.duration!= h.msToTime(flight.duration)
 
