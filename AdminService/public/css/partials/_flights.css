@@ -9,6 +9,13 @@
     align-items: center;
     justify-content: flex-start;
 }
+.flight.canceled {
+    opacity: 0.5;
+    background-color: red;
+}
+.flight.passed {
+    opacity: 0.5;
+}
 .flight .section {
     position: relative;
     padding: 1rem 1.5rem;
