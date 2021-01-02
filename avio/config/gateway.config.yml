@@ -22,10 +22,10 @@ apiEndpoints:
             ]
     adminAPI:
         host: '127.0.0.1'
-        paths: ['/admin/*', '/search', '/search/*', '/getInfo', '/account', '/update/*', '/logout']
+        paths: ['/admin/*','/search', '/search/*', '/getInfo', '/account', '/update/*', '/logout']
     ticketAPI:
         host: '127.0.0.1'
-        paths: ['/tickets', '/tickets/buy', /tickets/*', '/user/*', '/redirect/*', '/logout']
+        paths: ['/tickets', '/tickets/buy', /tickets/*', '/user/*', '/redirect/*', '/logout', '/getTicketInfo/']
 
 serviceEndpoints:
     userService:

@@ -28,7 +28,7 @@ router.post('/admin/add/flight', catchErrors(adminController.addFlight));
 
 router.get('/admin/dashboard/airplanes', catchErrors(adminController.getAirplanes));
 
-router.get('/admin/flight/:id/delete/', catchErrors(adminController.deleteFlight));
+router.post('/admin/flight/:id/delete/', catchErrors(adminController.deleteFlight));
 
 router.post('/admin/airplane/:id/delete/', catchErrors(adminController.deleteAirplane));
 
@@ -44,7 +44,7 @@ router.get('/account', adminController.account);
 
 router.get('/update/passengers', searchController.updatePassengers);
 
-router.get('/cancel' , adminController.cancelFlight);
+// router.get('/cancel' , adminController.cancelFlight);
 
 // router.post('/search', searchController.searchFlight);
 

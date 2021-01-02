@@ -29,7 +29,9 @@ block content
                         
                         .section
                             p.price Price: #{flight.price} &euro;
-                            a(class='delete' href=`/admin/flight/${flight._id}/delete/`) Delete
+                            form(action=`/admin/flight/${flight._id}/delete/` method="POST")
+                                button(class='delete' type='submit') Delete
+
 
                 
             if airplanes

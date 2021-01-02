@@ -4,8 +4,16 @@ const Flight = mongoose.model('Flight');
 const axios = require('axios');
 const { response } = require('express');
 const Queue = require('bee-queue');
-// const Agenda = require('agenda');
-// const agenda = new Agenda({db: {address: process.env.AGENDA_DATABASE, collection: 'agenda'}});
+
+const options = {
+    removeOnsucces: true,
+    redis: {
+        host: process.env.REDIS_HOST,
+        port: process.env.REDIS_PORT   
+    }
+}
+const job = new Queue('job' , options);
+
 
 
 exports.addAirplane = async (req, res, next) => {
@@ -87,11 +95,20 @@ exports.getAirplanes = async (req, res, next) => {
 };
 
 exports.deleteFlight = async (req, res, next) => {
+    console.log('aa');
     const flight = await Flight.findOne({ _id: req.params.id }).populate('airplane');
     const airplane = await Airplane.findOne({ _id: flight.airplane.id });
-
-    await airplane.update({ $set: { active: Date.now() } });
-    await flight.delete();
+    const resp = await axios.get('http://127.0.0.1:8080/getTicketInfo?id=' + (req.params.id).toString());
+    
+    if(resp.data === true){
+        console.log('true')
+    } 
+    else{
+        //cancel
+        await airplane.update({ $set: { active: Date.now() } });
+    }
+   
+    
 
     res.redirect('/admin/dashboard/flights');
 };
@@ -119,21 +136,7 @@ exports.account = (req, res) => {
         });
 };
 
-exports.cancelFlight = (req,res) => {
-   
-    agenda.define('cancel flight', async job => {
-        const url = 'http://127.0.0.1:8888/k'
-        console.log('my agenda');
-        const response = await axios.get(url); 
-      });
-       
-      (async function() { 
-        await agenda.start();
-       
-        
-      })();
 
-}
 
 
 

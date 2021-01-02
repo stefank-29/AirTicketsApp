@@ -175,3 +175,13 @@ exports.logout = (req, res) => {
         return res.redirect(response.config.url);
     });
 };
+
+exports.getTicketInfo = async (req,res) => {
+    
+    const ticket = await Ticket.find({flightId: req.query.id });
+    if(ticket.length>0) 
+        res.send(true);
+    else 
+        res.send(false);    
+
+}
