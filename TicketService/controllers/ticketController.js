@@ -176,12 +176,14 @@ exports.logout = (req, res) => {
     });
 };
 
-exports.getTicketInfo = async (req,res) => {
-    
-    const ticket = await Ticket.find({flightId: req.query.id });
-    if(ticket.length>0) 
-        res.send(true);
-    else 
-        res.send(false);    
+exports.getTicketInfo = async (req, res) => {
+    const ticket = await Ticket.find({ flightId: req.query.id });
+    if (ticket.length > 0) res.send(true);
+    else res.send(false);
+};
 
-}
+exports.getTickets = async (req, res) => {
+    user = req.query.userId;
+    const tickets = await Ticket.find({ userId: user });
+    res.send(tickets);
+};

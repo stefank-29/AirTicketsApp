@@ -17,9 +17,9 @@ const flightSscheme = new Schema({
     },
     duration: {
         type: Number,
-        default: function(){
-            return (this.arrival - this.departure)
-        }
+        default: function () {
+            return this.arrival - this.departure;
+        },
     },
     price: {
         type: Number,
@@ -41,6 +41,10 @@ const flightSscheme = new Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'Airplane',
         required: true,
+    },
+    canceled: {
+        type: Boolean,
+        default: false,
     },
 });
 

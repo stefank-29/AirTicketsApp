@@ -6,7 +6,7 @@ mixin flight(flight = {})
             p.time!= `${(new Date(flight.departure)).getHours()}:${(new Date(flight.departure)).getMinutes() < 10 ?  `0${(new Date(flight.departure)).getMinutes()}` : (new Date(flight.departure)).getMinutes()}`
             p.direction!= `${flight.from}`
         .plane
-            img.plane(src="/images/icons/plane.svg", alt="")
+            img.plane(src="http://localhost:8888/images/icons/plane.svg", alt="")
             p.duration!= h.msToTime(flight.duration)
 
         .section

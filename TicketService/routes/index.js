@@ -28,4 +28,6 @@ router.get('/logout', ticketController.logout);
 
 router.get('/getTicketInfo', catchErrors(ticketController.getTicketInfo));
 
+router.get('/getTickets', catchErrors(ticketController.getTickets));
+
 module.exports = router;
