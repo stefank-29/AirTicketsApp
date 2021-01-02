@@ -38,9 +38,12 @@ exports.searchDepartureFlight = async (req, res) => {
 
     flightsD.forEach((f) => {
         if (
-            f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
+            f.airplane.capacity >= f.passengersNumber + parseInt(req.query.passengers) &&
             datesAreOnSameDay(new Date(f.departure), new Date(req.query.departure))
         ) {
+            console.log(f.airplane.capacity);
+            console.log(f);
+            console.log(req.query.passengers)
             departureFlights.push(f);
         }
     });

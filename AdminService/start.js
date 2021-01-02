@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 require('dotenv').config({ path: 'variables.env' }); // to access config via proces.env
 
 // Connect to database
+
+
 mongoose.connect(process.env.DATABASE, {
+
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -24,5 +27,6 @@ app.set('port', process.env.PORT || 5555);
 const server = app.listen(app.get('port'), () => {
     console.log(`Express running => PORT ${server.address().port}`);
 });
+
 
 //require('./handlers/mail');

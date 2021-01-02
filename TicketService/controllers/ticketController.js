@@ -182,8 +182,32 @@ exports.getTicketInfo = async (req, res) => {
     else res.send(false);
 };
 
+
+
+
+exports.cancelTicket = async (req,res) => {
+    console.log('pogodjen');
+    const ticket = await Ticket.find({flightId: req.query.id });
+    let usersId = [];
+        await Promise.all(ticket.map(async (t) => {
+            await t.updateOne({ $set: {canceled: true}});
+            console.log(t.userId);
+            usersId.push(t.userId);
+            console.log(usersId);
+        }))
+
+        res.send(usersId);
+
+        
+     
+   
+   
+    
+}
+
 exports.getTickets = async (req, res) => {
     user = req.query.userId;
     const tickets = await Ticket.find({ userId: user });
     res.send(tickets);
 };
+

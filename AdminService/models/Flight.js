@@ -43,9 +43,11 @@ const flightSscheme = new Schema({
         required: true,
     },
     canceled: {
-        type: Boolean,
-        default: false,
-    },
+
+        type:Boolean,
+        default:false
+    }
+
 });
 
 module.exports = mongoose.model('Flight', flightSscheme);
