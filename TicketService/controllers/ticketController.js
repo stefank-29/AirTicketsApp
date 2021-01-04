@@ -119,6 +119,7 @@ exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
         userId: req.session.userId,
         flightId: req.session.flightId,
+        
 
         purchase: new Date(),
     });
@@ -222,6 +223,6 @@ exports.cancelTicket = async (req, res) => {
 
 exports.getTickets = async (req, res) => {
     user = req.query.userId;
-    const tickets = await Ticket.find({ userId: user });
+    const tickets = await Ticket.find({ userId: user }).sort({purchase:-1});
     res.send(tickets);
 };
