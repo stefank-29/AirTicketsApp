@@ -20,9 +20,11 @@ apiEndpoints:
                 '/resetPassword',
                 '/getUserInfo',
                 '/update/*',
-   '/mytickets', 
+                '/mytickets',
                 '/downgrade/rank',
-                '/sendemail'
+                '/sendemail',
+                '/allflights',
+                '/allflights/*',
             ]
 
     adminAPI:
@@ -37,6 +39,7 @@ apiEndpoints:
                 '/update/*',
                 '/logout',
                 '/flightsInfo',
+                '/getAllFlights',
             ]
     ticketAPI:
         host: '127.0.0.1'
@@ -51,8 +54,7 @@ apiEndpoints:
                 '/getTicketInfo/',
                 '/getTickets',
                 '/account/',
-                '/cancelTicket'
-
+                '/cancelTicket',
             ]
 
 serviceEndpoints:

@@ -20,7 +20,7 @@ exports.ticketsPage = async (req, res) => {
     const url2 = 'http://127.0.0.1:8080/flightsInfo?' + params2;
     const resp2 = await axios.get(url2);
     const flights = resp2.data;
-    
+
     res.render('myTickets', { title: 'My Tickets', flights });
 };
 
@@ -34,6 +34,7 @@ exports.buyTicket = async (req, res) => {
         userId: user.id,
         passengers: req.session.passengers,
         email: res.locals.user.gravatar,
+        rank: res.locals.user.rank,
     }).toString();
     const url = 'http://127.0.0.1:8080/tickets?' + params;
     axios
