@@ -142,7 +142,7 @@ cancelTicket.process(async (job) => {
 userRank.process(async (job) => {
     let min = Math.floor(job.data.rank / 60000);
 
-    let rank = min * 10;
+    let rank = min * 7;
 
     const params = new URLSearchParams({
         id: job.data.id,

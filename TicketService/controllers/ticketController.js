@@ -19,7 +19,7 @@ exports.storeQuery = (req, res) => {
 function minutesTomiles(millisecond) {
     let min = Math.floor(millisecond / 60000);
 
-    return min * 10;
+    return min * 7;
 }
 
 exports.infoTicket = async (req, res, next) => {
@@ -57,15 +57,15 @@ exports.scheduleTrigger = (req, res, next) => {
 
     schedule.scheduleJob(
         req.session.userId,
-        { start: startTime, end: endTime, rule: '* * * * * ' },
+        { start: startTime, end: endTime, rule:'*/10 * * * *'},
         async function () {
-            console.log('uso');
+           
             const params = new URLSearchParams({
                 flightId: req.session.flightId,
                 userId: req.session.userId,
                 passengers: req.session.passengers,
             }).toString();
-            const url = 'http://127.0.0.1:8080/update/passengers?' + params;
+            const url = 'http://127.0.0.1:8080/downgrade/passengers?' + params;
             const response = await axios.get(url);
             console.log(response);
         }
@@ -74,47 +74,47 @@ exports.scheduleTrigger = (req, res, next) => {
     next();
 };
 
-exports.homeRedirect = async (req, res) => {
-    console.log('sad');
+// exports.homeRedirect = async (req, res) => {
+//     console.log('sad');
 
-    schedule.scheduleJob(
-        req.session.userId,
-        { start: startTime, end: endTime, rule: '* * * * * ' },
-        async function () {
-            console.log('uso');
-            const params = new URLSearchParams({
-                flightId: req.session.flightId,
-                userId: req.session.userId,
-                passengers: req.session.passengers,
-            }).toString();
-            const url = 'http://127.0.0.1:8080/update/passengers?' + params;
-            const response = await axios.get(url);
-            console.log(response);
+//     // schedule.scheduleJob(
+//     //     req.session.userId,
+//     //     { start: startTime, end: endTime, rule: '* * * * * ' },
+//     //     async function () {
+//     //         console.log('uso');
+//     //         const params = new URLSearchParams({
+//     //             flightId: req.session.flightId,
+//     //             userId: req.session.userId,
+//     //             passengers: req.session.passengers,
+//     //         }).toString();
+//     //         const url = 'http://127.0.0.1:8080/update/passengers?' + params;
+//     //         const response = await axios.get(url);
+//     //         console.log(response);
 
-            return res.redirect(response.data);
-        }
-    );
+//     //         return res.redirect(response.data);
+//     //     }
+//     // );
+//     // '*/10 * * * *'
+//     schedule.scheduleJob(
+//         req.session.userId,
+//         { start: startTime, end: endTime, rule: '* * * * *'},
+//         async function () {
+//             console.log('otkaziiii');
+//             const params = new URLSearchParams({
+//                 flightId: req.session.flightId,
+//                 userId: req.session.userId,
+//                 passengers: req.session.passengers,
+//             }).toString();
+//             const url = 'http://127.0.0.1:8080/update/passengers?' + params;
+//             const response = await axios.get(url);
+//             console.log(response);
 
-    schedule.scheduleJob(
-        req.session.userId,
-        { start: startTime, end: endTime, rule: '*/10 * * * *' },
-        async function () {
-            console.log('uso');
-            const params = new URLSearchParams({
-                flightId: req.session.flightId,
-                userId: req.session.userId,
-                passengers: req.session.passengers,
-            }).toString();
-            const url = 'http://127.0.0.1:8080/update/passengers?' + params;
-            const response = await axios.get(url);
-            console.log(response);
+//             return res.redirect(response.data);
+//         }
+//     );
 
-            return res.redirect(response.data);
-        }
-    );
-
-    next();
-};
+//     next();
+// };
 
 exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
