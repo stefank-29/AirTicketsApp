@@ -33,7 +33,7 @@ html
               
 
               if email
-                img.avatar(src=email width='200' )
+                img.avatar(src=email width='200' class= rank > 10000 ? 'gold' : (rank > 1000 ? 'silver' : 'bronze'))
       
             //- else
             //-   li.nav__item: a.nav__link(href="/register", class=(currentPath.startsWith('/register') ? 'nav__link--active' : '')) Register

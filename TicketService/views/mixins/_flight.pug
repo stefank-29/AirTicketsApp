@@ -18,7 +18,8 @@ mixin flight(flight = {})
         .section
             p.price Ticket Price: #{flight.price} &euro; x #{passengers}
             if rankSale == flight.price * passengers
-                p.price Total: #{flight.price * passengers}  &euro;
+                p.price Total Price: #{flight.price * passengers}  &euro;
             else
-                p.price Total: #{flight.price * passengers} #{rankSale}  &euro;    
+                p.price Total Price: #{flight.price * passengers} &euro;  
+                p.price Total with discount: #{rankSale} &euro;
 

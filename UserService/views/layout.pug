@@ -36,7 +36,7 @@ html
                 //- globaly recognised avatar (service za )
 
                 if user
-                  img.avatar(src=user.gravatar width='200' )
+                  img.avatar(src=user.gravatar width='200' class= user.rank > 10000 ? 'gold' : (user.rank > 1000 ? 'silver' : 'bronze'))
         
             else
               li.nav__item: a.nav__link(href="/register", class=(currentPath.startsWith('/register') ? 'nav__link--active' : '')) Register
