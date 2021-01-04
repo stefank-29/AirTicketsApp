@@ -77,7 +77,7 @@ exports.addCardBuy = async (req, res) => {
     // res.redirect('/account');
 };
 
-exports.validateRegister = (req, res, next) => {
+exports.validateRegister = async (req, res, next) => {
     req.sanitizeBody('name');
     req.checkBody('name', 'You must supply name').notEmpty();
     req.checkBody('surname', 'You must supply surname').notEmpty();
@@ -90,6 +90,7 @@ exports.validateRegister = (req, res, next) => {
     req.checkBody('passportNumber', 'Passport number must be numeric').isNumeric();
 
     const errors = req.validationErrors();
+
     if (errors) {
         req.flash(
             'error',
@@ -101,6 +102,17 @@ exports.validateRegister = (req, res, next) => {
             flashes: req.flash(),
         });
         return; // stop function from runnin`g
+    }
+
+    const user = await User.findOne({ email: req.body.email });
+    if (user) {
+        req.flash('error', 'Account with that email address already exists!');
+        res.render('register', {
+            title: 'Register',
+            body: req.body,
+            flashes: req.flash(),
+        });
+        return;
     }
     next(); // there were no errors
 };
