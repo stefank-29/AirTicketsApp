@@ -17,6 +17,10 @@ router.post('/', flightsController.storeQuery);
 
 router.get('/mytickets', jwtAuth.authenticateToken, ticketController.ticketsPage);
 
+// router.get('/allflights', flightsController.getAllFlights);
+
+router.get('/allflights/page/:page', flightsController.getAllFlights);
+
 router.get('/flights/page/:page', flightsController.getDepartureFlights);
 router.get('/flights/return/page/:page', flightsController.getReturnFlights);
 router.get('/flights/page/redirect', flightsController.redirect);
@@ -77,7 +81,5 @@ router.get('/getUserInfo', catchErrors(userController.getInfo));
 router.get('/update/rank', catchErrors(userController.updateRank));
 router.get('/downgrade/rank', catchErrors(userController.downgraderank));
 router.get('/sendemail', catchErrors(userController.cancelEmail));
-
-
 
 module.exports = router;

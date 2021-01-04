@@ -39,7 +39,7 @@ exports.datesAreOnSameDay = (first, second) =>
     first.getDate() === second.getDate();
 
 exports.menu = [
-    { slug: '/flights', title: 'All flights', icon: 'flight' },
+    { slug: '/allflights/page/1', title: 'All flights', icon: 'flight' },
     { slug: '/mytickets', title: 'My tickets', icon: 'ticket' },
     // { slug: '/top', title: 'Top', icon: 'top' },
     // { slug: '/add', title: 'Add', icon: 'add' },
