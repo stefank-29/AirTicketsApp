@@ -82,14 +82,18 @@ exports.authenticateToken = (req, res, next) => {
     if (req && req.cookies) {
         token = req.cookies['jwt'];
     }
-    if (token == null) return res.sendStatus(401);
+    if (token == null) return res.redirect('login') 
 
     jwt.verify(token, process.env.ACCES_TOKEN, (err, user) => {
         console.log(err);
-        if (err) return res.sendStatus(403);
-        req.user = user;
-        console.log(user.sub);
-        next();
+        if (err) { 
+            
+            return res.redirect('login') 
+        }else{
+            req.user = user;
+       
+            next();
+        }
     });
 };
 exports.isAdmin = (req, res, next) => {
