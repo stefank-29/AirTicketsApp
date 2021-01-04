@@ -103,7 +103,6 @@ exports.deleteFlight = async (req, res, next) => {
     console.log('aa');
     const flight = await Flight.findOne({ _id: req.params.id }).populate('airplane');
     const airplane = await Airplane.findOne({ _id: flight.airplane.id });
-
     const resp = await axios.get('http://127.0.0.1:8080/getTicketInfo?id=' + (req.params.id).toString());
   
     if(resp.data === true){
@@ -122,10 +121,16 @@ exports.deleteFlight = async (req, res, next) => {
     } 
     else{
         await flight.update({ $set: { canceled: true } });
+        await airplane.update({ $set: { active: Date.now() } });
+    }
+   
+    
 
-    const resp = await axios.get(
-        'http://127.0.0.1:8080/getTicketInfo?id=' + req.params.id.toString()
-    );
+    res.redirect('/admin/dashboard/flights');
+};
+
+
+   
 
 
 cancelTicket.process(async (job) => {
@@ -137,10 +142,10 @@ cancelTicket.process(async (job) => {
    
     userRank.createJob({id: resp.data,rank:airplane.duration}).save()
         .then((job) => {
-            console.log('dodat posao' , job.id);
+            console.log('dodat posao rank' , job.id);
         });
         sendEmail.createJob({ id:resp.data, flight:airplane }).save().then(job => {
-            console.log('dodat posao' , job.id);    
+            console.log('dodat posao email' , job.id);    
         });
 
 });
