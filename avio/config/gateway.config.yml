@@ -8,6 +8,7 @@ apiEndpoints:
         paths:
             [
                 '/',
+                '/account/',
                 '/account/*',
                 '/login',
                 '/flights/*',
@@ -43,13 +44,15 @@ apiEndpoints:
             [
                 '/tickets',
                 '/tickets/buy',
-                /tickets/*',
+                '/tickets/*',
                 '/user/*',
                 '/redirect/*',
                 '/logout',
                 '/getTicketInfo/',
                 '/getTickets',
+                '/account/',
                 '/cancelTicket'
+
             ]
 
 serviceEndpoints:

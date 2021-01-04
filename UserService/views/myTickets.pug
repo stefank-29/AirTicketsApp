@@ -6,43 +6,58 @@ block content
         .list
             if flights
                 for flight in flights
-                    if flight.canceled == true
-                        .flight(class='canceled')
-                            .section
+                    if flight
+                        if flight.canceled == true
+                            .flight(class='canceled')
+                                .section
 
-                                p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`
+                                    //- p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`
+                                    p.date!= `${h.dayOfWeek(new Date(flight.departure))}, ${h.format(new Date(flight.departure),  "dd MMM yyyy")}`
 
-                                p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
-                                p.direction!= `${flight.from}`
-                            .plane
-                                img.plane(src="/images/icons/plane.svg", alt="")
-                                p.duration!= h.msToTime(flight.duration)
+                                    //- p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
+                                    p.time!= `${(new Date(flight.departure)).getHours()}:${(new Date(flight.departure)).getMinutes() < 10 ?  `0${(new Date(flight.departure)).getMinutes()}` : (new Date(flight.departure)).getMinutes()}`
 
-                            .section
-                                p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
-                                p.direction!= `${flight.to}`
-                            
-                            .section
-                                p.price Ticket Price: #{flight.price} &euro; x #{passengers}
-                                p.price Total: #{flight.price * passengers} &euro;
-                               
-                    else 
-                        .flight(class=(flight.departure < Date.now()? 'passed' : ''))
-                            .section 
-                                //- p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`
+                                    p.direction!= `${flight.from}`
+                                .plane
+                                    img.plane(src="http://localhost:8000/images/icons/plane.svg", alt="")
+                                    p.duration!= h.msToTime(flight.duration)
 
-                                //- p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
-                                p.direction!= `${flight.from}`
-                            .plane
-                                img.plane(src="/images/icons/plane.svg", alt="")
-                                //- p!= flight.airplane.name
-                                p.duration!= h.msToTime(flight.duration)
+                                .section
+                                    //- p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
+                                    //- p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
+                                    p.time!= `${(new Date(flight.arrival)).getHours()}:${(new Date(flight.arrival)).getMinutes() < 10 ?  `0${(new Date(flight.arrival)).getMinutes()}` : (new Date(flight.arrival)).getMinutes()}`
 
-                            .section
-                                //- p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
-                                p.direction!= `${flight.to}`
-                            
-                            .section
-                                p.price Ticket Price: #{flight.price} &euro; x #{passengers}
-                                p.price Total: #{flight.price * passengers} &euro;
+                                    p.direction!= `${flight.to}`
                                 
+                                .section
+                                    //- p.price Ticket Price: #{flight.price} &euro; //- x #{passengers}
+                                    p.price Ticket Price: #{flight.price} &euro;
+                                    p.price Total: #{flight.price * passengers} &euro;
+                                
+                        else 
+                            .flight(class=(new Date(flight.departure) < Date.now()? 'passed' : ''))
+                                .section
+
+                                    //- p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`
+                                    p.date!= `${h.dayOfWeek(new Date(flight.departure))}, ${h.format(new Date(flight.departure),  "dd MMM yyyy")}`
+
+                                    //- p.time!= `${flight.departure.getHours()}:${flight.departure.getMinutes() < 10 ?  `0${flight.departure.getMinutes()}` : flight.departure.getMinutes()}`
+                                    p.time!= `${(new Date(flight.departure)).getHours()}:${(new Date(flight.departure)).getMinutes() < 10 ?  `0${(new Date(flight.departure)).getMinutes()}` : (new Date(flight.departure)).getMinutes()}`
+
+                                    p.direction!= `${flight.from}`
+                                .plane
+                                    img.plane(src="http://localhost:8000/images/icons/plane.svg", alt="")
+                                    p.duration!= h.msToTime(flight.duration)
+
+                                .section
+                                    //- p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
+                                    //- p.time!= `${flight.arrival.getHours()}:${flight.arrival.getMinutes() < 10 ?  `0${flight.arrival.getMinutes()}` : flight.arrival.getMinutes()}`
+                                    p.time!= `${(new Date(flight.arrival)).getHours()}:${(new Date(flight.arrival)).getMinutes() < 10 ?  `0${(new Date(flight.arrival)).getMinutes()}` : (new Date(flight.arrival)).getMinutes()}`
+
+                                    p.direction!= `${flight.to}`
+                                .section
+                                    //- p.price Ticket Price: #{flight.price} &euro; //- x #{passengers}
+                                    p.price Ticket Price: #{flight.price} &euro;
+                                    p.price Total: #{flight.price * passengers} &euro;
+                               
+                                    

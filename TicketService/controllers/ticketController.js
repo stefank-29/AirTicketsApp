@@ -8,6 +8,7 @@ exports.storeQuery = (req, res) => {
     req.session.flightId = req.query.flightId;
     req.session.userId = req.query.userId;
     req.session.passengers = req.query.passengers;
+    req.session.email = req.query.email;
 
     console.log(req.query.flightId, req.query.userId, req.query.passengers);
 
