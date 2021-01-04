@@ -82,6 +82,7 @@ exports.authenticateToken = (req, res, next) => {
     if (req && req.cookies) {
         token = req.cookies['jwt'];
     }
+
     if (token == null) return res.redirect('/login') 
 
     jwt.verify(token, process.env.ACCES_TOKEN, (err, user) => {
@@ -90,8 +91,9 @@ exports.authenticateToken = (req, res, next) => {
             
             return res.redirect('/login') 
         }else{
+
             req.user = user;
-       
+
             next();
         }
     });
