@@ -9,6 +9,7 @@ const jwtController = require('./jwtController');
 const mail = require('../handlers/mail');
 const auth = require('./authController');
 const axios = require('axios');
+const format = require('date-fns/format');
 exports.registerForm = (req, res) => {
     res.render('register', { title: 'Register' });
 };
@@ -266,8 +267,20 @@ exports.downgraderank = async (req, res) => {
     res.send(true);
 };
 
+exports.dayOfWeek = (date) => {
+    //Create an array containing each day, starting with Sunday.
+    var weekdays = new Array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+    //Use the getDay() method to get the day.
+    var day = date.getDay();
+    //Return the element that corresponds to that index.
+    return weekdays[day];
+};
+
 exports.cancelEmail = async (req, res) => {
     let ids = req.query.id.split(',');
+
+    const day = dayOfWeek(new Date(req.query.querydeparture));
+    const dateFormated = format(new Date(departure), 'dd MMM yyyy');
 
     ids.forEach(async (id) => {
         const user = await User.findOne({ _id: id });
@@ -275,8 +288,10 @@ exports.cancelEmail = async (req, res) => {
             user,
             subject: 'Fligth cancelation',
             from: req.query.from,
-            to: req.query.to,
             departure: req.query.departure,
+            to: req.query.to,
+            day,
+            dateFormated,
             filename: 'cancel-flight',
         });
     });

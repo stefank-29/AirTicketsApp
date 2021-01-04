@@ -2,8 +2,8 @@ extends email-layout
 
 block content
   h2 Dear #{user.name},
-  p Your flight from #{from} to #{to} on #{`${h.dayOfWeek(new Date(departure))}, ${h.format(new Date(departure),  "dd MMM yyyy")}`},
-    #{ `${(new Date(departure)).getHours()}:${(new Date(departure)).getMinutes() < 10 ?  `0${(new Date(departure)).getMinutes()}` : (new Date(departure)).getMinutes()}`} is canceled. 
+  p= `Your flight from ${from} to ${to} on ${day}, ${dateFormated}`
+  p=  at `${(new Date(departure)).getHours()}:${(new Date(departure)).getMinutes() < 10 ?  `0${(new Date(departure)).getMinutes()}` : (new Date(departure)).getMinutes()} is canceled`
     
     
 
