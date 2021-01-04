@@ -279,19 +279,13 @@ exports.dayOfWeek = (date) => {
 exports.cancelEmail = async (req, res) => {
     let ids = req.query.id.split(',');
 
-    const day = dayOfWeek(new Date(req.query.querydeparture));
-    const dateFormated = format(new Date(departure), 'dd MMM yyyy');
-
     ids.forEach(async (id) => {
         const user = await User.findOne({ _id: id });
         await mail.send({
             user,
             subject: 'Fligth cancelation',
             from: req.query.from,
-            departure: req.query.departure,
             to: req.query.to,
-            day,
-            dateFormated,
             filename: 'cancel-flight',
         });
     });
