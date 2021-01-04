@@ -33,6 +33,16 @@ exports.getDepartureFlights = (req, res) => {
     axios
         .get(url)
         .then((response) => {
+           
+            if(response.data === false){
+                req.flash(
+                    'info',
+                    `flight does not exist`
+                );
+                res.redirect('back');
+            }     
+
+            else{
             const flightsDeparture = response.data.departureFlights;
             // const returnFlights = response.data.returnFlights;
             const page = response.data.page;
@@ -55,6 +65,7 @@ exports.getDepartureFlights = (req, res) => {
                 pages,
                 count,
             });
+           }
         })
         .catch((err) => {
             console.log(err);
@@ -77,6 +88,13 @@ exports.getReturnFlights = (req, res) => {
     axios
         .get(url)
         .then((response) => {
+            if(response.data === false){
+                req.flash(
+                    'info',
+                    `flight does not exist`
+                );
+                res.redirect('back');
+            }else{     
             //const flightsDeparture = response.data.departureFlights;
             const returnFlights = response.data.returnFlights;
             const page = response.data.page;
@@ -99,6 +117,7 @@ exports.getReturnFlights = (req, res) => {
                 pages,
                 count,
             });
+        }
         })
         .catch((err) => {
             console.log(err);
