@@ -35,7 +35,7 @@ block content
                                     p.price Total: #{flight.price * passengers} &euro;
                                 
                         else 
-                            .flight(class=(flight.departure < Date.now()? 'passed' : ''))
+                            .flight(class=(new Date(flight.departure) < Date.now()? 'passed' : ''))
                                 .section
 
                                     //- p.date!= `${h.dayOfWeek(flight.departure)}, ${h.format(flight.departure,  "DD MMM YYYY")}`

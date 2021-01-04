@@ -28,10 +28,12 @@ exports.buyTicket = async (req, res) => {
     const user = await User.findOne({ _id: res.locals.user.id });
     req.session.flightId = req.params.id;
     req.session.id = user.id;
+
     const params = new URLSearchParams({
         flightId: req.params.id,
         userId: user.id,
         passengers: req.session.passengers,
+        email: res.locals.user.gravatar,
     }).toString();
     const url = 'http://127.0.0.1:8080/tickets?' + params;
     axios

@@ -70,6 +70,7 @@ app.use(
         res.locals.h = helpers;
         res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
         res.locals.currentPath = req.path;
+        res.locals.email = req.session.email;
         // res.locals.jwt = req.cookies.jwt || null;
 
         // try {
