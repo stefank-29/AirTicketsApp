@@ -43,7 +43,7 @@ router.get('/search/return', catchErrors(searchController.searchReturnFlight));
 router.get('/logout', adminController.logout);
 router.get('/account', adminController.account);
 
-router.get('/update/passengers', searchController.updatePassengers);
+router.get('/downgrade/passengers', searchController.updatePassengers);
 
 router.get('/flightsInfo', adminController.flightsInfo);
 

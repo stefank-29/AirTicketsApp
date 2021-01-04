@@ -63,7 +63,7 @@ exports.searchDepartureFlight = async (req, res) => {
         .skip(skip)
         .limit(limit);
 
-    const query = { from: req.query.origin, to: req.query.destination };
+    const query = { from: req.query.origin, to: req.query.destination,canceled:false,departure: { $gt: Date.now() } };
 
     const countPromise = Flight.countDocuments(query);
 
@@ -103,11 +103,13 @@ exports.getInfo = async (req, res) => {
 };
 
 exports.updatePassengers = async (req, res) => {
+   
     const flight = await Flight.findOne({ _id: req.query.flightId });
-    console.log(flight);
+   
     await flight.updateOne({
         $set: { passengersNumber: flight['passengersNumber'] - parseInt(req.query.passengers) },
     });
+    
     res.send('http://127.0.0.1:8000/');
 };
 
@@ -129,7 +131,7 @@ exports.searchReturnFlight = async (req, res) => {
         .skip(skip)
         .limit(limit);
 
-    const query = { from: req.query.destination, to: req.query.origin };
+        const query = { from: req.query.destination, to: req.query.origin,canceled:false,departure: { $gt: Date.now() } };
     const countPromise = Flight.countDocuments(query);
 
     const [flightsR, count] = await Promise.all([flightsPromise, countPromise]);
