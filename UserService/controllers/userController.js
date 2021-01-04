@@ -86,6 +86,11 @@ exports.validateRegister = async (req, res, next) => {
     req.checkBody('password-confirm', 'Confirmed Password cannot be blank').notEmpty();
     req.checkBody('password-confirm', 'Your password do not match').equals(req.body.password);
 
+    req.check(
+        'password',
+        'Password should be combination of at least one uppercase, one lower case, one digit and min 8, max 20 characters long'
+    ).matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*-]{8,}$/, 'i');
+
     req.checkBody('passportNumber', 'You must supply a passport number').notEmpty();
     req.checkBody('passportNumber', 'Passport number must be numeric').isNumeric();
 
