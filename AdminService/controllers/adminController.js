@@ -104,7 +104,7 @@ exports.deleteFlight = async (req, res, next) => {
 
     if (resp.data === true) {
         await flight.update({ $set: { canceled: true } });
-
+        await airplane.update({ $set: { active: Date.now() } });
         cancelTicket
             .createJob({ id: flight.id })
             .save()

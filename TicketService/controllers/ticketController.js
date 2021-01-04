@@ -144,13 +144,34 @@ exports.buyTicket = async (req, res) => {
         });
 };
 
+function rank(km){
+    if(km >10000)
+        return 'gold';
+    else if(km >1000)
+        return 'silver';
+    else if(km <1000)
+        return 'bronze';        
+}
+function sale(rank,price) {
+    if(rank == 'gold' ) 
+        return price * 0.8;
+    else if(rank == 'silver')
+        return price * 0.9
+    else 
+        return price;         
+}
+
+ 
 exports.buyForm = (req, res) => {
     user = req.user;
+    
+    sl = rank(user.rank);
+    
     flight = req.flight;
     passengers = req.passengers;
-
-    // console.log(user);
-    res.render('ticketForm', { title: 'Buy tickets', user, flight, passengers });
+    rankSale = sale(sl,(flight.price*passengers));
+   
+    res.render('ticketForm', { title: 'Buy tickets', user, flight, passengers,rankSale });
 };
 
 exports.addCard = (req, res) => {

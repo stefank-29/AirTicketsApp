@@ -30,6 +30,7 @@
     justify-content: center;
     transition: transform 0.2s;
     border-bottom: 5px solid transparent;
+    
 }
 .nav__link svg {
     width: 40px;

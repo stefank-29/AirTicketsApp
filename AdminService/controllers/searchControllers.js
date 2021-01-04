@@ -36,8 +36,10 @@ exports.searchDepartureFlight = async (req, res) => {
    
     const [flightsD, count] = await Promise.all([flightsPromise, countPromise]);
     const pages = Math.ceil(count / limit);
-    
+   
     flightsD.forEach((f) => {
+        if(f.airplane!==null){
+       
         if (
             f.airplane.capacity >= f.passengersNumber + parseInt(req.query.passengers) &&
             datesAreOnSameDay(new Date(f.departure), new Date(req.query.departure))
@@ -47,6 +49,8 @@ exports.searchDepartureFlight = async (req, res) => {
             console.log(req.query.passengers)
             departureFlights.push(f);
         }
+      }
+       
     });
     
     if(departureFlights.length === 0 ){
@@ -103,12 +107,14 @@ exports.searchReturnFlight = async (req, res) => {
     const pages = Math.ceil(count / limit);
 
     flightsR.forEach((f) => {
+        if(f.airplane!==null){
         if (
             f.airplane.capacity >= f.passengersNumber + req.query.passengers &&
             datesAreOnSameDay(new Date(f.departure), new Date(req.query.return))
             && f.canceled === false ) {
             returnFlights.push(f);
         }
+       }
     });
     
     if(returnFlights.length === 0 ){

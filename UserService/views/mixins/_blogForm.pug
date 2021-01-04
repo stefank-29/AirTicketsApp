@@ -2,7 +2,7 @@ mixin blogForm(blog = {})
     form(action=`/add/${blog._id || ''}` method="POST" enctype='multipart/form-data' class= 'card' )
         label(for="title") Title
         input(type="text" name='title' value=blog.title required)
-        //- image upload
+       
         label(for="photo") Photo
         input(type="file" name='photo' id='photo' accept='image/git, image/png, image/jpg, image/jpeg')
         if blog.photo
