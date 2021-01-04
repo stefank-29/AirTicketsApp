@@ -279,6 +279,7 @@ exports.dayOfWeek = (date) => {
 exports.cancelEmail = async (req, res) => {
     let ids = req.query.id.split(',');
 
+
     ids.forEach(async (id) => {
         const user = await User.findOne({ _id: id });
         await mail.send({
