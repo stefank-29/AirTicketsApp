@@ -9,6 +9,7 @@ exports.storeQuery = (req, res) => {
     req.session.userId = req.query.userId;
     req.session.passengers = req.query.passengers;
     req.session.email = req.query.email;
+    req.session.rank = req.query.rank;
 
     console.log(req.query.flightId, req.query.userId, req.query.passengers);
 
@@ -119,7 +120,6 @@ exports.buyTicket = async (req, res) => {
     const ticket = new Ticket({
         userId: req.session.userId,
         flightId: req.session.flightId,
-        
 
         purchase: new Date(),
     });
@@ -145,34 +145,27 @@ exports.buyTicket = async (req, res) => {
         });
 };
 
-function rank(km){
-    if(km >10000)
-        return 'gold';
-    else if(km >1000)
-        return 'silver';
-    else if(km <1000)
-        return 'bronze';        
+function rank(km) {
+    if (km > 10000) return 'gold';
+    else if (km > 1000) return 'silver';
+    else if (km < 1000) return 'bronze';
 }
-function sale(rank,price) {
-    if(rank == 'gold' ) 
-        return price * 0.8;
-    else if(rank == 'silver')
-        return price * 0.9
-    else 
-        return price;         
+function sale(rank, price) {
+    if (rank == 'gold') return price * 0.8;
+    else if (rank == 'silver') return price * 0.9;
+    else return price;
 }
 
- 
 exports.buyForm = (req, res) => {
     user = req.user;
-    
+
     sl = rank(user.rank);
-    
+
     flight = req.flight;
     passengers = req.passengers;
-    rankSale = sale(sl,(flight.price*passengers));
-   
-    res.render('ticketForm', { title: 'Buy tickets', user, flight, passengers,rankSale });
+    rankSale = sale(sl, flight.price * passengers);
+
+    res.render('ticketForm', { title: 'Buy tickets', user, flight, passengers, rankSale });
 };
 
 exports.addCard = (req, res) => {
@@ -223,6 +216,6 @@ exports.cancelTicket = async (req, res) => {
 
 exports.getTickets = async (req, res) => {
     user = req.query.userId;
-    const tickets = await Ticket.find({ userId: user }).sort({purchase:-1});
+    const tickets = await Ticket.find({ userId: user }).sort({ purchase: -1 });
     res.send(tickets);
 };

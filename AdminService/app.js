@@ -78,6 +78,7 @@ app.use(
         res.locals.flashes = req.flash(); // pokrece flesh u sledecem reqestu (cuva sve requestove)
         res.locals.currentPath = req.path;
         res.locals.email = req.session.email;
+        res.locals.rank = req.session.rank;
 
         // res.locals.jwt = req.cookies.jwt || null;
 

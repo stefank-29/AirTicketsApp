@@ -63,6 +63,7 @@ exports.adminGetEmail = (req, res) => {
     // console.log('-----------------------------');
     // console.log(req.cookies['jwt']);
     req.session.email = req.query.email;
+    req.session.rank = req.query.rank;
 
     res.redirect('/admin/dashboard/');
 };

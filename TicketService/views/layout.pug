@@ -30,7 +30,7 @@ html
               span Logout
             li.nav__item: a.nav__link(href="/account", title='Account settings' class=(currentPath.startsWith('/account') ? 'nav__link--active' : ''))
               if email
-                img.avatar(src=email width='200' )  
+                img.avatar(src=email width='200' class= rank > 10000 ? 'gold' : (rank > 1000 ? 'silver' : 'bronze'))  
               
 
     block messages
