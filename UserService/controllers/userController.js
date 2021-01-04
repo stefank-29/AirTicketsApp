@@ -250,41 +250,36 @@ exports.getInfo = async (req, res) => {
 };
 
 exports.updateRank = async (req, res) => {
-   
     const user = await User.findOne({ _id: req.query.userId });
     await user.updateOne({ $set: { rank: user.rank + parseInt(req.query.rank) } });
     res.send('http://127.0.0.1:8000');
 };
 
 exports.downgraderank = async (req, res) => {
-    
     let ids = req.query.id.split(',');
-   
-    ids.forEach(async id => {
-    const user = await User.findOne({ _id: id });    
-    await user.updateOne({ $set: { rank: user.rank - parseInt(req.query.rank) } });
-    });   
-    
+
+    ids.forEach(async (id) => {
+        const user = await User.findOne({ _id: id });
+        await user.updateOne({ $set: { rank: user.rank - parseInt(req.query.rank) } });
+    });
+
     res.send(true);
 };
 
-exports.cancelEmail = async (req,res) => {
-    
+exports.cancelEmail = async (req, res) => {
     let ids = req.query.id.split(',');
-   
-    ids.forEach(async id => {
-    const user = await User.findOne({ _id: id });    
-    await mail.send({
-        user,
-        subject: 'Fligth cancelation',
-        from: req.query.from, 
-        filename: 'cancel-flight', 
 
+    ids.forEach(async (id) => {
+        const user = await User.findOne({ _id: id });
+        await mail.send({
+            user,
+            subject: 'Fligth cancelation',
+            from: req.query.from,
+            to: req.query.to,
+            departure: req.query.departure,
+            filename: 'cancel-flight',
+        });
     });
 
-    });   
-
-
-    
     res.send(null);
-}
+};
