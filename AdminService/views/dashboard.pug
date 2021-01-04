@@ -56,21 +56,21 @@ block content
 
 
                     
-                if airplanes
-                    for airplane in airplanes
-                        .airplane
-                            .section
-                                p.name!= airplane.name
-                                p.capacity!= `Capacity:  ${airplane.capacity}`
-                            
-                            .section
+            if airplanes
+                for airplane in airplanes
+                    .airplane
+                        .section
+                            p.name!= airplane.name
+                            p.capacity!= `Capacity:  ${airplane.capacity}`
+                        
+                        .section
 
-                                form(action=`/admin/airplane/${airplane._id}/delete/` method="POST")
+                            form(action=`/admin/airplane/${airplane._id}/delete/` method="POST")
 
-                                    if (airplane.active == undefined || airplane.active < Date.now())
-                                        button(class='delete' type='submit') Delete
-                                    else
-                                        button(class='delete' type='submit' disabled) Delete
+                                if (airplane.active == undefined || airplane.active < Date.now())
+                                    button(class='delete' type='submit') Delete
+                                else
+                                    button(class='delete' type='submit' disabled) Delete
 
 
 //-         
