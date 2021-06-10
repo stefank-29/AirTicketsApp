@@ -1,6 +1,6 @@
 # Air tickets app
 
-This is a air tickets app built with JavaScript/CSS on frontend and Node.js on backend.
+This is an air tickets app built with JavaScript/CSS on frontend and Node.js on backend.
 
 The application is based on microservices architecture.
 
