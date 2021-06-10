@@ -6,7 +6,7 @@ The application is based on microservices architecture.
 
 API gateway used for communication between client and services.
 
-### App have three services:
+### App has three services:
 
 -   [User service](#user-service)
 -   [Flight service](#flight-service)
