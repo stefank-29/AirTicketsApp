@@ -18,7 +18,7 @@ API gateway used for communication between client and services.
 
 ![Image of project](userservice.gif)
 
-### Admin service
+### Flight service
 
 ![Image of project](admin.gif)
 
