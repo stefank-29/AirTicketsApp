@@ -32,7 +32,6 @@ block content
                                 .section
                                     //- p.price Ticket Price: #{flight.price} &euro; //- x #{passengers}
                                     p.price Ticket Price: #{flight.price} &euro;
-                                    p.price Total: #{flight.price * passengers} &euro;
                                 
                         else 
                             .flight(class=(new Date(flight.departure) < Date.now()? 'passed' : ''))
@@ -58,6 +57,5 @@ block content
                                 .section
                                     //- p.price Ticket Price: #{flight.price} &euro; //- x #{passengers}
                                     p.price Ticket Price: #{flight.price} &euro;
-                                    p.price Total: #{flight.price * passengers} &euro;
                                
                                     

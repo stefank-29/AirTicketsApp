@@ -25,7 +25,6 @@ apiEndpoints:
                 '/sendemail',
                 '/allflights',
                 '/allflights/*',
-               
             ]
 
     adminAPI:
@@ -40,7 +39,7 @@ apiEndpoints:
                 '/logout',
                 '/flightsInfo',
                 '/getAllFlights',
-                '/downgrade/passengers'
+                '/downgrade/passengers',
             ]
     ticketAPI:
         host: '127.0.0.1'
@@ -56,7 +55,6 @@ apiEndpoints:
                 '/getTickets',
                 '/account/',
                 '/cancelTicket',
-                
             ]
 
 serviceEndpoints:
