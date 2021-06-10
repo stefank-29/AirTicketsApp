@@ -28,7 +28,7 @@ API gateway used for communication between client and services.
 
 # Table of contents
 
--   [Project Title](#sneakers-shop)
+-   [Air tickets app](#air-tickets-app)
 -   [Demo-Preview](#demo-preview)
 -   [Table of contents](#table-of-contents)
 -   [Installation](#installation)
